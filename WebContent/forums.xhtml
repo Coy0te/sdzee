@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <title>Liste des forums</title>
+        <h:outputStylesheet library="default" name="css/form.css"  />
+    </h:head>
+    <h:body>
+		<ui:composition>  
+		<ui:repeat value="#{listerCategoriesBean.categories.forums}" var="forum">
+		<div class="categoryForum">
+		    <div class="name">
+		        <a href="/forum/categorie/#{forum.titre}" class="imgCategoryForum">
+		            <img src="#{forum.id}.png" alt="#{forum.titre}">
+		        </a>
+		        <a href="/forum/categorie/#{forum.titre}" class="rightContentCategoryForum">
+		            <span class="titleCategory">#{forum.titre}</span>
+		          <span class="contentCategory">#{forum.description}</span>
+		    	</a>
+			</div>
+		    <a href="/forum/sujet/#" class="rightContentCategoryForum lastMessage">
+		        <hr>
+		            <strong><span class="contentCategory">Dernier message :</span></strong>
+		            <br>
+		            <div class="lastMessage">Titre du dernier message</div>
+		        <div class="backgroundArrow arrowBottom" style="display: none;"></div>
+		    </a>
+		</div>
+		</ui:repeat>
+		</ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <title>Inscription</title>
+        <h:outputStylesheet library="default" name="css/form.css"  />
+    </h:head>
+    <h:body>
+      <h:form id="formulaire">
+         <fieldset>
+         	<legend>Inscription</legend>
+	     	<h:outputLabel for="email">Adresse email <span class="requis">*</span></h:outputLabel>
+	        <h:inputText id="email" value="#{inscrireBean.membre.email}" size="20" maxlength="60">
+	            <f:ajax event="blur" render="emailMessage" />
+	            <f:validator binding="#{existenceEmailValidator}" />
+	        </h:inputText>
+	        <h:message id="emailMessage" for="email" errorClass="erreur" />
+	        <br />
+	
+	        <h:outputLabel for="motdepasse">Mot de passe <span class="requis">*</span></h:outputLabel>
+	        <h:inputSecret id="motdepasse" value="#{inscrireBean.membre.motDePasse}" binding="#{composantMotDePasse}" size="20" maxlength="20">
+	       	    <f:ajax event="blur" execute="motdepasse confirmation" render="motDePasseMessage confirmationMessage" />
+	        </h:inputSecret>
+	        <h:message id="motDePasseMessage" for="motdepasse" errorClass="erreur" />
+	        <br />
+	
+	        <h:outputLabel for="confirmation">Confirmation du mot de passe <span class="requis">*</span></h:outputLabel>
+	        <h:inputSecret id="confirmation" value="#{inscrireBean.membre.motDePasse}" size="20" maxlength="20">
+   				<f:validator validatorId="confirmationMotDePasseValidator" />
+  			    <f:attribute name="composantMotDePasse" value="#{composantMotDePasse}" />
+	            <f:ajax event="blur" execute="motdepasse confirmation" render="motDePasseMessage confirmationMessage" />
+	        </h:inputSecret>
+	        <h:message id="confirmationMessage" for="confirmation" errorClass="erreur" />
+	        <br />
+	
+	        <h:outputLabel for="pseudo">Pseudo <span class="requis">*</span></h:outputLabel>
+	        <h:inputText id="pseudo" value="#{inscrireBean.membre.pseudo}" size="20" maxlength="20">
+	            <f:ajax event="blur" render="pseudoMessage" />
+	            <f:validator binding="#{existencePseudoValidator}" />
+	        </h:inputText>
+	        <h:message id="pseudoMessage" for="pseudo" errorClass="erreur" />
+	        <br />
+	        
+	        <h:messages globalOnly="true" infoClass="info" />
+	
+	        <h:commandButton value="Inscription" action="#{inscrireBean.inscrire}" styleClass="sansLabel">
+	            <f:ajax execute="@form" render="@form" />
+	        </h:commandButton>
+	        <br />
+          </fieldset>
+        </h:form> 	
+    </h:body>
+</html>
