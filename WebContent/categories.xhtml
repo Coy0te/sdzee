@@ -15,7 +15,7 @@
 				<a href="/forum/categorie/#{categorie.titre}">#{categorie.titre}</a>
 			</h2>
 			<ui:include src="forums.xhtml">
-				<ui:param name="idCategorie" value="#{categorie.id}"/>
+				<ui:param name="categorie" value="#{categorie}"/>
 			</ui:include>
 			</div>
 		</ui:repeat>

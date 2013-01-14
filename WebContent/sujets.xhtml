@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <title>Liste des sujets</title>
+        <h:outputStylesheet library="default" name="css/form.css"  />
+    </h:head>
+    <h:body>
+    	<ul class="list">
+		<ui:repeat value="#{listerSujetsBean.getSujetsParForum(forum)}" var="sujet">
+		    <li class="notRead">
+                <div class="row">
+                    <div class="cellsLink span5">
+                        <span class="resolved"></span>
+                        <a href="/forum/sujet/condition-pour-menu-deroulant-au-clic">
+                            <h3>#{sujet.titre}</h3>
+                            <span>Par <strong>#{sujet.auteur.pseudo}</strong> Le #{sujet.dateCreation}</span>
+                        </a>
+                    </div>
+	                <div class="cellsCentred span2">
+					    <p>#{sujet.reponses.size()} messages</p>
+					</div>
+	    			<div class="cellsCentred span1"></div>
+	                <div class="cellsLink span3">
+		            	<a class="lastComment" href="/forum/sujet/#{#{sujet.reponses.last.titre}">
+			          		Dernier message par
+			          		<strong>#{sujet.reponses.last.auteur.nom}</strong>
+			        		<br>#{sujet.reponses.last.dateCreation}
+		        		</a>
+	    			</div>
+                </div>
+            </li>
+		</ui:repeat>
+		</ul>
+    </h:body>
+</html>

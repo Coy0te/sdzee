@@ -1,26 +1,29 @@
 package com.sdzee.forums.entities;
 
-import java.util.List;
-
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table( name = "forum_forum" )
 public class Forum {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long        id;
+    private Long      id;
     @NotNull( message = "{forum.titre.notnull}" )
-    private String      titre;
+    private String    titre;
     @NotNull( message = "{forum.description.notnull}" )
-    private String      description;
-    // FK
+    private String    description;
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "categorie" )
     @NotNull( message = "{forum.categorie.notnull}" )
-    private Categorie   categorie;
-    private List<Sujet> sujets;
+    private Categorie categorie;
 
     public Long getId() {
         return id;
@@ -52,13 +55,5 @@ public class Forum {
 
     public void setCategorie( Categorie categorie ) {
         this.categorie = categorie;
-    }
-
-    public List<Sujet> getSujets() {
-        return sujets;
-    }
-
-    public void setSujets( List<Sujet> sujets ) {
-        this.sujets = sujets;
     }
 }
