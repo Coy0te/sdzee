@@ -17,7 +17,7 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 @Table( name = "membre" )
 public class Membre {
     private static final String ALGO_CHIFFREMENT = "SHA-256";
-    private static final String REGEX_EMAIL = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)";
+    private static final String REGEX_EMAIL      = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)";
 
     // ID
     @Id
@@ -28,7 +28,7 @@ public class Membre {
     @NotNull( message = "{membre.email.notnull}" )
     @Pattern( regexp = REGEX_EMAIL, message = "{membre.email.pattern}" )
     private String              email;
-    
+
     @NotNull( message = "{membre.motdepasse.notnull}" )
     @Size( min = 3, message = "{membre.motdepasse.taille}" )
     private String              motDePasse;
@@ -40,12 +40,12 @@ public class Membre {
 
     @Size( min = 2, message = "{membre.prenom.taille}" )
     private String              prenom;
-    
+
     @Size( min = 2, message = "{membre.nom.taille}" )
     private String              nom;
-    
+
     private Timestamp           dateInscription;
-    
+
     private Timestamp           dateDerniereConnexion;
 
     public Long getId() {
