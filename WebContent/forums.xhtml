@@ -8,22 +8,21 @@
     <h:body>
 		<ui:composition>  
 		<ui:repeat value="#{listerForumsBean.getForumsParCategorie(categorie)}" var="forum">
-		<div class="categoryForum">
-		    <div class="name">
-		        <a href="/forum/categorie/#{forum.titre}" class="imgCategoryForum">
+		<div>
+		    <div>
+		        <a href="/forum/categorie/#{forum.titre}">
 		        	<h:graphicImage library="default" name="images/forums/#{forum.id}.png" alt="#{forum.titre}" />
 		        </a>
-		        <a href="/forum/categorie/#{forum.titre}" class="rightContentCategoryForum">
-		            <span class="titleCategory">#{forum.titre}</span>
-		          <span class="contentCategory">#{forum.description}</span>
+		        <a href="/forum/categorie/#{forum.titre}">
+		            <span>#{forum.titre}</span>
+		            <span>#{forum.description}</span>
 		    	</a>
 			</div>
-		    <a href="/forum/sujet/#" class="rightContentCategoryForum lastMessage">
+		    <a href="/forum/sujet/#{listerSujetsBean.getDernierSujetParForum(forum).titre}">
 		        <hr />
-		        <strong><span class="contentCategory">Dernier message :</span></strong>
+		        <strong><span>Dernier message :</span></strong>
 		        <br/>
-		        <div class="lastMessage">Titre du dernier message</div>
-		        <div class="backgroundArrow arrowBottom" style="display: none;"></div>
+		        <div>#{listerSujetsBean.getDernierSujetParForum(forum).titre}</div>
 		    </a>
 		</div>
 		</ui:repeat>

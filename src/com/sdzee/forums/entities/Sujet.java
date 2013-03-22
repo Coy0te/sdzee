@@ -1,8 +1,8 @@
 package com.sdzee.forums.entities;
 
 import java.sql.Timestamp;
-import java.util.LinkedList;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -21,24 +20,35 @@ import com.sdzee.membres.entities.Membre;
 public class Sujet {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long                id;
+    private Long      id;
+
     @NotNull( message = "{sujet.titre.notnull}" )
-    private String              titre;
+    private String    titre;
+
     @NotNull( message = "{sujet.auteur.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "auteur" )
-    private Membre              auteur;
+    private Membre    auteur;
+
     @NotNull( message = "{sujet.forum.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "forum" )
-    private Forum               forum;
+    private Forum     forum;
+
     @NotNull( message = "{sujet.dateCreation.notnull}" )
-    private Timestamp           dateCreation;
-    private Boolean             ferme;
-    private Boolean             sticky;
-    private Integer             vues;
-    @OneToMany( fetch = FetchType.LAZY, mappedBy = "sujet" )
-    private LinkedList<Reponse> reponses;
+    private Timestamp dateCreation;
+
+    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
+    private Boolean   ferme;
+
+    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
+    private Boolean   sticky;
+
+    private Integer   vues;
+
+    private Integer   votesPositifs;
+
+    private Integer   votesNegatifs;
 
     public Long getId() {
         return id;
@@ -104,11 +114,19 @@ public class Sujet {
         this.vues = vues;
     }
 
-    public LinkedList<Reponse> getReponses() {
-        return reponses;
+    public Integer getVotesPositifs() {
+        return votesPositifs;
     }
 
-    public void setReponses( LinkedList<Reponse> reponses ) {
-        this.reponses = reponses;
+    public void setVotesPositifs( Integer votesPositifs ) {
+        this.votesPositifs = votesPositifs;
+    }
+
+    public Integer getVotesNegatifs() {
+        return votesNegatifs;
+    }
+
+    public void setVotesNegatifs( Integer votesNegatifs ) {
+        this.votesNegatifs = votesNegatifs;
     }
 }

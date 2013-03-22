@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <title>Liste des réponses</title>
+        <h:outputStylesheet library="default" name="css/form.css"  />
+    </h:head>
+    <h:body>
+    	<ul>
+		<ui:repeat value="#{listerReponsesBean.getReponsesParSujet(param['sujetId'])}" var="reponse">
+		    <li>
+                <div>
+                    Par <strong>#{reponse.auteur.pseudo}</strong> (#{reponse.adresseIP}) Le #{reponse.dateCreation} <br/>
+                    #{reponse.texte}
+                </div>
+            </li>
+		</ui:repeat>
+		</ul>
+    </h:body>
+</html>

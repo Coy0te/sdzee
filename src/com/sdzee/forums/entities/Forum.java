@@ -16,10 +16,13 @@ public class Forum {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long      id;
+    
     @NotNull( message = "{forum.titre.notnull}" )
     private String    titre;
+    
     @NotNull( message = "{forum.description.notnull}" )
     private String    description;
+    
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "categorie" )
     @NotNull( message = "{forum.categorie.notnull}" )

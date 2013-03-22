@@ -10,8 +10,8 @@
 			<a href="/forum/">Liste des forums</a>
 		</h1>    
 		<ui:repeat value="#{listerCategoriesBean.categories}" var="categorie">
-		<div class="groupCategoryForum">
-			<h2 class="categoryTitle">
+		<div>
+			<h2>
 				<a href="/forum/categorie/#{categorie.titre}">#{categorie.titre}</a>
 			</h2>
 			<ui:include src="forums.xhtml">

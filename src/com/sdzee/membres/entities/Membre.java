@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -13,8 +14,10 @@ import javax.validation.constraints.Size;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 @Entity
+@Table( name = "membre" )
 public class Membre {
     private static final String ALGO_CHIFFREMENT = "SHA-256";
+    private static final String REGEX_EMAIL = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)";
 
     // ID
     @Id
@@ -23,8 +26,9 @@ public class Membre {
 
     // PARAMETRES
     @NotNull( message = "{membre.email.notnull}" )
-    @Pattern( regexp = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)", message = "{membre.email.pattern}" )
+    @Pattern( regexp = REGEX_EMAIL, message = "{membre.email.pattern}" )
     private String              email;
+    
     @NotNull( message = "{membre.motdepasse.notnull}" )
     @Size( min = 3, message = "{membre.motdepasse.taille}" )
     private String              motDePasse;
@@ -36,9 +40,12 @@ public class Membre {
 
     @Size( min = 2, message = "{membre.prenom.taille}" )
     private String              prenom;
+    
     @Size( min = 2, message = "{membre.nom.taille}" )
     private String              nom;
+    
     private Timestamp           dateInscription;
+    
     private Timestamp           dateDerniereConnexion;
 
     public Long getId() {

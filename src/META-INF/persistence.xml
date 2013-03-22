@@ -3,9 +3,12 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
  http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
- 
   	<persistence-unit name="bdd_sdzee_PU" transaction-type="JTA">
   		<jta-data-source>jdbc/bonecp_resource</jta-data-source>
 		<class>com.sdzee.membres.entities.Membre</class>
+		<class>com.sdzee.forums.entities.Categorie</class>
+		<class>com.sdzee.forums.entities.Forum</class>
+		<class>com.sdzee.forums.entities.Sujet</class>
+		<class>com.sdzee.forums.entities.Reponse</class>
 	</persistence-unit>   
 </persistence>
