@@ -22,20 +22,20 @@ public class Sujet {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long      id;
 
-    @NotNull( message = "{sujet.titre.notnull}" )
+    @NotNull( message = "{forums.sujet.titre.notnull}" )
     private String    titre;
 
-    @NotNull( message = "{sujet.auteur.notnull}" )
+    @NotNull( message = "{forums.sujet.auteur.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "auteur" )
     private Membre    auteur;
 
-    @NotNull( message = "{sujet.forum.notnull}" )
+    @NotNull( message = "{forums.sujet.forum.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "forum" )
     private Forum     forum;
 
-    @NotNull( message = "{sujet.dateCreation.notnull}" )
+    @NotNull( message = "{forums.sujet.dateCreation.notnull}" )
     private Timestamp dateCreation;
 
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )

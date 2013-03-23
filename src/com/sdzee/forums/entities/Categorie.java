@@ -13,7 +13,7 @@ public class Categorie {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long   id;
-    @NotNull( message = "{categorie.titre.notnull}" )
+    @NotNull( message = "{forums.categorie.titre.notnull}" )
     private String titre;
 
     public Long getId() {

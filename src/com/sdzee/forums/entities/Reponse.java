@@ -21,23 +21,23 @@ public class Reponse {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long      id;
 
-    @NotNull( message = "{reponse.auteur.notnull}" )
+    @NotNull( message = "{forums.reponse.auteur.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "auteur" )
     private Membre    auteur;
 
-    @NotNull( message = "{reponse.sujet.notnull}" )
+    @NotNull( message = "{forums.reponse.sujet.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "sujet" )
     private Sujet     sujet;
 
-    @NotNull( message = "{reponse.texte.notnull}" )
+    @NotNull( message = "{forums.reponse.texte.notnull}" )
     private String    texte;
 
-    @NotNull( message = "{reponse.dateCreation.notnull}" )
+    @NotNull( message = "{forums.reponse.dateCreation.notnull}" )
     private Timestamp dateCreation;
 
-    @NotNull( message = "{reponse.adresseIP.notnull}" )
+    @NotNull( message = "{forums.reponse.adresseIP.notnull}" )
     private String    adresseIP;
 
     public Long getId() {
