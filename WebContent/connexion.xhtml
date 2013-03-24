@@ -10,12 +10,12 @@
          <fieldset>
          	<legend>Connexion</legend>
 	        <h:outputLabel for="pseudo">Pseudo <span class="requis">*</span></h:outputLabel>
-	        <h:inputText id="pseudo" value="#{connecterBean.membre.pseudo}" binding="#{composantPseudo}" size="20" maxlength="20"/>
+	        <h:inputText id="pseudo" value="#{connecterBean.pseudo}" binding="#{composantPseudo}" size="20" maxlength="20"/>
 	        <h:message id="pseudoMessage" for="pseudo" errorClass="erreur" />
 	        <br />
 	
 	        <h:outputLabel for="motdepasse">Mot de passe <span class="requis">*</span></h:outputLabel>
-	        <h:inputSecret id="motdepasse" value="#{connecterBean.membre.motDePasse}" size="20" maxlength="20">
+	        <h:inputSecret id="motdepasse" value="#{connecterBean.motDePasse}" size="20" maxlength="20">
 	          	<f:attribute name="composantPseudo" value="#{composantPseudo}" />
 	       	    <f:validator binding="#{connexionMotDePasseValidator}" />
 	        </h:inputSecret>

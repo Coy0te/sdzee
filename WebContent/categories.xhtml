@@ -14,10 +14,10 @@
 			<h2>
 				<a href="/forum/categorie/#{categorie.titre}">#{categorie.titre}</a>
 			</h2>
-			<ui:include src="forums.xhtml">
+			<ui:include src="inc_forums.xhtml">
 				<ui:param name="categorie" value="#{categorie}"/>
 			</ui:include>
-			</div>
+		</div>
 		</ui:repeat>
     </h:body>
 </html>

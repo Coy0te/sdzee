@@ -2,6 +2,7 @@ package com.sdzee.membres.entities;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class Membre {
     private Long                id;
 
     // PARAMETRES
+    @Column( unique = true )
     @NotNull( message = "{membre.email.notnull}" )
     @Pattern( regexp = REGEX_EMAIL, message = "{membre.email.pattern}" )
     private String              email;
@@ -34,6 +36,7 @@ public class Membre {
     private String              motDePasse;
 
     // INFOS
+    @Column( unique = true )
     @NotNull( message = "{membre.pseudo.notnull}" )
     @Size( min = 3, message = "{membre.pseudo.taille}" )
     private String              pseudo;
