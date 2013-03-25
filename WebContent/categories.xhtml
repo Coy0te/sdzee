@@ -6,7 +6,7 @@
         <h:outputStylesheet library="default" name="css/form.css"  />
     </h:head>
     <h:body>
-	    <ui:include src="inc_haut.xhtml" />
+	    <ui:include src="haut/inc_haut.xhtml" />
 		<h1>
 			<a href="/forum/">Liste des forums</a>
 		</h1>    
@@ -15,7 +15,7 @@
 			<h2>
 				<a href="/forum/categorie/#{categorie.titre}">#{categorie.titre}</a>
 			</h2>
-			<ui:include src="inc_forums.xhtml">
+			<ui:include src="page/inc_forums.xhtml">
 				<ui:param name="categorie" value="#{categorie}"/>
 			</ui:include>
 		</div>
