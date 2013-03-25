@@ -40,7 +40,8 @@ public class ConnecterBean implements Serializable {
         if ( urlOrigine == null ) {
             urlOrigine = externalContext.getRequestContextPath() + PAGE_ACCUEIL;
         } else {
-            String queryStringOrigine = (String) externalContext.getRequestMap().get( RequestDispatcher.FORWARD_QUERY_STRING );
+            String queryStringOrigine = (String) externalContext.getRequestMap().get(
+                    RequestDispatcher.FORWARD_QUERY_STRING );
 
             if ( queryStringOrigine != null ) {
                 urlOrigine += URL_PARAM_SEPARATEUR + queryStringOrigine;
@@ -69,8 +70,7 @@ public class ConnecterBean implements Serializable {
     public void deconnecter() throws IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.invalidateSession();
-        externalContext.redirect( externalContext.getRequestContextPath() + PAGE_CONNEXION );
-
+        externalContext.redirect( externalContext.getRequestContextPath() + PAGE_ACCUEIL );
     }
 
     public String getPseudo() {

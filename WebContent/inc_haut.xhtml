@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <title>Haut de page</title>
+        <h:outputStylesheet library="default" name="css/form.css"  />
+    </h:head>
+    <h:body>
+		<ui:composition>
+		<div>
+			<h:outputText value="Vous êtes connecté en tant que : #{membre.pseudo}. " rendered="#{membre != null}" />
+			<h:outputText value="Vous n'êtes pas connecté. " rendered="#{membre == null}" />
+			<h:form>
+				<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" rendered="#{membre != null}" />
+			</h:form>
+			<h:link value="Connexion." outcome="connexion" rendered="#{membre == null}"/>
+			<hr />
+		</div>
+		</ui:composition>
+    </h:body>
+</html>
