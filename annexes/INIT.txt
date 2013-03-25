@@ -1,0 +1,104 @@
+CREATE TABLE  bdd_sdzee.membre (
+  id INT( 11 ) NOT NULL AUTO_INCREMENT ,  
+  email VARCHAR( 60 ) NOT NULL ,  
+  motDePasse VARCHAR( 64 ) NOT NULL ,  
+  pseudo VARCHAR( 20 ) NOT NULL ,  
+  prenom VARCHAR( 20 ) ,  
+  nom VARCHAR( 20 ) ,  
+  dateInscription DATETIME NOT NULL ,  
+  dateDerniereConnexion DATETIME ,  
+  PRIMARY KEY ( id ) ,  
+  UNIQUE ( email ) ,
+  UNIQUE ( pseudo ) 
+) 
+ENGINE = INNODB;
+
+CREATE TABLE  bdd_sdzee.forum_categorie (
+  id INT( 11 ) NOT NULL AUTO_INCREMENT ,  
+  titre VARCHAR( 60 ) NOT NULL ,  
+  dateCreation DATETIME NOT NULL ,  
+  PRIMARY KEY ( id ) ,
+  UNIQUE ( titre ) 
+) 
+ENGINE = INNODB;
+
+CREATE TABLE  bdd_sdzee.forum_forum (
+  id INT( 11 ) NOT NULL AUTO_INCREMENT ,  
+  titre VARCHAR( 60 ) NOT NULL ,  
+  description VARCHAR( 255 ) NOT NULL ,  
+  categorie INT( 11 ) NOT NULL ,
+  dateCreation DATETIME NOT NULL ,  
+  PRIMARY KEY ( id ) ,
+  UNIQUE ( titre ) ,
+  CONSTRAINT fk_categorie_forum FOREIGN KEY (categorie) REFERENCES forum_categorie(id)
+) 
+ENGINE = INNODB;
+
+CREATE TABLE  bdd_sdzee.forum_sujet (
+  id INT( 11 ) NOT NULL AUTO_INCREMENT ,  
+  titre VARCHAR( 60 ) NOT NULL ,  
+  soustitre VARCHAR( 60 ) NOT NULL ,  
+  texte TEXT NOT NULL ,
+  auteur INT( 11 ) NOT NULL ,  
+  forum INT( 11 ) NOT NULL ,  
+  dateCreation DATETIME NOT NULL ,  
+  ferme TINYINT( 1 ) DEFAULT 0 ,
+  sticky TINYINT( 1 ) DEFAULT 0 ,
+  vues INT( 11 ) DEFAULT 0,
+  PRIMARY KEY ( id ) ,
+  CONSTRAINT fk_auteur_sujet FOREIGN KEY (auteur) REFERENCES membre(id) ,
+  CONSTRAINT fk_forum_sujet FOREIGN KEY (forum) REFERENCES forum_forum(id)
+)
+ENGINE = INNODB;
+
+CREATE TABLE  bdd_sdzee.forum_reponse (
+  id INT( 11 ) NOT NULL AUTO_INCREMENT ,  
+  auteur INT( 11 ) NOT NULL ,  
+  sujet INT( 11 ) NOT NULL ,  
+  texte TEXT NOT NULL ,
+  dateCreation DATETIME NOT NULL ,  
+  adresseIP VARCHAR( 50 ) NOT NULL ,
+  PRIMARY KEY ( id ) ,
+  CONSTRAINT fk_auteur_reponse FOREIGN KEY (auteur) REFERENCES membre(id) ,
+  CONSTRAINT fk_sujet_reponse FOREIGN KEY (sujet) REFERENCES forum_sujet(id)
+)
+ENGINE = INNODB;
+
+
+INSERT INTO forum_categorie (titre, dateCreation)  VALUES( "Site Web", NOW() );
+INSERT INTO forum_categorie (titre, dateCreation)  VALUES( "Programmation", NOW() );
+INSERT INTO forum_categorie (titre, dateCreation)  VALUES( "Systèmes d'exploitatiom", NOW() );
+INSERT INTO forum_categorie (titre, dateCreation)  VALUES( "Infographie", NOW() );
+INSERT INTO forum_categorie (titre, dateCreation)  VALUES( "Matériel & logiciels", NOW() );
+INSERT INTO forum_categorie (titre, dateCreation)  VALUES( "Jeux vidéo", NOW() );
+INSERT INTO forum_categorie (titre, dateCreation)  VALUES( "Communauté des Zéros", NOW() );
+INSERT INTO forum_categorie (titre, dateCreation)  VALUES( "Sciences", NOW() );
+
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "HTML / CSS", "Vos questions sur la réalisation de sites web en HTML et CSS", 1 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Javascript", "Vos questions à propos de Javascript et AJAX", 1 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "PHP", "Un souci avec le PHP ? Venez demander de l'aide !", 1 , NOW() );
+
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Langage C", "Vos questions sur le langage C", 2 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Langage C++", "Vos questions sur le langage C++", 2 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "C# .NET & VB .NET", "Si vous programmez en C# ou Visual Basic, postez ici !", 2 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Langage Java", "...", 2 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Langage Python", "...", 2 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Bases de données", "...", 2 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Mobile", "...", 2 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Autres langages", "", 2 , NOW() );
+
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Windows", "Un souci avec Windows ? Il y aura quelqu'un pour vous répondre.", 3 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Linux & FreeBSD", "Vous avez un problème avec Linux ou FreeBSD ?", 3 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Mac OS X", "Une question à propos de Mac OS ? Vous êtes au bon endroit !", 3 , NOW() );
+
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Graphisme 3D", "", 4 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Graphisme 2D", "", 4 , NOW() );
+
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Discussions informatiques", "Un problème en informatique ? C'est par ici que ça se passe !", 5 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Choix du matériel & configuration", "Vous voulez personnaliser votre configuration ? Par ici !", 5 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Problèmes techniques", "Un problème matériel ? Posez votre question !", 5 , NOW() );
+
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Discussions jeux vidéo", "Toutes les discussions autour des jeux vidéo.", 6 , NOW() );
+INSERT INTO forum_forum (titre, description, categorie, dateCreation)  VALUES( "Mapping & modding", "Des questions sur la création de maps et de mods  ?", 6 , NOW() );
+
+INSERT INTO forum_sujet (titre, texte, auteur, forum, dateCreation ) VALUES( "Un sujet au pif", "Alors que dans la moule d'argentine la teneur en mouléïte n'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.", 1,  2, NOW() );
