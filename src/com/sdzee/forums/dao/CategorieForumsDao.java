@@ -1,4 +1,4 @@
-package com.sdzee.tutos.dao;
+package com.sdzee.forums.dao;
 
 import java.util.List;
 
@@ -8,17 +8,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.sdzee.dao.DAOException;
-import com.sdzee.tutos.entities.Categorie;
+import com.sdzee.forums.entities.CategorieForum;
 
 @Stateless
-public class CategorieDao {
-    private static final String JPQL_LISTE_CATEGORIES = "SELECT c FROM Categorie c ORDER BY c.id";
+public class CategorieForumsDao {
+    private static final String JPQL_LISTE_CATEGORIES = "SELECT c FROM CategorieForum c ORDER BY c.id";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
 
     /* Enregistrement d'une nouvelle catégorie */
-    public void creer( Categorie categorie ) throws DAOException {
+    public void creer( CategorieForum categorie ) throws DAOException {
         try {
             em.persist( categorie );
         } catch ( Exception e ) {
@@ -27,18 +27,18 @@ public class CategorieDao {
     }
 
     /* Récupération d'une catégorie via son id */
-    public Categorie trouver( long id ) throws DAOException {
+    public CategorieForum trouver( long id ) throws DAOException {
         try {
-            return em.find( Categorie.class, id );
+            return em.find( CategorieForum.class, id );
         } catch ( Exception e ) {
             throw new DAOException( e );
         }
     }
 
     /* Récupération de la liste des catégories */
-    public List<Categorie> lister() throws DAOException {
+    public List<CategorieForum> lister() throws DAOException {
         try {
-            TypedQuery<Categorie> query = em.createQuery( JPQL_LISTE_CATEGORIES, Categorie.class );
+            TypedQuery<CategorieForum> query = em.createQuery( JPQL_LISTE_CATEGORIES, CategorieForum.class );
             return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );
@@ -46,7 +46,7 @@ public class CategorieDao {
     }
 
     /* Suppression d'une catégorie */
-    public void supprimer( Categorie categorie ) throws DAOException {
+    public void supprimer( CategorieForum categorie ) throws DAOException {
         try {
             em.remove( em.merge( categorie ) );
         } catch ( Exception e ) {

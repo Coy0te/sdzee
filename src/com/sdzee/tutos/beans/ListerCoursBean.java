@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.sdzee.tutos.dao.CoursDao;
-import com.sdzee.tutos.entities.Categorie;
+import com.sdzee.tutos.entities.CategorieCours;
 import com.sdzee.tutos.entities.Cours;
 
 @ManagedBean
@@ -19,7 +19,7 @@ public class ListerCoursBean implements Serializable {
     @EJB
     private CoursDao          coursDao;
 
-    public List<Cours> getCoursParCategorie( Categorie categorie ) {
+    public List<Cours> getCoursParCategorie( CategorieCours categorie ) {
         return coursDao.lister( categorie );
     }
 }

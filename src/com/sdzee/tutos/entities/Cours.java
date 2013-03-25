@@ -35,7 +35,7 @@ public class Cours {
     @NotNull( message = "{tutos.cours.categorie.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "categorie" )
-    private Categorie categorie;
+    private CategorieCours categorie;
 
     @NotNull( message = "{tutos.cours.dateCreation.notnull}" )
     private Timestamp dateCreation;
@@ -80,11 +80,11 @@ public class Cours {
         this.auteur = auteur;
     }
 
-    public Categorie getCategorie() {
+    public CategorieCours getCategorie() {
         return categorie;
     }
 
-    public void setCategorie( Categorie categorie ) {
+    public void setCategorie( CategorieCours categorie ) {
         this.categorie = categorie;
     }
 

@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.sdzee.forums.dao.ForumDao;
-import com.sdzee.forums.entities.Categorie;
+import com.sdzee.forums.entities.CategorieForum;
 import com.sdzee.forums.entities.Forum;
 
 @ManagedBean
@@ -19,7 +19,7 @@ public class ListerForumsBean implements Serializable {
     @EJB
     private ForumDao          forumDao;
 
-    public List<Forum> getForumsParCategorie( Categorie categorie ) {
+    public List<Forum> getForumsParCategorie( CategorieForum categorie ) {
         return forumDao.lister( categorie );
     }
 }

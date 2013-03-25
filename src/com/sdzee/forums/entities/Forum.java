@@ -26,7 +26,7 @@ public class Forum {
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "categorie" )
     @NotNull( message = "{forums.forum.categorie.notnull}" )
-    private Categorie categorie;
+    private CategorieForum categorie;
 
     public Long getId() {
         return id;
@@ -52,11 +52,11 @@ public class Forum {
         this.description = description;
     }
 
-    public Categorie getCategorie() {
+    public CategorieForum getCategorie() {
         return categorie;
     }
 
-    public void setCategorie( Categorie categorie ) {
+    public void setCategorie( CategorieForum categorie ) {
         this.categorie = categorie;
     }
 }

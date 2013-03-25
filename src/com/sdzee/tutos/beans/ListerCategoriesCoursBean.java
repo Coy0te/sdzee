@@ -1,4 +1,4 @@
-package com.sdzee.forums.beans;
+package com.sdzee.tutos.beans;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,18 +8,18 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import com.sdzee.forums.dao.CategorieDao;
-import com.sdzee.forums.entities.Categorie;
+import com.sdzee.tutos.dao.CategorieCoursDao;
+import com.sdzee.tutos.entities.CategorieCours;
 
 @ManagedBean
 @RequestScoped
-public class ListerCategoriesBean implements Serializable {
+public class ListerCategoriesCoursBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private List<Categorie>   categories;
+    private List<CategorieCours>   categories;
 
     @EJB
-    private CategorieDao      categorieDao;
+    private CategorieCoursDao      categorieDao;
 
     // Récupération de la liste des catégories
     @PostConstruct
@@ -27,7 +27,7 @@ public class ListerCategoriesBean implements Serializable {
         categories = categorieDao.lister();
     }
 
-    public List<Categorie> getCategories() {
+    public List<CategorieCours> getCategories() {
         return categories;
     }
 }

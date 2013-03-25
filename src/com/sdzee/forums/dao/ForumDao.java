@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.sdzee.dao.DAOException;
-import com.sdzee.forums.entities.Categorie;
+import com.sdzee.forums.entities.CategorieForum;
 import com.sdzee.forums.entities.Forum;
 
 @Stateless
@@ -49,7 +49,7 @@ public class ForumDao {
     }
 
     /* Récupération de la liste des forums pour une catégorie donnée */
-    public List<Forum> lister( Categorie categorie ) throws DAOException {
+    public List<Forum> lister( CategorieForum categorie ) throws DAOException {
         try {
             TypedQuery<Forum> query = em.createQuery( JPQL_LISTE_FORUMS_PAR_CATEGORIE, Forum.class );
             query.setParameter( PARAM_CATEGORIE, categorie );

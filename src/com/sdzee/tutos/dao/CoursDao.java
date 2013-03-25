@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.sdzee.dao.DAOException;
-import com.sdzee.tutos.entities.Categorie;
+import com.sdzee.tutos.entities.CategorieCours;
 import com.sdzee.tutos.entities.Cours;
 
 @Stateless
@@ -49,7 +49,7 @@ public class CoursDao {
     }
 
     /* Récupération de la liste des cours pour une catégorie donnée */
-    public List<Cours> lister( Categorie categorie ) throws DAOException {
+    public List<Cours> lister( CategorieCours categorie ) throws DAOException {
         try {
             TypedQuery<Cours> query = em.createQuery( JPQL_LISTE_COURS_PAR_CATEGORIE, Cours.class );
             query.setParameter( PARAM_CATEGORIE, categorie );

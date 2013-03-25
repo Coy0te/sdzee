@@ -1,4 +1,4 @@
-package com.sdzee.tutos.entities;
+package com.sdzee.forums.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,12 +8,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table( name = "cours_categorie" )
-public class Categorie {
+@Table( name = "forum_categorie" )
+public class CategorieForum {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long   id;
-    @NotNull( message = "{tutos.categorie.titre.notnull}" )
+    @NotNull( message = "{forums.categorie.titre.notnull}" )
     private String titre;
 
     public Long getId() {
