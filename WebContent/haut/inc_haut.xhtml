@@ -16,7 +16,7 @@
 			</h:form>
 			<h:link value="Connexion." outcome="connexion" rendered="#{membre == null}"/>
 			<ui:fragment rendered="#{membre != null}">
-				<ui:include src="haut/inc_menu.xhtml" />
+				<ui:include src="inc_menu.xhtml" />
 			</ui:fragment>
 			<h:link value="Tutoriels" outcome="accueil" />
 			<h:link value="Forums" outcome="categories" />

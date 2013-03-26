@@ -25,6 +25,9 @@ public class Sujet {
     @NotNull( message = "{forums.sujet.titre.notnull}" )
     private String    titre;
 
+    @NotNull( message = "{forums.sujet.texte.notnull}" )
+    private String    texte;
+
     @NotNull( message = "{forums.sujet.auteur.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "auteur" )
@@ -49,6 +52,9 @@ public class Sujet {
     private Integer   votesPositifs;
 
     private Integer   votesNegatifs;
+
+    @NotNull( message = "{forums.sujet.adresseIP.notnull}" )
+    private String    adresseIP;
 
     public Long getId() {
         return id;
@@ -128,5 +134,21 @@ public class Sujet {
 
     public void setVotesNegatifs( Integer votesNegatifs ) {
         this.votesNegatifs = votesNegatifs;
+    }
+
+    public String getTexte() {
+        return texte;
+    }
+
+    public void setTexte( String texte ) {
+        this.texte = texte;
+    }
+
+    public String getAdresseIP() {
+        return adresseIP;
+    }
+
+    public void setAdresseIP( String adresseIP ) {
+        this.adresseIP = adresseIP;
     }
 }

@@ -8,6 +8,13 @@
     <h:body>
 	    <ui:include src="haut/inc_haut.xhtml" />
     	<ul>
+    		<li>
+                    Par <strong>#{listerReponsesBean.getSujet(param['sujetId']).auteur.pseudo}</strong> (#{listerReponsesBean.getSujet(param['sujetId']).adresseIP}) Le #{listerReponsesBean.getSujet(param['sujetId']).dateCreation} <br/>
+                    #{listerReponsesBean.getSujet(param['sujetId']).texte}
+    		</li>
+    		<li>
+    			### Pub ###
+    		</li>
 		<ui:repeat value="#{listerReponsesBean.getReponsesParSujet(param['sujetId'])}" var="reponse">
 		    <li>
                 <div>
@@ -17,5 +24,11 @@
             </li>
 		</ui:repeat>
 		</ul>
+		
+		<h:form rendered="#{membre != null}">
+			<h:inputTextarea placeholder="Rédigez votre réponse ici" value="#{reponse.texte}" />
+			<h:commandButton value="Aperçu" type="button" />
+			<h:commandButton value="Répondre" type="submit" action="#{creerReponseBean.repondre}" />
+		</h:form>
     </h:body>
 </html>

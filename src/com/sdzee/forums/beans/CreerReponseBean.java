@@ -14,27 +14,33 @@ import com.sdzee.forums.entities.Sujet;
 
 @ManagedBean
 @RequestScoped
-public class ListerReponsesBean implements Serializable {
+public class CreerReponseBean implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    private Reponse           reponse;
 
     @EJB
     private ReponseDao        reponseDao;
     @EJB
     private SujetDao          sujetDao;
 
-    public Sujet getSujet( int sujetId ) {
-        return sujetDao.trouver( sujetId );
-    }
-
     public List<Reponse> getReponsesParSujet( int sujetId ) {
         return reponseDao.lister( sujetDao.trouver( sujetId ) );
     }
 
-    public Reponse getDerniereReponseParSujet( Sujet sujet ) {
-        return reponseDao.trouverDerniere( sujet );
+    public void repondre() {
+        reponseDao.creer( reponse );
     }
 
     public Integer getDecompteReponsesParSujet( Sujet sujet ) {
         return reponseDao.decompte( sujet );
+    }
+
+    public Reponse getReponse() {
+        return reponse;
+    }
+
+    public void setReponse( Reponse reponse ) {
+        this.reponse = reponse;
     }
 }
