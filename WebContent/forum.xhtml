@@ -8,7 +8,7 @@
 	</ui:define>
 	<ui:define name="body">
     	<ul>
-		<ui:repeat value="#{listerSujetsBean.getSujetsParForum(param['forumId'])}" var="sujet">
+		<ui:repeat value="#{sujetsBean.getSujets(param['forumId'])}" var="sujet">
 		    <li>
                 <div>
                     <div>
@@ -18,13 +18,14 @@
                         </a>
                     </div>
 	                <div>
-					    <p>#{listerReponsesBean.getDecompteReponsesParSujet(sujet) + 1} #{listerReponsesBean.getDecompteReponsesParSujet(sujet) == 0 ? 'message' : 'messages' }</p>
+					    <p>#{sujetsBean.getDecompteReponses(sujet) + 1} #{sujetsBean.getDecompteReponses(sujet) == 0 ? 'message' : 'messages' }</p>
 					</div>
 	                <div>
-		            	<a href="#{request.contextPath}/forum/sujet/#{sujet.titre}/##{listerReponsesBean.getDerniereReponseParSujet(sujet).id}">
+		            	<a href="#{request.contextPath}/forum/sujet/#{sujet.titre}/##{sujetsBean.getDerniereReponse(sujet).id}">
 			          		Dernier message par
-			          		<strong>#{listerReponsesBean.getDerniereReponseParSujet(sujet) != null ? listerReponsesBean.getDerniereReponseParSujet(sujet).auteur.pseudo : sujet.auteur.pseudo}</strong>
-			        		<br/>#{listerReponsesBean.getDerniereReponseParSujet(sujet).dateCreation}
+			          		<strong>#{sujetsBean.getDerniereReponse(sujet) != null ? sujetsBean.getDerniereReponse(sujet).auteur.pseudo : sujet.auteur.pseudo}</strong>
+			        		<br/>
+			        		<strong>#{sujetsBean.getDerniereReponse(sujet) != null ? sujetsBean.getDerniereReponse(sujet).dateCreation : sujet.dateCreation}</strong>
 		        		</a>
 	    			</div>
                 </div>

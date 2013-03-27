@@ -7,34 +7,33 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import com.sdzee.forums.dao.ForumDao;
 import com.sdzee.forums.dao.ReponseDao;
 import com.sdzee.forums.dao.SujetDao;
 import com.sdzee.forums.entities.Reponse;
 import com.sdzee.forums.entities.Sujet;
 
-@ManagedBean
+@ManagedBean( name = "sujetsBean" )
 @RequestScoped
-public class ListerReponsesBean implements Serializable {
+public class SujetsBackingBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EJB
-    private ReponseDao        reponseDao;
-    @EJB
     private SujetDao          sujetDao;
+    @EJB
+    private ForumDao          forumDao;
+    @EJB
+    private ReponseDao        reponseDao;
 
-    public Sujet getSujet( int sujetId ) {
-        return sujetDao.trouver( sujetId );
+    public List<Sujet> getSujets( int forumId ) {
+        return sujetDao.lister( forumDao.trouver( forumId ) );
     }
 
-    public List<Reponse> getReponsesParSujet( int sujetId ) {
-        return reponseDao.lister( sujetDao.trouver( sujetId ) );
-    }
-
-    public Reponse getDerniereReponseParSujet( Sujet sujet ) {
+    public Reponse getDerniereReponse( Sujet sujet ) {
         return reponseDao.trouverDerniere( sujet );
     }
 
-    public Integer getDecompteReponsesParSujet( Sujet sujet ) {
+    public Integer getDecompteReponses( Sujet sujet ) {
         return reponseDao.decompte( sujet );
     }
 }

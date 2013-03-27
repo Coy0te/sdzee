@@ -10,7 +10,7 @@
 		<h1>
 			<a href="#{request.contextPath}/forum/">Liste des forums</a>
 		</h1>    
-		<ui:repeat value="#{listerCategoriesForumsBean.categories}" var="categorie">
+		<ui:repeat value="#{forumsBean.categories}" var="categorie">
 		<div>
 			<h2>
 				<a href="#{request.contextPath}/forum/categorie/#{categorie.titre}">#{categorie.titre}</a>

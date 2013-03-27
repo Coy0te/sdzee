@@ -9,13 +9,13 @@
 	<ui:define name="body">
     	<ul>
     		<li>
-                    Par <strong>#{listerReponsesBean.getSujet(param['sujetId']).auteur.pseudo}</strong> (#{listerReponsesBean.getSujet(param['sujetId']).adresseIP}) Le #{listerReponsesBean.getSujet(param['sujetId']).dateCreation} <br/>
-                    #{listerReponsesBean.getSujet(param['sujetId']).texte}
+                Par <strong>#{reponsesBean.getSujet(param['sujetId']).auteur.pseudo}</strong> (#{reponsesBean.getSujet(param['sujetId']).adresseIP}) Le #{reponsesBean.getSujet(param['sujetId']).dateCreation} <br/>
+                #{reponsesBean.getSujet(param['sujetId']).texte}
     		</li>
     		<li>
     			### Pub ###
     		</li>
-		<ui:repeat value="#{listerReponsesBean.getReponsesParSujet(param['sujetId'])}" var="reponse">
+		<ui:repeat value="#{reponsesBean.getReponses(param['sujetId'])}" var="reponse">
 		    <li>
                 <div>
                     Par <strong>#{reponse.auteur.pseudo}</strong> (#{reponse.adresseIP}) Le #{reponse.dateCreation} <br/>
@@ -26,9 +26,9 @@
 		</ul>
 		
 		<h:form rendered="#{membre != null}">
-			<h:inputTextarea placeholder="Rédigez votre réponse ici" value="#{reponse.texte}" />
+			<h:inputTextarea placeholder="Rédigez votre réponse ici" value="#{reponsesBean.reponse.texte}" />
 			<h:commandButton value="Aperçu" type="button" />
-			<h:commandButton value="Répondre" type="submit" action="#{creerReponseBean.repondre}" />
+			<h:commandButton value="Répondre" type="submit" action="#{reponseBean.repondre}" />
 		</h:form>
 	</ui:define>
 	<ui:define name="footer">
