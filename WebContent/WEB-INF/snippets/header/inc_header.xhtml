@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+	<div>
+		<h:outputText value="Vous êtes connecté en tant que : #{membre.pseudo}. " rendered="#{membre != null}" />
+		<h:outputText value="Vous n'êtes pas connecté. " rendered="#{membre == null}" />
+		<h:form rendered="#{membre != null}">
+			<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
+		</h:form>
+		<h:link value="Connexion." outcome="connexion" rendered="#{membre == null}" /> 
+		<br />
+		<ui:fragment rendered="#{membre != null}">
+			<ui:include src="inc_menu.xhtml" />
+		</ui:fragment>
+		<h:link value="Accueil" outcome="accueil" /> | 
+		<h:link value="Tutoriels" outcome="tutoriels" /> | 
+		<h:link value="Forums" outcome="categories" /> | 
+		<h:link value="Librairie" outcome="boutique" /> | 
+		<h:link value="Études" outcome="etudes" />
+		<hr />
+	</div>
+</ui:composition>

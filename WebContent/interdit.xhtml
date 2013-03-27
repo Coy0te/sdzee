@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"> 
-    <h:head>
-        <meta charset="utf-8" />
-        <title>Accès non autorisé</title>
-        <h:outputStylesheet library="default" name="css/form.css"  />
-    </h:head>
-    <h:body>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="title">
+		Accès non autorisé
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
+	</ui:define>
+	<ui:define name="body">
     	<h1>Accès non autorisé</h1>
     	<p>Vous ne disposez pas des droits nécessaires pour accéder à cette page.</p>
     	<h:link value="Accueil." outcome="accueil" />
-    </h:body>
-</html>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

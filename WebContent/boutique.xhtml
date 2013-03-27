@@ -1,25 +1,13 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
 				template="/WEB-INF/templates/template.xhtml">
 	<ui:define name="title">
-		Liste des forums
+		Boutique
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
 	</ui:define>
 	<ui:define name="body">
-		<h1>
-			<a href="#{request.contextPath}/forum/">Liste des forums</a>
-		</h1>    
-		<ui:repeat value="#{listerCategoriesForumsBean.categories}" var="categorie">
-		<div>
-			<h2>
-				<a href="#{request.contextPath}/forum/categorie/#{categorie.titre}">#{categorie.titre}</a>
-			</h2>
-			<ui:include src="/WEB-INF/snippets/body/inc_forums.xhtml">
-				<ui:param name="categorie" value="#{categorie}"/>
-			</ui:include>
-		</div>
-		</ui:repeat>
+		TODO.
 	</ui:define>
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />

@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"> 
-    <h:head>
-        <meta charset="utf-8" />
-        <title>Liste des sujets</title>
-        <h:outputStylesheet library="default" name="css/form.css"  />
-    </h:head>
-    <h:body>
-	    <ui:include src="haut/inc_haut.xhtml" />
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="title">
+		Liste des sujets du forum
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
+	</ui:define>
+	<ui:define name="body">
     	<ul>
 		<ui:repeat value="#{listerSujetsBean.getSujetsParForum(param['forumId'])}" var="sujet">
 		    <li>
                 <div>
                     <div>
-                        <a href="/forum/sujet/condition-pour-menu-deroulant-au-clic">
+                        <a href="#{request.contextPath}/forum/sujet/#{sujet.titre}">
                             <h3>#{sujet.titre}</h3>
                             <span>Par <strong>#{sujet.auteur.pseudo}</strong> Le #{sujet.dateCreation}</span>
                         </a>
@@ -21,7 +21,7 @@
 					    <p>#{listerReponsesBean.getDecompteReponsesParSujet(sujet) + 1} #{listerReponsesBean.getDecompteReponsesParSujet(sujet) == 0 ? 'message' : 'messages' }</p>
 					</div>
 	                <div>
-		            	<a href="/forum/sujet/">
+		            	<a href="#{request.contextPath}/forum/sujet/#{sujet.titre}/##{listerReponsesBean.getDerniereReponseParSujet(sujet).id}">
 			          		Dernier message par
 			          		<strong>#{listerReponsesBean.getDerniereReponseParSujet(sujet) != null ? listerReponsesBean.getDerniereReponseParSujet(sujet).auteur.pseudo : sujet.auteur.pseudo}</strong>
 			        		<br/>#{listerReponsesBean.getDerniereReponseParSujet(sujet).dateCreation}
@@ -31,5 +31,8 @@
             </li>
 		</ui:repeat>
 		</ul>
-    </h:body>
-</html>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

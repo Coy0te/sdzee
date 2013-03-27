@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"> 
-    <h:head>
-        <meta charset="utf-8" />
-        <title>Liste des réponses</title>
-        <h:outputStylesheet library="default" name="css/form.css"  />
-    </h:head>
-    <h:body>
-	    <ui:include src="haut/inc_haut.xhtml" />
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="title">
+		Liste des réponses au sujet
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
+	</ui:define>
+	<ui:define name="body">
     	<ul>
     		<li>
                     Par <strong>#{listerReponsesBean.getSujet(param['sujetId']).auteur.pseudo}</strong> (#{listerReponsesBean.getSujet(param['sujetId']).adresseIP}) Le #{listerReponsesBean.getSujet(param['sujetId']).dateCreation} <br/>
@@ -30,5 +30,8 @@
 			<h:commandButton value="Aperçu" type="button" />
 			<h:commandButton value="Répondre" type="submit" action="#{creerReponseBean.repondre}" />
 		</h:form>
-    </h:body>
-</html>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>
