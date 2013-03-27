@@ -43,7 +43,7 @@ public class ReponsesBackingBean implements Serializable {
             adresseIP = request.getRemoteAddr();
         }
 
-        // reponseDao.creer( texteReponse, adresseIP );
+        // TODO: reponseDao.creer( texteReponse, adresseIP );
     }
 
     public String getTexteReponse() {
