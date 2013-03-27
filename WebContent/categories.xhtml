@@ -8,12 +8,12 @@
 	</ui:define>
 	<ui:define name="body">
 		<h1>
-			<a href="#{request.contextPath}/forum/">Liste des forums</a>
+			Liste des forums
 		</h1>    
 		<ui:repeat value="#{forumsBean.categories}" var="categorie">
 		<div>
 			<h2>
-				<a href="#{request.contextPath}/forum/categorie/#{categorie.titre}">#{categorie.titre}</a>
+				#{categorie.titre}
 			</h2>
 			<ui:include src="/WEB-INF/snippets/body/inc_forums.xhtml">
 				<ui:param name="categorie" value="#{categorie}"/>

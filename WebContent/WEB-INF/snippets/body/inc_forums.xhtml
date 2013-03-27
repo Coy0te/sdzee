@@ -10,20 +10,23 @@
 		<ui:repeat value="#{forumsBean.getForums(categorie)}" var="forum">
 		<div>
 		    <div>
-		        <a href="#{request.contextPath}/forum/categorie/#{forum.titre}">
+		        <h:link outcome="forum">
+		        	<f:param name="forumId" value="#{forum.id}" />
 		        	<h:graphicImage library="default" name="images/forums/#{forum.id}.png" alt="#{forum.titre}" />
-		        </a>
-		        <a href="#{request.contextPath}/forum/categorie/#{forum.titre}">
+		        </h:link>
+		        <h:link outcome="forum">
+		        	<f:param name="forumId" value="#{forum.id}" />
 		            <span>#{forum.titre}</span>
 		            <span>#{forum.description}</span>
-		    	</a>
+		    	</h:link>
 			</div>
 			<hr />
-		    <a href="#{request.contextPath}/forum/sujet/#{forumsBean.getDernierSujet(forum).titre}">
+	        <h:link outcome="sujet">
+	        	<f:param name="sujetId" value="#{forumsBean.getDernierSujet(forum).id}" />
 		        <strong><span>Dernier message :</span></strong>
 		        <br/>
 		        <span>#{forumsBean.getDernierSujet(forum).titre}</span>
-		    </a>
+		    </h:link>
 		</div>
 		</ui:repeat>
 		</ui:composition>

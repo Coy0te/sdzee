@@ -12,21 +12,24 @@
 		    <li>
                 <div>
                     <div>
-                        <a href="#{request.contextPath}/forum/sujet/#{sujet.titre}">
+				        <h:link outcome="sujet">
+				        	<f:param name="sujetId" value="#{sujet.id}" />
                             <h3>#{sujet.titre}</h3>
                             <span>Par <strong>#{sujet.auteur.pseudo}</strong> Le #{sujet.dateCreation}</span>
-                        </a>
+                        </h:link>
                     </div>
 	                <div>
 					    <p>#{sujetsBean.getDecompteReponses(sujet) + 1} #{sujetsBean.getDecompteReponses(sujet) == 0 ? 'message' : 'messages' }</p>
 					</div>
 	                <div>
-		            	<a href="#{request.contextPath}/forum/sujet/#{sujet.titre}/##{sujetsBean.getDerniereReponse(sujet).id}">
+				        <h:link outcome="sujet">
+				        	<f:param name="sujetId" value="#{sujet.id}" />
+				        	<f:param name="reponseId" value="#{sujetsBean.getDerniereReponse(sujet).id}" />
 			          		Dernier message par
 			          		<strong>#{sujetsBean.getDerniereReponse(sujet) != null ? sujetsBean.getDerniereReponse(sujet).auteur.pseudo : sujet.auteur.pseudo}</strong>
 			        		<br/>
 			        		<strong>#{sujetsBean.getDerniereReponse(sujet) != null ? sujetsBean.getDerniereReponse(sujet).dateCreation : sujet.dateCreation}</strong>
-		        		</a>
+		        		</h:link>
 	    			</div>
                 </div>
             </li>
