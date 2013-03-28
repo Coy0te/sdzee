@@ -25,6 +25,9 @@
 	        			
 	        <h:messages globalOnly="true" infoClass="info" />
 	
+			<input type="hidden" name="urlOrigine" value="#{param.urlOrigine}" />
+			<input type="hidden" name="queryStringOrigine" value="#{param.queryStringOrigine}" />
+
 	        <h:commandButton value="Connexion" action="#{connecterBean.connecter}" styleClass="sansLabel">
 	            <f:ajax execute="@form" render="@form" />
 	        </h:commandButton>

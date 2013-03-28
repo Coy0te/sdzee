@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.RequestDispatcher;
 
 import com.sdzee.membres.dao.MembreDao;
 import com.sdzee.membres.entities.Membre;
@@ -28,23 +27,20 @@ public class ConnecterBean implements Serializable {
     private String              motDePasse;
     private String              urlOrigine;
 
-    // Injection de notre EJB (Session Bean Stateless)
     @EJB
     private MembreDao           membreDao;
 
     @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        urlOrigine = (String) externalContext.getRequestMap().get( RequestDispatcher.FORWARD_REQUEST_URI );
+        urlOrigine = externalContext.getRequestParameterMap().get( "urlOrigine" );
+        String queryStringOrigine = externalContext.getRequestParameterMap().get( "queryStringOrigine" );
 
-        if ( urlOrigine == null ) {
+        if ( urlOrigine == null || urlOrigine.isEmpty() ) {
             urlOrigine = externalContext.getRequestContextPath() + PAGE_ACCUEIL;
         } else {
-            String queryStringOrigine = (String) externalContext.getRequestMap().get(
-                    RequestDispatcher.FORWARD_QUERY_STRING );
-
-            if ( queryStringOrigine != null ) {
-                urlOrigine += URL_PARAM_SEPARATEUR + queryStringOrigine;
+            if ( queryStringOrigine != null && !queryStringOrigine.isEmpty() ) {
+                urlOrigine += "?" + queryStringOrigine;
             }
         }
     }
@@ -52,8 +48,7 @@ public class ConnecterBean implements Serializable {
     // Méthode d'action appelée lors du clic sur le bouton du formulaire
     // de connexion
     public void connecter() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
         // On récupère le membre depuis la BDD
         Membre membre = membreDao.trouver( PSEUDO, pseudo );
