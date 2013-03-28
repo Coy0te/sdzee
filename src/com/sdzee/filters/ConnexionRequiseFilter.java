@@ -16,7 +16,11 @@ import com.sdzee.membres.entities.Membre;
 
 @WebFilter( "/admin/*" )
 public class ConnexionRequiseFilter implements Filter {
-    private static final String SESSION_MEMBRE = "membre";
+    private static final String SESSION_MEMBRE      = "membre";
+    // Rappel: visiteur < inscrit < modo < admin
+    private static final int    DROITS_ADMIN        = 4;
+    private static final String PAGE_CONNEXION      = "/connexion.jsf";
+    private static final String PAGE_ACCES_INTERDIT = "/interdit.jsf";
 
     @Override
     public void destroy() {
@@ -26,14 +30,20 @@ public class ConnexionRequiseFilter implements Filter {
     public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
         Membre membre = (Membre) req.getSession().getAttribute( SESSION_MEMBRE );
-
+        // Membre connecté
         if ( membre != null ) {
-            // Membre connecté, visite autorisée.
-            chain.doFilter( request, response );
+            // Membre admin
+            if ( membre.getDroits() == DROITS_ADMIN ) {
+                chain.doFilter( request, response );
+            } else {
+                // Membre non admin, redirection vers la page d'avertissement.
+                HttpServletResponse res = (HttpServletResponse) response;
+                res.sendRedirect( req.getContextPath() + PAGE_ACCES_INTERDIT );
+            }
         } else {
             // Membre non connecté, redirection vers la page de connexion.
             HttpServletResponse res = (HttpServletResponse) response;
-            res.sendRedirect( req.getContextPath() + "/connexion.xhtml" );
+            res.sendRedirect( req.getContextPath() + PAGE_CONNEXION );
         }
     }
 

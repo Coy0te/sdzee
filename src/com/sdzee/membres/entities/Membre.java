@@ -51,6 +51,8 @@ public class Membre {
 
     private Timestamp           dateDerniereConnexion;
 
+    private Integer             droits;
+
     public Long getId() {
         return id;
     }
@@ -127,6 +129,14 @@ public class Membre {
 
     public void setDateDerniereConnexion( Timestamp dateDerniereConnexion ) {
         this.dateDerniereConnexion = dateDerniereConnexion;
+    }
+
+    public Integer getDroits() {
+        return droits;
+    }
+
+    public void setDroits( Integer droits ) {
+        this.droits = droits;
     }
 
 }
