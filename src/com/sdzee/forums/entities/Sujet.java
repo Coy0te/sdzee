@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.sdzee.membres.entities.Membre;
 
@@ -23,6 +24,7 @@ public class Sujet {
     private Long      id;
 
     @NotNull( message = "{forums.sujet.titre.notnull}" )
+    @Size( max = 100, message = "{forums.sujet.titre.taille}" )
     private String    titre;
 
     @NotNull( message = "{forums.sujet.texte.notnull}" )

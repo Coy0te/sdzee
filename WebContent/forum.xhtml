@@ -10,18 +10,18 @@
     	<ul>
 		<ui:repeat value="#{sujetsBean.getSujets(param['forumId'])}" var="sujet">
 		    <li>
-                <div>
-                    <div>
+                <div class="row">
+                    <div class="cell">
 				        <h:link outcome="sujet">
 				        	<f:param name="sujetId" value="#{sujet.id}" />
                             <h3>#{sujet.titre}</h3>
                             <span>Par <strong>#{sujet.auteur.pseudo}</strong> Le #{sujet.dateCreation}</span>
                         </h:link>
                     </div>
-	                <div>
+	                <div class="cell">
 					    <p>#{sujetsBean.getDecompteReponses(sujet) + 1} #{sujetsBean.getDecompteReponses(sujet) == 0 ? 'message' : 'messages' }</p>
 					</div>
-	                <div>
+	                <div class="cell">
 				        <h:link outcome="sujet">
 				        	<f:param name="sujetId" value="#{sujet.id}" />
 				        	<f:param name="reponseId" value="#{sujetsBean.getDerniereReponse(sujet).id}" />
@@ -35,6 +35,9 @@
             </li>
 		</ui:repeat>
 		</ul>
+		<h:link outcome="sujet" rendered="#{membre != null}">
+			
+		</h:link>
 	</ui:define>
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
