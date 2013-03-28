@@ -20,13 +20,13 @@
 		            <span>#{forum.description}</span>
 		    	</h:link>
 			</div>
-			<hr />
 	        <h:link outcome="sujet">
 	        	<f:param name="sujetId" value="#{forumsBean.getDernierSujet(forum).id}" />
 		        <strong><span>Dernier message :</span></strong>
 		        <br/>
 		        <span>#{forumsBean.getDernierSujet(forum).titre}</span>
 		    </h:link>
+		    <hr />
 		</div>
 		</ui:repeat>
 		</ui:composition>

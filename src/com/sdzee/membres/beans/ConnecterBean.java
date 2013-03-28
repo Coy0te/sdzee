@@ -16,12 +16,14 @@ import com.sdzee.membres.entities.Membre;
 @ManagedBean
 @ViewScoped
 public class ConnecterBean implements Serializable {
-    private static final long   serialVersionUID     = 1L;
-    private static final String PSEUDO               = "pseudo";
-    private static final String SESSION_MEMBRE       = "membre";
-    private static final String URL_PARAM_SEPARATEUR = "?";
-    private static final String PAGE_ACCUEIL         = "/accueil.jsf";
-    private static final String PAGE_CONNEXION       = "/connexion.jsf";
+    private static final long   serialVersionUID           = 1L;
+    private static final String PSEUDO                     = "pseudo";
+    private static final String SESSION_MEMBRE             = "membre";
+    private static final String PARAM_URL_ORIGINE          = "urlOrigine";
+    private static final String PARAM_QUERY_STRING_ORIGINE = "queryStringOrigine";
+    private static final String URL_PARAM_SEPARATEUR       = "?";
+    private static final String PAGE_ACCUEIL               = "/accueil.jsf";
+    private static final String PAGE_CONNEXION             = "/connexion.jsf";
 
     private String              pseudo;
     private String              motDePasse;
@@ -33,14 +35,14 @@ public class ConnecterBean implements Serializable {
     @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        urlOrigine = externalContext.getRequestParameterMap().get( "urlOrigine" );
-        String queryStringOrigine = externalContext.getRequestParameterMap().get( "queryStringOrigine" );
+        urlOrigine = externalContext.getRequestParameterMap().get( PARAM_URL_ORIGINE );
+        String queryStringOrigine = externalContext.getRequestParameterMap().get( PARAM_QUERY_STRING_ORIGINE );
 
         if ( urlOrigine == null || urlOrigine.isEmpty() ) {
             urlOrigine = externalContext.getRequestContextPath() + PAGE_ACCUEIL;
         } else {
             if ( queryStringOrigine != null && !queryStringOrigine.isEmpty() ) {
-                urlOrigine += "?" + queryStringOrigine;
+                urlOrigine += URL_PARAM_SEPARATEUR + queryStringOrigine;
             }
         }
     }

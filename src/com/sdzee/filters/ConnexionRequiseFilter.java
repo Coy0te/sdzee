@@ -19,6 +19,7 @@ public class ConnexionRequiseFilter implements Filter {
     private static final String SESSION_MEMBRE      = "membre";
     // Rappel: visiteur < inscrit < modo < admin
     private static final int    DROITS_ADMIN        = 4;
+    private static final String PARAM_URL_ORIGINE   = "?urlOrigine=";
     private static final String PAGE_CONNEXION      = "/connexion.jsf";
     private static final String PAGE_ACCES_INTERDIT = "/interdit.jsf";
 
@@ -29,6 +30,7 @@ public class ConnexionRequiseFilter implements Filter {
     @Override
     public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
+        String urlOrigine = req.getRequestURI();
         Membre membre = (Membre) req.getSession().getAttribute( SESSION_MEMBRE );
         // Membre connecté
         if ( membre != null ) {
@@ -43,7 +45,11 @@ public class ConnexionRequiseFilter implements Filter {
         } else {
             // Membre non connecté, redirection vers la page de connexion.
             HttpServletResponse res = (HttpServletResponse) response;
-            res.sendRedirect( req.getContextPath() + PAGE_CONNEXION );
+            if ( urlOrigine != null && !urlOrigine.isEmpty() ) {
+                res.sendRedirect( req.getContextPath() + PAGE_CONNEXION + PARAM_URL_ORIGINE + urlOrigine );
+            } else {
+                res.sendRedirect( req.getContextPath() + PAGE_CONNEXION );
+            }
         }
     }
 
