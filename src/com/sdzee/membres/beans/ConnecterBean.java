@@ -21,8 +21,8 @@ public class ConnecterBean implements Serializable {
     private static final String PSEUDO               = "pseudo";
     private static final String SESSION_MEMBRE       = "membre";
     private static final String URL_PARAM_SEPARATEUR = "?";
-    private static final String PAGE_ACCUEIL         = "/accueil.xhtml";
-    private static final String PAGE_CONNEXION       = "/connexion.xhtml";
+    private static final String PAGE_ACCUEIL         = "/accueil.jsf";
+    private static final String PAGE_CONNEXION       = "/connexion.jsf";
 
     private String              pseudo;
     private String              motDePasse;

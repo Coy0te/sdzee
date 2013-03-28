@@ -26,7 +26,7 @@
 		</ul>
 		
 		<h:form rendered="#{membre != null}">
-			<h:inputTextarea placeholder="Rédigez votre réponse ici" value="#{reponsesBean.reponse.texte}" />
+			<h:inputTextarea placeholder="Rédigez votre réponse ici" value="#{reponsesBean.texteReponse}" />
 			<h:commandButton value="Aperçu" type="button" />
 			<h:commandButton value="Répondre" type="submit" action="#{reponseBean.repondre}" />
 		</h:form>
