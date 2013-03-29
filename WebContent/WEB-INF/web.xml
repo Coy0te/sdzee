@@ -17,17 +17,6 @@
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>
+    <url-pattern>/javax.faces.resource/*</url-pattern>
   </servlet-mapping>
-<!--  <filter>
-    <filter-name>MyFacesExtensionsFilter</filter-name>
-    <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
-    <init-param>
-      <javaee:param-name>uploadMaxFileSize</javaee:param-name>
-      <javaee:param-value>100m</javaee:param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>MyFacesExtensionsFilter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-  </filter-mapping> -->
 </web-app>
