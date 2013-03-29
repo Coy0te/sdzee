@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:p="http://primefaces.org/ui"
+				template="/WEB-INF/templates/template_base.xhtml">
+	<ui:define name="title">
+		Administration des forums
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
+	</ui:define>
+	<ui:define name="body">
+   		<h:panelGroup styleClass="right">
+			<p:clock mode="server" pattern="dd.MM.yyyy - HH:mm:ss" /> 
+		</h:panelGroup>
+		<h1>
+			Administration des forums
+		</h1>
+		<div id="adminContent">
+		<ui:insert name="admin_content">
+			Admin par défaut.
+		</ui:insert>
+		</div>	
+		<h:form id="adminMenu">
+			<h:link outcome="/admin/admin_categories">
+		        <h:graphicImage library="default" name="images/admin/menu_categories.png" alt="Catégories" />
+			</h:link>
+			<h:link outcome="/admin/admin_forums">
+		        <h:graphicImage library="default" name="images/admin/menu_forums.png" alt="Forums" />
+			</h:link>
+			<h:link outcome="/admin/admin_membres">
+		        <h:graphicImage library="default" name="images/admin/menu_membres.png" alt="Membres" />
+			</h:link>
+			<h:link outcome="/admin/admin_statistiques">
+		        <h:graphicImage library="default" name="images/admin/menu_statistiques.png" alt="Statistiques" />
+			</h:link>
+		</h:form>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

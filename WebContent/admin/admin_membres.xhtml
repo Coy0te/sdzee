@@ -1,43 +1,10 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
 				xmlns:p="http://primefaces.org/ui" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-				template="/WEB-INF/templates/template.xhtml">
-	<ui:define name="title">
-		Administration des forums
-	</ui:define>
-	<ui:define name="header">
-		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
-	</ui:define>
-	<ui:define name="body">
-		<h1>
-			Administration des forums
-		</h1>   
-		 
-		<p:clock mode="server" pattern="dd.MM.yyyy - HH:mm:ss" />
-		<hr />
-		
-		<h:form id="adminMenu">
-		    <p:growl id="messages"/>
-		    <p:menu>
-		        <p:submenu label="Catégories">
-		            <p:menuitem value="Créer" actionListener="#{adminBean.creer}" update="messages" icon="ui-icon-disk" />
-		            <p:menuitem value="Modifier" actionListener="#{adminBean.modifier}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
-		            <p:menuitem id="deleteCategorie" value="Supprimer" actionListener="#{adminBean.supprimer}" update="messages" icon="ui-icon-close"/>
-		        </p:submenu>
-		        <p:submenu label="Forums">
-		            <p:menuitem value="Créer" actionListener="#{adminBean.creer}" update="messages" icon="ui-icon-disk" />
-		            <p:menuitem value="Modifier" actionListener="#{adminBean.modifier}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
-		            <p:menuitem id="deleteForum" value="Supprimer" actionListener="#{adminBean.supprimer}" update="messages" icon="ui-icon-close"/>
-		        </p:submenu>
-		        <p:submenu label="Membres">
-		            <p:menuitem value="Modifier" actionListener="#{adminBean.modifier}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
-		            <p:menuitem id="deleteMembre" value="Supprimer" actionListener="#{adminBean.supprimer}" update="messages" icon="ui-icon-close"/>
-		        </p:submenu>
-		    </p:menu>	    
-		</h:form>
-
+				template="/WEB-INF/templates/template_admin.xhtml">
+	<ui:define name="admin_content">
 		<p:dataTable var="membre" value="#{adminMembresBean.membres}" paginator="true" rows="20" filteredValue="#{adminMembresBean.filteredMembres}">
 			<f:facet name="header">
-				List des membres
+				Liste des membres
 			</f:facet>
 			<p:column filterBy="#{membre.pseudo}" filterMatchMode="startsWith" headerText="Pseudo" footerText="Pseudo">
 				#{membre.pseudo}
@@ -55,11 +22,5 @@
 				Au total, il y a #{fn:length(adminMembresBean.membres)} membres.
 			</f:facet>
 		</p:dataTable>
-
-		<p:blockUI block="adminMenu" trigger="adminMenu:deleteCategorie,adminMenu:deleteForum,adminMenu:deleteMembre" />
-	
-	</ui:define>
-	<ui:define name="footer">
-		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
 	</ui:define>
 </ui:composition>

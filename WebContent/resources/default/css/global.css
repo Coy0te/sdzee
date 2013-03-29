@@ -4,6 +4,12 @@ body, p, legend, label, input {
     font: normal 8pt verdana, helvetica, sans-serif;
 }
 
+body{
+	width: 955px;
+	margin: 0 auto;
+	padding: 3px 0;
+}
+
 fieldset {
     padding: 10px;
     border: 1px #0568CD solid;
@@ -15,7 +21,9 @@ legend {
 }
 
 /* Layout -------------------------------------------------------------------------------------- */
-
+.right{
+	float:right;
+}
 .row{
 	padding: 5px 0;
 }
@@ -23,6 +31,16 @@ legend {
 	display: inline-block;
 	padding: 5px;
 }
+
+/* Admin --------------------------------------------------------------------------------------- */
+#adminContent {
+	float: right;
+	width: 705px;
+}
+#adminMenu {
+	width: 250px;
+}
+
 
 /* Forms --------------------------------------------------------------------------------------- */
 
