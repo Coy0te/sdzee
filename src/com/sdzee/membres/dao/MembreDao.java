@@ -1,16 +1,20 @@
 package com.sdzee.membres.dao;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import com.sdzee.dao.DAOException;
 import com.sdzee.membres.entities.Membre;
 
 @Stateless
 public class MembreDao {
+    private static final String JPQL_LISTE_MEMBRES     = "SELECT m FROM Membre m ORDER BY m.id";
     private static final String JPQL_SELECT_PAR_EMAIL  = "SELECT m FROM Membre m WHERE m.email=:email";
     private static final String JPQL_SELECT_PAR_PSEUDO = "SELECT m FROM Membre m WHERE m.pseudo=:pseudo";
     private static final String PARAM_EMAIL            = "email";
@@ -24,6 +28,16 @@ public class MembreDao {
     public void creer( Membre membre ) throws DAOException {
         try {
             em.persist( membre );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /* Récupération de la liste des membres */
+    public List<Membre> lister() throws DAOException {
+        try {
+            TypedQuery<Membre> query = em.createQuery( JPQL_LISTE_MEMBRES, Membre.class );
+            return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );
         }
