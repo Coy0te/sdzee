@@ -8,17 +8,17 @@
 	</ui:define>
 	<ui:define name="body">
 		<h1>
-			Liste des forums
-		</h1>    
+			<h:link value="Liste des forums"/>
+		</h1>  
 		<ui:repeat value="#{forumsBean.categories}" var="categorie">
-		<div>
 			<h2>
 				#{categorie.titre}
 			</h2>
+			<div class="groupCategoryForum">
 			<ui:include src="/WEB-INF/snippets/body/inc_forums.xhtml">
 				<ui:param name="categorie" value="#{categorie}"/>
 			</ui:include>
-		</div>
+			</div>
 		</ui:repeat>
 	</ui:define>
 	<ui:define name="footer">

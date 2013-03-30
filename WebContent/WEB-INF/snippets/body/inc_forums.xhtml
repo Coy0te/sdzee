@@ -8,25 +8,21 @@
     <h:body>
 		<ui:composition>  
 		<ui:repeat value="#{forumsBean.getForums(categorie)}" var="forum">
-		<div>
-		    <div>
-		        <h:link outcome="forum">
-		        	<f:param name="forumId" value="#{forum.id}" />
-		        	<h:graphicImage library="default" name="images/forums/#{forum.id}.png" alt="#{forum.titre}" />
-		        </h:link>
-		        <h:link outcome="forum">
-		        	<f:param name="forumId" value="#{forum.id}" />
-		            <span>#{forum.titre}</span>
-		            <span>#{forum.description}</span>
-		    	</h:link>
-			</div>
+		<div class="forumCategory">
+	        <h:link outcome="forum">
+	        	<f:param name="forumId" value="#{forum.id}" />
+	        	<h:graphicImage library="default" name="images/forums/#{forum.id}.png" alt="#{forum.titre}" />
+	        </h:link>
+	        <h:link outcome="forum">
+	        	<f:param name="forumId" value="#{forum.id}" />
+	            <span class="forumCategoryTitle" title="#{forum.description}">#{forum.titre}</span>
+	            <span class="forumDesc">#{forum.description}</span>
+	    	</h:link>
 	        <h:link outcome="sujet">
 	        	<f:param name="sujetId" value="#{forumsBean.getDernierSujet(forum).id}" />
-		        <strong><span>Dernier message :</span></strong>
-		        <br/>
-		        <span>#{forumsBean.getDernierSujet(forum).titre}</span>
+		        <span class="forumLastMessage">Dernier message :</span>
+		        <span class="forumDesc">#{forumsBean.getDernierSujet(forum).titre}</span>
 		    </h:link>
-		    <hr />
 		</div>
 		</ui:repeat>
 		</ui:composition>

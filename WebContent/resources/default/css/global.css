@@ -1,13 +1,15 @@
 /* Général ------------------------------------------------------------------------------------- */
 
 body, p, legend, label, input {
-    font: normal 8pt verdana, helvetica, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 body{
-	width: 955px;
-	margin: 0 auto;
+	margin: 0;
 	padding: 3px 0;
+	background: rgba(219,218,206,0.8)!important;
+	line-height: 18px;
+	font-size: 14px;
 }
 
 fieldset {
@@ -21,6 +23,111 @@ legend {
 }
 
 /* Layout -------------------------------------------------------------------------------------- */
+#mainHeader{
+	background: #002d40;
+	border-bottom: 4px solid #03638b;
+	height: 68px;
+	width: 100%;
+	color: #fff;
+	position: relative;
+}
+#mainHeader #mainMenu {
+	width: 955px;
+	margin: auto;
+	position: relative;
+	font-size: 15px;
+}
+#mainHeader #mainMenu #menuUp {
+	width: auto;
+	height: 52px;
+	display: inline-block;
+	position: relative;
+	margin-left: -17px;
+}
+#mainHeader #mainMenu #menuDown {
+	display: inline-block;
+	width: auto;
+	height: 100%;
+	vertical-align: top;
+	margin-top: 7px;
+}
+#mainHeader #memberInfos {
+	display: inline-block;
+	vertical-align: middle;
+	min-width: 165px;
+	margin-top: 9px;
+}
+#mainHeader #mainMenu div.contentDown {
+	display: inline-block;
+	vertical-align: middle;
+	width: 100%;
+}
+#mainHeader #mainMenu div.contentDown ul.menu {
+	list-style: none;
+	text-indent: 0;
+	padding: 0;
+	margin: 0 10px 0 0;
+	display: inline-block;
+	vertical-align: middle;
+	height: 40px;
+	vertical-align: top;
+	line-height: 18px;
+	width: 500px;
+}
+#mainHeader #mainMenu div.contentDown ul.menu li {
+	list-style: none;
+	display: inline-block;
+	height: 40px;
+	line-height: 20px;
+}
+#mainHeader #mainMenu div.contentDown ul.menu li.sep {
+	box-shadow: 1px 0 rgba(3,99,139,0.5),-1px 0 rgba(0,0,0,0.5) inset;
+	width: 1px;
+	height: 40px;
+	vertical-align: top;
+	margin: 0 -3px 0 -4px;
+	padding-left: 0;
+}
+#mainHeader #mainMenu div.contentDown ul.menu li a {
+	display: inline-block;
+	padding: 10px 10px 0 10px;
+	min-width: 50px;
+	text-align: center;
+	font-size: 16px;
+	text-shadow: 0 1px 0 #000;
+}
+#mainHeader a {
+	text-decoration: none;
+	color: #fff;
+}
+
+section#mainSection{
+	width: 955px;
+	margin: auto;
+	position: relative;
+	background: #fff!important;
+	min-height: 400px;
+	border-radius: 5px!important;
+	-webkit-border-radius: 5px!important;
+	-moz-border-radius: 5px!important;
+	border-radius: 5px!important;
+	padding: 17px;
+}
+section#mainSection h1 {
+	color: #2e2b2a;
+	font-size: 25px;
+	font-weight: normal;
+	letter-spacing: -1px;
+	margin: 0;
+	padding: 0 0 15px;
+	text-shadow: 0 1px 0 #fff;
+	font-family: 'Source Sans Pro',sans-serif;
+	line-height: 36px;
+}
+section#mainSection h1 a {
+	color: #2e2b2a;
+	text-decoration: none;
+}
 .right{
 	float:right;
 }
@@ -30,6 +137,64 @@ legend {
 .cell{
 	display: inline-block;
 	padding: 5px;
+}
+
+/* Catégories ---------------------------------------------------------------------------------- */
+section#mainSection .groupCategoryForum {
+	margin-top: 14px;
+	border-bottom: 1px solid #e3e3e3;
+}
+div.forumCategory {
+	display: table;
+	height: 50px;
+	width: 100%;
+	margin: 0px 0px 1em;
+	padding: 0px;
+	background: rgb(244, 244, 240);
+	border-bottom: 2px solid rgb(220, 219, 207);
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+div.forumCategory > a {
+	display: table-cell;
+	height: 50px;
+	vertical-align: top;
+	text-decoration: none;
+	outline: none;
+}
+div.forumCategory > a:nth-child(1) {
+	width: 50px;
+	padding-left: 3px;
+	padding-right: 6px;
+	padding-top: 3px;
+}
+div.forumCategory > a:nth-child(2) {
+	width: 480px;
+}
+div.forumCategory > a > span {
+	display: block;
+	font-size: 14px;
+	padding-left: 5px;
+	padding-right: 4px;
+}
+div.forumCategory > a > .forumCategoryTitle {
+	overflow: hidden;
+	color: rgb(0, 0, 0);
+	font-size: 16px;
+	line-height: 25px;
+}
+div.forumCategory > a > .forumDesc {
+	color: rgb(105, 105, 105);
+	max-height: 35px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+div.forumCategory > a > .forumLastMessage {
+	overflow: hidden;
+	color: rgb(105, 105, 105);
+	line-height: 25px;
+	font-weight: bold;
 }
 
 /* Admin --------------------------------------------------------------------------------------- */

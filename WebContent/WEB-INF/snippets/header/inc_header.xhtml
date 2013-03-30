@@ -1,24 +1,41 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
-	<div>
-		<h:outputText value="Vous êtes connecté en tant que : #{membre.pseudo}. " rendered="#{membre != null}" />
-		<h:outputText value="Vous n'êtes pas connecté. " rendered="#{membre == null}" />
-		<h:form rendered="#{membre != null}">
-			<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
-		</h:form>
-		<h:link value="Connexion." outcome="connexion" rendered="#{membre == null}">
-			<f:param name="urlOrigine" value="#{request.requestURI}" />
-			<f:param name="queryStringOrigine" value="#{request.queryString}" />
-		</h:link> 
-		<br />
-		<ui:fragment rendered="#{membre != null}">
-			<ui:include src="inc_menu.xhtml" />
-		</ui:fragment>
-		<h:link value="Accueil" outcome="/accueil" /> | 
-		<h:link value="Tutoriels" outcome="/tutoriels" /> | 
-		<h:link value="Forums" outcome="/categories" /> | 
-		<h:link value="Librairie" outcome="/boutique" /> | 
-		<h:link value="Études" outcome="/etudes" /> |
-		<h:link value="Admin" outcome="/admin/admin" rendered="#{membre != null and membre.droits == 4}" />
-		<hr />
+	<div id="mainHeader">
+		<div id="mainMenu">
+			<div id="menuUp">
+				<h:link value="SdZ EE" outcome="/accueil" />
+				<div id="memberInfos">
+					<h:outputText value="Vous êtes connecté en tant que : #{membre.pseudo}. " rendered="#{membre != null}" />
+					<h:outputText value="Vous n'êtes pas connecté. " rendered="#{membre == null}" />
+					<h:form rendered="#{membre != null}">
+						<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
+					</h:form>
+					<h:link value="Connexion." outcome="connexion" rendered="#{membre == null}">
+						<f:param name="urlOrigine" value="#{request.requestURI}" />
+						<f:param name="queryStringOrigine" value="#{request.queryString}" />
+					</h:link> 
+					<br />
+					<ui:fragment rendered="#{membre != null}">
+						<ui:include src="inc_menu.xhtml" />
+					</ui:fragment>
+				</div>
+			</div>
+			<div id="menuDown">
+				<div class="contentDown">
+					<ul class="menu">
+						<li class="sep"></li>
+						<li><h:link value="Tutoriels" outcome="/tutoriels" /></li>
+						<li class="sep"></li>
+						<li><h:link value="Forums" outcome="/categories" /></li>
+						<li class="sep"></li>
+						<li><h:link value="Librairie" outcome="/boutique" /></li>
+						<li class="sep"></li>
+						<li><h:link value="Études" outcome="/etudes" /></li>
+						<li class="sep"></li>
+						<li><h:link value="Admin" outcome="/admin/admin" rendered="#{membre != null and membre.droits == 4}" /></li>
+						<li class="sep"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
 </ui:composition>
