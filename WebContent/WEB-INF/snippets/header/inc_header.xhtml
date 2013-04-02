@@ -1,10 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
 	<div id="mainHeader">
-		<div id="mainMenu">
+		<div id="mainMenu" class="largeurLimite">
 			<div id="menuUp">
-				<h:link value="SdZ EE" outcome="/accueil" />
+				<div class="UpMob">
+					<h:link id="logo" outcome="/accueil" />
+				</div>
 				<div id="memberInfos">
-					<h:outputText value="Vous êtes connecté en tant que : #{membre.pseudo}. " rendered="#{membre != null}" />
+					<h:outputText value="Vous êtes : #{membre.pseudo}. " rendered="#{membre != null}" />
 					<h:outputText value="Vous n'êtes pas connecté. " rendered="#{membre == null}" />
 					<h:form rendered="#{membre != null}">
 						<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />

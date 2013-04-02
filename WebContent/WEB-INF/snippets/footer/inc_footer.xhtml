@@ -1,10 +1,39 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
-	<hr />
-	<div>
-		<h:link value="Accueil" outcome="/accueil" /> | 
-		<h:link value="Tutoriels" outcome="/tutoriels" /> | 
-		<h:link value="Forums" outcome="/categories" /> | 
-		<h:link value="Librairie" outcome="/boutique" /> | 
-		<h:link value="Études" outcome="/etudes" /> |
+<div id="mainFooter">
+	<div class="largeurLimite">
+		<div class="row footerTablet">
+			<div class="footerTop">
+				<ul class="menu">
+					<li class="sep"></li>
+					<li class="tutorialLink "><h:link value="Tutoriels" outcome="/tutoriels" /></li>
+					<li class="sep"></li>
+					<li class="forumLink "><h:link value="Forums" outcome="/categories" /></li>
+					<li class="sep"></li>
+					<li class="bookstoreLink"><h:link value="Librairie" outcome="/boutique" /></li>
+					<li class="sep"></li>
+					<li class="schoolLink "><h:link value="Études" outcome="/etudes" /></li>
+					<li class="sep"></li>
+				</ul>
+				<h:form styleClass="searchForm">
+					<input type="search" placeholder="Recherche" name="q" value=""/>
+					<h:commandButton action="recherche"/>
+				</h:form>
+			</div>
+		</div>
+		<hr/>
+		<div class="row cgu">
+			<div class="span4 footerInfo">
+				<p>
+					<a href="/conditions-generales-utilisation">Conditions Générales d'Utilisation</a>
+					<a href="mailto:coyote@sdzee.com">Contact</a>
+				</p>
+			</div>
+			<a class="span4 by" href="http://sdzee.com">
+				<span>Réalisé par</span> <div id="sdzee"></div>
+			</a>
+		</div>
 	</div>
+</div>
 </ui:composition>
+
+
