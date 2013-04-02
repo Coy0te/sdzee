@@ -322,6 +322,13 @@ div.forumCategory > a > .forumLastMessage {
 	font-weight: bold;
 }
 
+
+/**** PrimeFaces overrides ****/
+.ui-orderlist .ui-orderlist-list {
+	width: 500px;
+	height: auto;
+}
+
 /* Admin --------------------------------------------------------------------------------------- */
 #adminContent {
 	float: right;

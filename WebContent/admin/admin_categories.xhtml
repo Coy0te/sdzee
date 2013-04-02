@@ -2,6 +2,15 @@
 				xmlns:p="http://primefaces.org/ui" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 				template="/WEB-INF/templates/template_admin.xhtml">
 	<ui:define name="admin_content">
-		<p>Bienvenue dans l'interface d'administration du forum.</p>
+		<h2>Liste des catégories</h2>
+		<h:form> 
+			<p:orderList id="listeCategories" value="#{forumsBean.categories}" var="categorie" effect="clip" itemValue="#{categorie}" controlsLocation="left">
+		        <f:facet name="caption">Catégories</f:facet>
+		         <p:column>
+		            #{categorie.titre}
+		        </p:column>
+		    </p:orderList>
+		    <p:commandButton value="Mettre à jour" update="listeCategories" oncomplete="" /> 
+	    </h:form>
 	</ui:define>
 </ui:composition>

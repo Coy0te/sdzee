@@ -26,6 +26,7 @@ CREATE TABLE `forum_categorie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `titre` varchar(60) NOT NULL,
   `dateCreation` datetime NOT NULL,
+  `position` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `titre` (`titre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
@@ -37,7 +38,7 @@ CREATE TABLE `forum_categorie` (
 
 LOCK TABLES `forum_categorie` WRITE;
 /*!40000 ALTER TABLE `forum_categorie` DISABLE KEYS */;
-INSERT INTO `forum_categorie` VALUES (1,'Site Web','2013-03-21 16:13:08'),(2,'Programmation','2013-03-21 16:13:09'),(3,'Systèmes d\'exploitatiom','2013-03-21 16:13:09'),(4,'Infographie','2013-03-21 16:13:09'),(5,'Matériel & logiciels','2013-03-21 16:13:09'),(6,'Jeux vidéo','2013-03-21 16:13:09'),(7,'Communauté des Zéros','2013-03-21 16:13:09'),(8,'Sciences','2013-03-21 16:13:09');
+INSERT INTO `forum_categorie` VALUES (1,'Site Web','2013-03-21 16:13:08',1),(2,'Programmation','2013-03-21 16:13:09',2),(3,'Systèmes d\'exploitatiom','2013-03-21 16:13:09',3),(4,'Infographie','2013-03-21 16:13:09',4),(5,'Matériel & logiciels','2013-03-21 16:13:09',5),(6,'Jeux vidéo','2013-03-21 16:13:09',6),(7,'Communauté des Zéros','2013-03-21 16:13:09',7),(8,'Sciences','2013-03-21 16:13:09',8);
 /*!40000 ALTER TABLE `forum_categorie` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,6 +126,7 @@ CREATE TABLE `forum_sujet` (
   `vues` int(11) DEFAULT '0',
   `votesPositifs` int(11) DEFAULT '0',
   `votesNegatifs` int(11) DEFAULT '0',
+  `adresseIP` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_auteur_sujet` (`auteur`),
   KEY `fk_forum_sujet` (`forum`),
@@ -139,7 +141,7 @@ CREATE TABLE `forum_sujet` (
 
 LOCK TABLES `forum_sujet` WRITE;
 /*!40000 ALTER TABLE `forum_sujet` DISABLE KEYS */;
-INSERT INTO `forum_sujet` VALUES (1,'Un sujet au pif','','Alors que dans la moule d\'argentine la teneur en mouléïte n\'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.',1,2,'2013-03-21 16:13:44',0,0,0,0,0);
+INSERT INTO `forum_sujet` VALUES (1,'Un sujet au pif','','Alors que dans la moule d\'argentine la teneur en mouléïte n\'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.',1,2,'2013-03-21 16:13:44',0,0,0,0,0,'192.168.1.2');
 /*!40000 ALTER TABLE `forum_sujet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,10 +161,11 @@ CREATE TABLE `membre` (
   `nom` varchar(20) DEFAULT NULL,
   `dateInscription` datetime NOT NULL,
   `dateDerniereConnexion` datetime DEFAULT NULL,
+  `droits` int(2) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `pseudo` (`pseudo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,7 +174,7 @@ CREATE TABLE `membre` (
 
 LOCK TABLES `membre` WRITE;
 /*!40000 ALTER TABLE `membre` DISABLE KEYS */;
-INSERT INTO `membre` VALUES (1,'coyote@test.com','baSDuV8d+My8W/M84MTBK42acjjKWeY9RrfboLDH/R7ot72cCi/KkA==','Med',NULL,NULL,'2013-03-21 16:12:48',NULL);
+INSERT INTO `membre` VALUES (1,'coyote@test.com','baSDuV8d+My8W/M84MTBK42acjjKWeY9RrfboLDH/R7ot72cCi/KkA==','Med',NULL,NULL,'2013-03-21 16:12:48',NULL,1),(2,'coy@ote.fr','baSDuV8d+My8W/M84MTBK42acjjKWeY9RrfboLDH/R7ot72cCi/KkA==','Coyote',NULL,NULL,'2013-03-21 16:12:48',NULL,4);
 /*!40000 ALTER TABLE `membre` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -184,4 +187,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-03-25 12:27:45
+-- Dump completed on 2013-04-02 17:30:48
