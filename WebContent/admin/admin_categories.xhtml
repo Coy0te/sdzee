@@ -3,14 +3,17 @@
 				template="/WEB-INF/templates/template_admin.xhtml">
 	<ui:define name="admin_content">
 		<h2>Liste des catégories</h2>
-		<h:form> 
-			<p:orderList id="listeCategories" value="#{forumsBean.categories}" var="categorie" effect="clip" itemValue="#{categorie}" controlsLocation="left">
+		<h:form id="formOrdeCategories">
+			<p:orderList id="listeCategories" value="#{forumsBean.categories}" var="categorie" effect="clip" 
+			itemValue="#{categorie.id}" controlsLocation="left">
 		        <f:facet name="caption">Catégories</f:facet>
 		         <p:column>
 		            #{categorie.titre}
 		        </p:column>
 		    </p:orderList>
-		    <p:commandButton value="Mettre à jour" update="listeCategories" oncomplete="" /> 
+		    <p:commandButton id="boutonMAJ" value="Mettre à jour" ajax="true" process="@this listeCategories"
+		    				 actionListener="#{forumsBean.reorganiserCategories}"/>
+		    <p:blockUI block="formOrdeCategories" trigger="boutonMAJ" /> 
 	    </h:form>
 	</ui:define>
 </ui:composition>

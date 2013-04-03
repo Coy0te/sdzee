@@ -46,4 +46,8 @@ public class ForumsBackingBean implements Serializable {
     public Sujet getDernierSujet( Forum forum ) {
         return sujetDao.trouverDernier( forum );
     }
+
+    public void reorganiserCategories() {
+        System.out.println( ">>>>>>>> CHECK!" );
+    }
 }
