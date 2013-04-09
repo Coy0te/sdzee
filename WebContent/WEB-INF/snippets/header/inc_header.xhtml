@@ -6,8 +6,8 @@
 					<h:link id="logo" outcome="/accueil" />
 				</div>
 				<div id="memberInfos">
-					<h:outputText value="Vous êtes : #{membre.pseudo}. " rendered="#{membre != null}" />
-					<h:outputText value="Vous n'êtes pas connecté. " rendered="#{membre == null}" />
+					<h:outputText value="&gt;&gt; #{membre.pseudo}" rendered="#{membre != null}" />
+					<h:outputText value="&gt;&gt; Visiteur " rendered="#{membre == null}" />
 					<h:form rendered="#{membre != null}">
 						<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
 					</h:form>
@@ -36,6 +36,12 @@
 						<li><h:link value="Admin" outcome="/admin/admin" rendered="#{membre != null and membre.droits == 4}" /></li>
 						<li class="sep"></li>
 					</ul>
+					<div id="navmenuRight">
+						<h:form styleClass="searchForm">
+							<h:inputText placeholder="Recherche" name="q"/>
+							<h:commandButton action="recherche"/>
+						</h:form>
+					</div>
 				</div>
 			</div>
 		</div>

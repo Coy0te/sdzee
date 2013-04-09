@@ -142,6 +142,10 @@ legend {
 #mainHeader #mainMenu div.contentDown ul.menu li:hover{
 	background-color: #024866;
 }
+#mainHeader #mainMenu #navmenuRight {
+	display: inline-block;
+	width: auto;
+}
 #mainHeader a, #mainFooter a {
 	text-decoration: none;
 	color: #fff;
@@ -423,7 +427,7 @@ section#mainSection h1 a {
 	height: 40px;
 	line-height: 48px;
 }
-#mainFooter .searchForm {
+form.searchForm {
 	position: relative;
 	width: 270px;
 	float: right;
@@ -433,29 +437,55 @@ form.searchForm {
 	display: inline-block;
 	vertical-align: middle;
 }
-#mainFooter .searchForm input[type="search"] {
-	width: 262px;
-	margin: 3px 3px 0px 0px;
-	padding: 4px 6px;
+form.searchForm input[type="text"] {
+	display: inline-block;
 	height: 20px;
-	border: 1px solid #ccc;
+	padding: 4px 6px;
+	margin-bottom: 10px;
+	font-size: 14px;
+	line-height: 20px;
+	color: #555;
 	border-radius: 4px;
-	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
-	margin-bottom: 0;
-	background: white;
+	-webkit-border-radius: 4px;
+	vertical-align: middle;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	-webkit-transition: border linear .2s,box-shadow linear .2s;
+	-moz-transition: border linear .2s,box-shadow linear .2s;
+	-o-transition: border linear .2s,box-shadow linear .2s;
+	transition: border linear .2s,box-shadow linear .2s;
+	background: -webkit-linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#fff);
+	background: -moz-linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#fff);
+	background: -o-linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#fff);
+	background: -ms-linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#fff);
+	background: linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#fff);
+	background-position: 270px -475px;
 }
-#mainFooter .searchForm input[type="submit"] {
+form.searchForm input[type="submit"] {
 	padding: 0;
 	border-radius: 0;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
+	background: 0;
 	border: 0;
 	color: #FFF;
 	font-size: 25px;
 	font-weight: bold;
 	cursor: pointer;
 	margin: 0 4px;
+	position: relative;
+}
+#mainHeader form.searchForm {
+	top: 5px;
+	width: 106px;
+	position: relative;
+	margin-bottom: 1px;
+}
+form.searchForm input[type="submit"] {
 	background: url(#{resource['default/css/images/search.png']}) no-repeat #f8f8f4;
 	height: 28px;
 	margin-right: 0;
@@ -464,6 +494,31 @@ form.searchForm {
 	top: 1px;
 	width: 28px;
 }
+#mainHeader form.searchForm input[type="submit"] {
+	left: 73px;
+}
+#mainHeader form.searchForm input[type="text"] {
+	margin: 0;
+	padding: 4px;
+	width: 96px;
+}
+
+#mainFooter form.searchForm {
+	position: relative;
+	width: 270px;
+	float: right;
+	margin-bottom: 0;
+}
+#mainFooter form.searchForm input[type="text"] {
+	margin: 0;
+	width: 262px;
+	padding-right: 0;
+	height: 20px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	margin-bottom: 0;
+}
+
 #mainFooter hr {
 	border-top: 1px solid #eee;
 	-moz-box-shadow: 1px 1px 0 0 #004460;
