@@ -7,9 +7,15 @@
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
 	</ui:define>
 	<ui:define name="body">
-    	<ul>
+		<h1>
+			<h:link>
+				<f:param name="forumId" value="#{param['forumId']}" />
+				#{sujetsBean.getForum(param['forumId']).titre}
+			</h:link>
+		</h1>
+    	<ul class="list">
 		<ui:repeat value="#{sujetsBean.getSujets(param['forumId'])}" var="sujet">
-		    <li>
+		    <li class="read">
                 <div class="row">
                     <div class="cell">
 				        <h:link outcome="sujet">
@@ -21,6 +27,7 @@
 	                <div class="cell">
 					    <p>#{sujetsBean.getDecompteReponses(sujet) + 1} #{sujetsBean.getDecompteReponses(sujet) == 0 ? 'message' : 'messages' }</p>
 					</div>
+					<div class="cell">lu/non lu</div>
 	                <div class="cell">
 				        <h:link outcome="sujet">
 				        	<f:param name="sujetId" value="#{sujet.id}" />

@@ -10,6 +10,7 @@ import javax.faces.bean.RequestScoped;
 import com.sdzee.forums.dao.ForumDao;
 import com.sdzee.forums.dao.ReponseDao;
 import com.sdzee.forums.dao.SujetDao;
+import com.sdzee.forums.entities.Forum;
 import com.sdzee.forums.entities.Reponse;
 import com.sdzee.forums.entities.Sujet;
 
@@ -24,6 +25,10 @@ public class SujetsBackingBean implements Serializable {
     private ForumDao          forumDao;
     @EJB
     private ReponseDao        reponseDao;
+
+    public Forum getForum( int forumId ) {
+        return forumDao.trouver( forumId );
+    }
 
     public List<Sujet> getSujets( int forumId ) {
         return sujetDao.lister( forumDao.trouver( forumId ) );

@@ -16,6 +16,11 @@ a{
 	text-decoration: none;
 }
 
+ul{
+	padding: 0;
+	margin: 0;
+}
+
 fieldset {
     padding: 10px;
     border: 1px #0568CD solid;
@@ -178,6 +183,9 @@ section#mainSection h1 a {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 }
+#mainSection div.comments div.row:nth-child(even) {
+	background-color: rgba(231,231,219,0.5);
+}
 #mainSection div.comments div.row div.userInfos {
 	float: left;
 }
@@ -334,6 +342,53 @@ section#mainSection h1 a {
 	margin-right: 5px;
 }
 
+
+#mainSection ul.list {
+	width: 100%;
+	margin: 10px 0 12px 0;
+	list-style: none;
+}
+#mainSection ul.list li {
+	border-bottom: 2px solid #dcdbcf;
+	margin-bottom: 10px;
+	positon: relative;
+	position: relative;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	height: 60px;
+	display: block;
+	height: auto;
+}
+#mainSection ul.list li.read {
+	background: rgba(231,231,219,0.3);
+	color: #696969;
+}
+#mainSection ul.list li div {
+	vertical-align: middle;
+}
+#mainSection ul.list li div.row div.cell{
+	margin-left: 15px;
+	padding: 0;
+}
+#mainSection ul.list li div.row > div.cell:nth-child(1){
+	width: 375px;
+}
+#mainSection ul.list li div.row > div.cell:nth-child(2){
+	width: 141px;
+}
+#mainSection ul.list li div.row > div.cell:nth-child(3){
+	width: 63px;
+}
+#mainSection ul.list li div.row > div.cell:nth-child(4){
+	width: 219px;
+}
+#mainSection ul.list li div.row div.cell a {
+	padding: 12px 15px;
+	display: block;
+	width: auto;
+	color: #696969;
+}
 
 
 #mainFooter {
