@@ -6,7 +6,7 @@ body, p, legend, label, input {
 
 body{
 	margin: 0;
-	padding: 3px 0;
+	padding: 0;
 	background: rgba(219,218,206,0.8)!important;
 	line-height: 18px;
 	font-size: 14px;
@@ -30,7 +30,6 @@ legend {
 #mainHeader{
 	background: #002d40;
 	border-bottom: 4px solid #03638b;
-	height: 68px;
 	width: 100%;
 	color: #fff;
 	position: relative;
@@ -77,6 +76,7 @@ legend {
 	width: 100%;
 }
 #mainHeader #mainMenu div.contentDown ul.menu {
+	width: 500px;
 	list-style: none;
 	text-indent: 0;
 	padding: 0;
@@ -86,13 +86,13 @@ legend {
 	height: 40px;
 	vertical-align: top;
 	line-height: 18px;
-	width: 500px;
 }
 #mainHeader #mainMenu div.contentDown ul.menu li {
+	line-height: 20px;
 	list-style: none;
 	display: inline-block;
 	height: 40px;
-	line-height: 20px;
+	vertical-align: top;
 }
 #mainHeader #mainMenu div.contentDown ul.menu li.sep {
 	box-shadow: 1px 0 rgba(3,99,139,0.5),-1px 0 rgba(0,0,0,0.5) inset;
@@ -109,6 +109,9 @@ legend {
 	text-align: center;
 	font-size: 16px;
 	text-shadow: 0 1px 0 #000;
+}
+#mainHeader #mainMenu div.contentDown ul.menu li:hover{
+	background-color: #024866;
 }
 #mainHeader a, #mainFooter a {
 	text-decoration: none;
