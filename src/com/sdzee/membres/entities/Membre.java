@@ -53,6 +53,8 @@ public class Membre {
 
     private Integer             droits;
 
+    private String              avatar;
+
     public Long getId() {
         return id;
     }
@@ -137,6 +139,14 @@ public class Membre {
 
     public void setDroits( Integer droits ) {
         this.droits = droits;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar( String avatar ) {
+        this.avatar = avatar;
     }
 
 }

@@ -7,29 +7,79 @@
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
 	</ui:define>
 	<ui:define name="body">
-    	<ul>
-    		<li>
-                Par <strong>#{reponsesBean.getSujet(param['sujetId']).auteur.pseudo}</strong> (#{reponsesBean.getSujet(param['sujetId']).adresseIP}) Le #{reponsesBean.getSujet(param['sujetId']).dateCreation} <br/>
-                #{reponsesBean.getSujet(param['sujetId']).texte}
-    		</li>
-    		<li>
-    			### Pub ###
-    		</li>
-		<ui:repeat value="#{reponsesBean.getReponses(param['sujetId'])}" var="reponse">
-		    <li>
-                <div>
-                    Par <strong>#{reponse.auteur.pseudo}</strong> (#{reponse.adresseIP}) Le #{reponse.dateCreation} <br/>
-                    #{reponse.texte}
-                </div>
-            </li>
-		</ui:repeat>
-		</ul>
-		
-		<h:form rendered="#{membre != null}">
-			<h:inputTextarea placeholder="Rédigez votre réponse ici" value="#{reponsesBean.texteReponse}" />
-			<h:commandButton value="Aperçu" type="button" />
-			<h:commandButton value="Répondre" type="submit" action="#{reponseBean.repondre}" />
-		</h:form>
+	<ui:param name="sujet" value="#{reponsesBean.getSujet(param['sujetId'])}"/>
+		<h1>
+			<h:link>
+				<f:param name="sujetId" value="#{param['sujetId']}" />
+				#{sujet.titre}
+			</h:link>
+		</h1>
+		<div class="comments">
+			<div class="row" id="op">
+				<div class="userInfos">
+					<div class="avatar">
+						<div class="author">
+							<h:link outcome="/membres">
+								<f:param name="membreId" value="#{sujet.auteur.id}"/>
+								#{sujet.auteur.pseudo}
+							</h:link>
+						</div>
+						<h:link outcome="/membres">
+							<f:param name="membreId" value="#{sujet.auteur.id}"/>
+							<h:graphicImage library="default" name="images/membres/#{sujet.auteur.avatar == null ? 'avatar_defaut.png' : sujet.auteur.avatar}" alt="avatar" />
+						</h:link>
+					</div>
+				</div>
+				<div class="comment">
+					<div class="content">
+						<h:link class="date">
+							<f:param name="sujetId" value="#{param['sujetId']}" />
+							Le #{sujet.dateCreation}
+						</h:link>
+						<div class="message">
+							#{sujet.texte}
+						</div>
+					</div>
+				</div>
+			</div>
+			<ui:repeat value="#{reponsesBean.getReponses(param['sujetId'])}" var="reponse">
+			<div class="row">
+				<div class="userInfos">
+					<div class="avatar">
+						<div class="author">
+							<h:link outcome="/membres">
+								<f:param name="membreId" value="#{reponse.auteur.id}"/>
+								#{reponse.auteur.pseudo}
+							</h:link>
+						</div>
+						<h:link outcome="/membres">
+							<f:param name="membreId" value="#{reponse.auteur.id}"/>
+							<h:graphicImage library="default" name="images/membres/#{reponse.auteur.avatar == null ? 'avatar_defaut.png' : reponse.auteur.avatar}" alt="avatar" />
+						</h:link>
+					</div>
+				</div>
+				<div class="comment">
+					<div class="content">
+						<h:link class="date">
+							<f:param name="sujetId" value="#{param['sujetId']}" />
+							Le #{reponse.dateCreation}
+						</h:link>
+						<div class="message">
+							#{reponse.texte}
+						</div>
+					</div>
+				</div>
+			</div>
+			</ui:repeat>
+		</div>
+		<div id="newComment" class="message">
+			<h2>Répondre au sujet : #{sujet.titre}</h2>
+			<h:form rendered="#{membre != null}">
+				<h:inputTextarea placeholder="Rédigez votre réponse ici" value="#{reponsesBean.texteReponse}" />
+				<h:commandButton value="Répondre" type="submit" action="#{reponseBean.repondre}" styleClass="btn btn-primary" />
+				<h:commandButton value="Aperçu" type="button" styleClass="btn showMarkdownOverview" />
+			</h:form>
+		</div>
 	</ui:define>
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
