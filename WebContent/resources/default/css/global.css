@@ -35,9 +35,6 @@ legend {
 .right{
 	float:right;
 }
-.row{
-	padding: 5px 0;
-}
 .row:after {
 	clear: both;
 }
@@ -57,11 +54,13 @@ legend {
 	margin: auto;
 }
 #mainHeader{
-	background: #002d40;
-	border-bottom: 4px solid #03638b;
 	width: 100%;
 	color: #fff;
 	position: relative;
+}
+#mainHeader #headerTop{
+	background: #002d40;
+	border-bottom: 4px solid #03638b;
 }
 #mainHeader #mainMenu {
 	position: relative;
@@ -82,7 +81,7 @@ legend {
 #mainHeader #mainMenu a#logo {
 	display: inline-block;
 	vertical-align: middle;
-	background: url(#{resource['default/css/images/sdzee.png']}) no-repeat;
+	background: url(#{resource['default/css/images/sdzee.png']}) no-repeat -2px -6px;
 	height: 52px;
 	width: 158px;
 }
@@ -150,9 +149,54 @@ legend {
 	text-decoration: none;
 	color: #fff;
 }
+#mainHeader .headGradient {
+	position: absolute;
+	top: 56px;
+	width: 100%;
+}
+#mainHeader .headGradient div:first-child {
+	background: #d3d1bc;
+	height: 1px;
+}
+#mainHeader .headGradient div:first-child+div {
+	background: -webkit-linear-gradient(top,#b0ad8c 0,rgba(176,173,140,0) 100%);
+	background: -moz-linear-gradient(top,#b0ad8c 0,rgba(176,173,140,0) 100%);
+	background: -o-linear-gradient(top,#b0ad8c 0,rgba(176,173,140,0) 100%);
+	background: -ms-linear-gradient(top,#b0ad8c 0,rgba(176,173,140,0) 100%);
+	background: linear-gradient(top,#b0ad8c 0,rgba(176,173,140,0) 100%);
+	height: 7px;
+}
+#mainHeader #headerBreadcrumb {
+	border-top: 2px solid white;
+	border-bottom: 1px solid white;
+	height: 28px;
+	line-height: 30px;
+	color: black;
+	margin-bottom: 10px;
+}
+#mainHeader #headerBreadcrumb ul#breadcrumbtrail {
+	display: inline;
+	list-style-type: none;
+	margin: 0;
+	opacity: .5;
+	text-shadow: 0 1px 0 #fff;
+}
+
+#mainHeader #headerBreadcrumb ul#breadcrumbtrail li {
+	display: inline;
+	font-size: 13px;
+}
+#mainHeader #headerBreadcrumb ul#breadcrumbtrail li a {
+	color: #03638b;
+}
+#mainHeader #headerBreadcrumb ul#breadcrumbtrail li div.breadcrumbArrow {
+	height: 15px;
+	width: 8px;
+	margin-left: 6px;
+	display: inline-block;
+}
 
 section#mainSection{
-	width: 955px;
 	margin: auto;
 	position: relative;
 	background: #fff!important;
@@ -162,6 +206,7 @@ section#mainSection{
 	-moz-border-radius: 5px!important;
 	border-radius: 5px!important;
 	padding: 17px;
+	margin-bottom: 10px;
 }
 section#mainSection h1 {
 	color: #2e2b2a;
@@ -414,18 +459,29 @@ section#mainSection h1 a {
 	text-indent: 0;
 	padding: 0;
 	display: inline-block;
+	vertical-align: middle;
 	height: 40px;
-	vertical-align: top;
-	line-height: 18px;
 	margin: 0;
 	float: right;
 	width: auto;
+	line-height: 18px;
 }
 #mainFooter .footerTop ul.menu li {
 	list-style: none;
 	display: inline-block;
 	height: 40px;
 	line-height: 48px;
+}
+#mainFooter .footerTop ul.menu li a{
+	color: rgba(255,255,255,0.5);
+	text-shadow: none;
+	padding: 0 1px;
+	min-width: 48px;
+	font-size: 15px;
+	display: inline-block;
+}
+#mainFooter .footerTop ul.menu li a:hover{
+	color: rgba(255,255,255,1);
 }
 form.searchForm {
 	position: relative;
@@ -530,15 +586,10 @@ form.searchForm input[type="submit"] {
 	border-bottom: 1px solid #000e13;
 	margin: 10px 0 0 0;
 }
-#mainFooter .cgu {
-	padding-top: 10px;
-}
-.span4 {
-	width: 297px;
-}
 #mainFooter a.by {
 	float: right;
 	width: auto;
+	line-height: 40px;
 }
 #mainFooter #sdzee {
 	background: url(#{resource['default/css/images/search.png']}) no-repeat;
@@ -546,6 +597,36 @@ form.searchForm input[type="submit"] {
 	height: 25px;
 	display: inline-block;
 	vertical-align: middle;
+}
+#mainFooter .cgu ul.footerInfo {
+	width: 560px;
+	list-style: none;
+	margin: 0;
+	float: left;
+	min-height: 1px;
+}
+#mainFooter .cgu ul.footerInfo li {
+	float: left;
+	padding: 0 10px;
+	line-height: 40px;
+}
+#mainFooter .cgu ul.footerInfo li:first-child {
+	padding-left: 0;
+}
+#mainFooter .cgu ul.footerInfo li.sep {
+	box-shadow: 1px 0 rgba(3,99,139,0.5),-1px 0 rgba(0,0,0,0.5) inset;
+	width: 1px;
+	height: 40px;
+	vertical-align: top;
+	padding: 0;
+	line-height: inherit;
+}
+#mainFooter .cgu ul.footerInfo li a {
+	color: rgba(255,255,255,0.5);
+	font-size: 15px;
+}
+#mainFooter .cgu ul.footerInfo li a:hover {
+	color: rgba(255,255,255,1);
 }
 
 /* Catégories ---------------------------------------------------------------------------------- */

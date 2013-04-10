@@ -4,15 +4,10 @@
 		<div class="row footerTablet">
 			<div class="footerTop">
 				<ul class="menu">
-					<li class="sep"></li>
 					<li class="tutorialLink "><h:link value="Tutoriels" outcome="/tutoriels" /></li>
-					<li class="sep"></li>
 					<li class="forumLink "><h:link value="Forums" outcome="/categories" /></li>
-					<li class="sep"></li>
 					<li class="bookstoreLink"><h:link value="Librairie" outcome="/boutique" /></li>
-					<li class="sep"></li>
 					<li class="schoolLink "><h:link value="Études" outcome="/etudes" /></li>
-					<li class="sep"></li>
 				</ul>
 				<h:form styleClass="searchForm">
 					<h:inputText placeholder="Recherche" name="q"/>
@@ -22,13 +17,25 @@
 		</div>
 		<hr/>
 		<div class="row cgu">
-			<div class="span4 footerInfo">
-				<p>
+			<ul class="footerInfo">
+				<li>
 					<h:outputLink value="/conditions-generales-utilisation">Conditions Générales d'Utilisation</h:outputLink>
+				</li>
+				<li class="sep"></li>
+				<li class="roadmap">
 					<h:outputLink value="mailto:coyote@sdzee.com">Contact</h:outputLink>
-				</p>
-			</div>
-			<h:outputLink styleClass="span4 by" value="http://sdzee.com">
+				</li>
+				<li class="sep"></li>
+				<li class="bugs">
+					<h:outputLink value="/bugs">Bugs</h:outputLink>
+				</li>
+				<li class="sep"></li>
+				<li class="suggests">
+					<h:outputLink value="/suggestions">Suggestions</h:outputLink>
+				</li>
+				<li class="sep"></li>
+			</ul>
+			<h:outputLink styleClass="by" value="http://sdzee.com">
 				<span>Réalisé par</span> <div id="sdzee"></div>
 			</h:outputLink>
 		</div>
