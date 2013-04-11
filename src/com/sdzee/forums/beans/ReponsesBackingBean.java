@@ -9,6 +9,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
+import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.forums.dao.ReponseDao;
 import com.sdzee.forums.dao.SujetDao;
 import com.sdzee.forums.entities.Reponse;
@@ -19,6 +21,7 @@ import com.sdzee.forums.entities.Sujet;
 public class ReponsesBackingBean implements Serializable {
     private static final long   serialVersionUID     = 1L;
     private static final String HEADER_REQUETE_PROXY = "X-FORWARDED-FOR";
+    private static final String URL_PAGE_FORUM       = "/forum.jsf?forumId=";
 
     private String              texteReponse;
 
@@ -52,5 +55,15 @@ public class ReponsesBackingBean implements Serializable {
 
     public void setTexteReponse( String texteReponse ) {
         this.texteReponse = texteReponse;
+    }
+
+    public List<BreadCrumbItem> getBreadCrumb( Sujet sujet ) {
+        String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
+        BreadCrumbHelper.addForumsItem( breadCrumb, chemin, true );
+        BreadCrumbHelper.addItem( breadCrumb, sujet.getForum().getTitre(), chemin + URL_PAGE_FORUM
+                + sujet.getForum().getId() );
+        BreadCrumbHelper.addItem( breadCrumb, sujet.getTitre(), null );
+        return breadCrumb;
     }
 }

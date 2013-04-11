@@ -2,6 +2,7 @@ package com.sdzee.membres.beans;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -9,14 +10,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
+import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.membres.dao.MembreDao;
 import com.sdzee.membres.entities.Membre;
 
 @ManagedBean
 @RequestScoped
 public class InscrireBean implements Serializable {
-    private static final long   serialVersionUID   = 1L;
-    private static final String SUCCES_INSCRIPTION = "Succès de l'inscription !";
+    private static final long   serialVersionUID       = 1L;
+    private static final String SUCCES_INSCRIPTION     = "Succès de l'inscription !";
+    private static final String TITRE_PAGE_INSCRIPTION = "Inscription";
 
     private Membre              membre;
 
@@ -45,5 +49,12 @@ public class InscrireBean implements Serializable {
     private void initialiserDateInscription() {
         Timestamp date = new Timestamp( System.currentTimeMillis() );
         membre.setDateInscription( date );
+    }
+
+    public List<BreadCrumbItem> getBreadCrumb() {
+        String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
+        BreadCrumbHelper.addItem( breadCrumb, TITRE_PAGE_INSCRIPTION, null );
+        return breadCrumb;
     }
 }

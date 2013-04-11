@@ -7,7 +7,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
+import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
+import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.forums.dao.CategorieForumsDao;
 import com.sdzee.forums.dao.ForumDao;
 import com.sdzee.forums.dao.SujetDao;
@@ -47,7 +50,10 @@ public class ForumsBackingBean implements Serializable {
         return sujetDao.trouverDernier( forum );
     }
 
-    public void reorganiserCategories() {
-        System.out.println( ">>>>>>>> CHECK!" );
+    public List<BreadCrumbItem> getBreadCrumb() {
+        String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
+        BreadCrumbHelper.addForumsItem( breadCrumb, chemin, false );
+        return breadCrumb;
     }
 }

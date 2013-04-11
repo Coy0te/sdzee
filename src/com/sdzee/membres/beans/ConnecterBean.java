@@ -2,6 +2,7 @@ package com.sdzee.membres.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -10,6 +11,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
+import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.membres.dao.MembreDao;
 import com.sdzee.membres.entities.Membre;
 
@@ -23,7 +26,7 @@ public class ConnecterBean implements Serializable {
     private static final String PARAM_QUERY_STRING_ORIGINE = "queryStringOrigine";
     private static final String URL_PARAM_SEPARATEUR       = "?";
     private static final String PAGE_ACCUEIL               = "/accueil.jsf";
-    private static final String PAGE_CONNEXION             = "/connexion.jsf";
+    private static final String TITRE_PAGE_CONNEXION       = "Connexion";
 
     private String              pseudo;
     private String              motDePasse;
@@ -84,5 +87,12 @@ public class ConnecterBean implements Serializable {
 
     public void setMotDePasse( String motDePasse ) {
         this.motDePasse = motDePasse;
+    }
+
+    public List<BreadCrumbItem> getBreadCrumb() {
+        String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
+        BreadCrumbHelper.addItem( breadCrumb, TITRE_PAGE_CONNEXION, null );
+        return breadCrumb;
     }
 }

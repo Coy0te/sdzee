@@ -7,7 +7,7 @@
 						<h:link id="logo" outcome="/accueil" />
 					</div>
 					<div id="memberInfos">
-						<h:outputText value="&gt;&gt; #{membre.pseudo}" rendered="#{membre != null}" />
+						<h:outputText value="#{membre.pseudo}" rendered="#{membre != null}" />
 						<h:form rendered="#{membre != null}">
 							<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
 						</h:form>
@@ -54,14 +54,12 @@
 		<div id="headerBreadcrumb">
 			<div class="largeurLimite">
 				<ul id="breadcrumbtrail">
-					<li class="home">
-						<h:link outcome="/accueil">
-							<span>Accueil</span>
-						</h:link>
+					<ui:repeat value="#{breadCrumb}" var="item" varStatus="statut">
+					<li class="#{statut.index==0?'home':''}">
+						<h:outputLink value="#{item.url}" rendered="#{item.url != null}">#{item.titre}</h:outputLink>
+						<h:outputText value="#{item.titre}" rendered="#{item.url == null}"/>
 					</li>
-					<li>
-						#{breadCrumb}
-					</li>
+					</ui:repeat>
 				</ul>
 			</div>
 		</div>

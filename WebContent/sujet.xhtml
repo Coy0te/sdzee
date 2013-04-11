@@ -6,7 +6,7 @@
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
-			<ui:param name="breadCrumb" value="#{sujet.titre}"/>
+			<ui:param name="breadCrumb" value="#{reponsesBean.getBreadCrumb(sujet)}"/>
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">

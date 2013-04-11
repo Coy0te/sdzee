@@ -6,7 +6,10 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
+import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
+import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.forums.dao.ForumDao;
 import com.sdzee.forums.dao.ReponseDao;
 import com.sdzee.forums.dao.SujetDao;
@@ -40,5 +43,14 @@ public class SujetsBackingBean implements Serializable {
 
     public Integer getDecompteReponses( Sujet sujet ) {
         return reponseDao.decompte( sujet );
+    }
+
+    public List<BreadCrumbItem> getBreadCrumb( int forumId ) {
+        String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        Forum forum = getForum( forumId );
+        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
+        BreadCrumbHelper.addForumsItem( breadCrumb, chemin, true );
+        BreadCrumbHelper.addItem( breadCrumb, forum.getTitre(), null );
+        return breadCrumb;
     }
 }

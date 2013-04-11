@@ -5,7 +5,7 @@
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
-			<ui:param name="breadCrumb" value="Forum #{sujetsBean.getForum(param['forumId']).titre}"/>
+			<ui:param name="breadCrumb" value="#{sujetsBean.getBreadCrumb(param['forumId'])}"/>
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">
@@ -20,7 +20,7 @@
 		    <li class="read">
                 <div class="row">
                     <div class="cell">
-				        <h:link outcome="sujet">
+				        <h:link outcome="/sujet">
 				        	<f:param name="sujetId" value="#{sujet.id}" />
                             <h3>#{sujet.titre}</h3>
                             <span>Par <strong>#{sujet.auteur.pseudo}</strong> Le #{sujet.dateCreation}</span>
@@ -31,7 +31,7 @@
 					</div>
 					<div class="cell">lu/non lu</div>
 	                <div class="cell">
-				        <h:link outcome="sujet">
+				        <h:link outcome="/sujet">
 				        	<f:param name="sujetId" value="#{sujet.id}" />
 				        	<f:param name="reponseId" value="#{sujetsBean.getDerniereReponse(sujet).id}" />
 			          		Dernier message par
@@ -44,8 +44,9 @@
             </li>
 		</ui:repeat>
 		</ul>
-		<h:link outcome="sujet" rendered="#{membre != null}">
-			
+		<h:link rendered="#{membre != null}">
+			<f:param name="forumId" value="#{param['forumId']}" />
+			Créer un sujet
 		</h:link>
 	</ui:define>
 	<ui:define name="footer">

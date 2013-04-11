@@ -5,7 +5,7 @@
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
-			<ui:param name="breadCrumb" value="Connexion"/>
+			<ui:param name="breadCrumb" value="#{connecterBean.getBreadCrumb()}"/>
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">
