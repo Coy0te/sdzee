@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
+import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.forums.dao.CategorieForumsDao;
 import com.sdzee.forums.dao.ForumDao;
 import com.sdzee.forums.entities.CategorieForum;
@@ -19,6 +21,7 @@ import com.sdzee.forums.entities.Forum;
 @ViewScoped
 public class AdminBackingBean implements Serializable {
     private static final long    serialVersionUID = 1L;
+    private static final String  TITRE_PAGE_ADMIN = "Administration";
 
     @EJB
     private ForumDao             forumDao;
@@ -63,4 +66,10 @@ public class AdminBackingBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage( null, message );
     }
 
+    public List<BreadCrumbItem> getBreadCrumb() {
+        String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
+        BreadCrumbHelper.addItem( breadCrumb, TITRE_PAGE_ADMIN, null );
+        return breadCrumb;
+    }
 }

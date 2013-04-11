@@ -6,7 +6,9 @@
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
-			<ui:param name="breadCrumb" value="Administration"/>
+			<ui:insert name="admin_breadcrumb">
+				<ui:param name="breadCrumb" value="#{adminBean.getBreadCrumb()}"/>
+			</ui:insert>
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">
