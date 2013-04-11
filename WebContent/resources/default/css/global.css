@@ -81,7 +81,7 @@ legend {
 #mainHeader #mainMenu a#logo {
 	display: inline-block;
 	vertical-align: middle;
-	background: url(#{resource['default/css/images/sdzee.png']}) no-repeat -2px -6px;
+	background: url(#{resource['default/css/images/sdzee.png']}) no-repeat -2px -1px;
 	height: 52px;
 	width: 158px;
 }
