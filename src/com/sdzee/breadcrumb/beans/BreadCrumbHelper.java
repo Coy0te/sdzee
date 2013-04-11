@@ -12,8 +12,7 @@ public final class BreadCrumbHelper {
     /**
      * Initialise le breadCrumb avec la page d'accueil
      * 
-     * @param chemin
-     *            Le contextPath de l'application.
+     * @param chemin Le contextPath de l'application.
      * @return Le breadCrumb initialisé avec la page d'accueil.
      */
     public static List<BreadCrumbItem> initBreadCrumb( String chemin ) {
@@ -28,13 +27,9 @@ public final class BreadCrumbHelper {
     /**
      * Réalise l'ajout de la page mère des forums au breadCrumb
      * 
-     * @param liste
-     *            Le breadCrumb à modifier.
-     * @param chemin
-     *            Le contextPath de l'application.
-     * @param url
-     *            Un booléen à true pour inclure l'URL de la page des forums, et
-     *            à false sinon.
+     * @param liste Le breadCrumb à modifier.
+     * @param chemin Le contextPath de l'application.
+     * @param url Un booléen à true pour inclure l'URL de la page des forums, et à false sinon.
      */
     public static void addForumsItem( List<BreadCrumbItem> liste, String chemin, boolean url ) {
         BreadCrumbItem item = new BreadCrumbItem();
@@ -46,12 +41,9 @@ public final class BreadCrumbHelper {
     /**
      * Réalise l'ajout d'un item au breadCrumb
      * 
-     * @param liste
-     *            Le breadCrumb à modifier.
-     * @param titreItem
-     *            Le titre de l'item à ajouter.
-     * @param urlItem
-     *            L'url de l'item à ajouter.
+     * @param liste Le breadCrumb à modifier.
+     * @param titreItem Le titre de l'item à ajouter.
+     * @param urlItem L'url de l'item à ajouter.
      * */
     public static void addItem( List<BreadCrumbItem> liste, String titreItem, String urlItem ) {
         BreadCrumbItem item = new BreadCrumbItem();
