@@ -5,7 +5,9 @@
 		Administration des forums
 	</ui:define>
 	<ui:define name="header">
-		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="Administration"/>
+		</ui:include>
 	</ui:define>
 	<ui:define name="body">
    		<h:panelGroup styleClass="right">

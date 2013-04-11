@@ -4,7 +4,9 @@
 		Liste des forums
 	</ui:define>
 	<ui:define name="header">
-		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="Forums"/>
+		</ui:include>
 	</ui:define>
 	<ui:define name="body">
 		<h1>

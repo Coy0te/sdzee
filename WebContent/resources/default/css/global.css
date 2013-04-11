@@ -1,7 +1,7 @@
 /* Général ------------------------------------------------------------------------------------- */
 
-body, p, legend, label, input {
-    font-family: 'Source Sans Pro', sans-serif;
+body, p, legend, label, input, span, ul, li, a {
+	font-family: 'Source Sans Pro',sans-serif;
 }
 
 body{
@@ -181,10 +181,18 @@ legend {
 	opacity: .5;
 	text-shadow: 0 1px 0 #fff;
 }
-
+#mainHeader div#headerBreadcrumb:hover ul#breadcrumbtrail {
+	opacity: 1;
+}
 #mainHeader #headerBreadcrumb ul#breadcrumbtrail li {
 	display: inline;
 	font-size: 13px;
+}
+#mainHeader #headerBreadcrumb ul#breadcrumbtrail li:before {
+    content: "\0020 \0020 \0020 \00BB \0020";
+}
+#mainHeader #headerBreadcrumb ul#breadcrumbtrail li.home:before {
+    content: "";
 }
 #mainHeader #headerBreadcrumb ul#breadcrumbtrail li a {
 	color: #03638b;

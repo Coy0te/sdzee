@@ -8,14 +8,14 @@
 					</div>
 					<div id="memberInfos">
 						<h:outputText value="&gt;&gt; #{membre.pseudo}" rendered="#{membre != null}" />
-						<h:outputText value="&gt;&gt; Visiteur " rendered="#{membre == null}" />
 						<h:form rendered="#{membre != null}">
 							<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
 						</h:form>
-						<h:link value="Connexion." outcome="connexion" rendered="#{membre == null}">
+						<h:link value="Connexion" outcome="/connexion" rendered="#{membre == null}">
 							<f:param name="urlOrigine" value="#{request.requestURI}" />
 							<f:param name="queryStringOrigine" value="#{request.queryString}" />
-						</h:link> 
+						</h:link> / 
+						<h:link value="Inscription" outcome="/inscription" rendered="#{membre == null}"/>
 						<br />
 						<ui:fragment rendered="#{membre != null}">
 							<ui:include src="inc_menu.xhtml" />
@@ -55,19 +55,12 @@
 			<div class="largeurLimite">
 				<ul id="breadcrumbtrail">
 					<li class="home">
-						<a href="/">
+						<h:link outcome="/accueil">
 							<span>Accueil</span>
-						</a>
-					<div class="breadcrumbArrow"></div>
+						</h:link>
 					</li>
 					<li>
-						<a href="/forum/">
-							<span>Forum</span>
-						</a>
-					<div class="breadcrumbArrow"></div>
-					</li>
-					<li class="current">
-						Mes interventions
+						#{breadCrumb}
 					</li>
 				</ul>
 			</div>

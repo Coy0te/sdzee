@@ -1,13 +1,15 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
 				template="/WEB-INF/templates/template_base.xhtml">
+	<ui:param name="sujet" value="#{reponsesBean.getSujet(param['sujetId'])}"/>
 	<ui:define name="title">
 		Liste des réponses au sujet
 	</ui:define>
 	<ui:define name="header">
-		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml" />
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{sujet.titre}"/>
+		</ui:include>
 	</ui:define>
 	<ui:define name="body">
-	<ui:param name="sujet" value="#{reponsesBean.getSujet(param['sujetId'])}"/>
 		<h1>
 			<h:link>
 				<f:param name="sujetId" value="#{param['sujetId']}" />
