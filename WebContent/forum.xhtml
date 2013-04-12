@@ -6,6 +6,9 @@
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
 			<ui:param name="breadCrumb" value="#{sujetsBean.getBreadCrumb(param['forumId'])}"/>
+			<ui:param name="titrePage" value="Forums des Zéros"/>
+			<ui:param name="descriptionPage" value="Une question ? Pas de panique, on va vous aider !"/>
+			<ui:param name="logoPage" value="forumSdz"/>
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">

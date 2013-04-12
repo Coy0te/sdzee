@@ -149,9 +149,14 @@ legend {
 	text-decoration: none;
 	color: #fff;
 }
-#mainHeader .headGradient {
+#mainHeader #headerTop .headGradient {
 	position: absolute;
 	top: 56px;
+	width: 100%;
+}
+#mainHeader .headGradient {
+	position: absolute;
+	top: 146px;
 	width: 100%;
 }
 #mainHeader .headGradient div:first-child {
@@ -166,6 +171,48 @@ legend {
 	background: linear-gradient(top,#b0ad8c 0,rgba(176,173,140,0) 100%);
 	height: 7px;
 }
+
+#mainHeader #headerMiddle div.titlePicture {
+	background: url(#{resource['default/css/images/sprite_logos_page.png']}) no-repeat -81px -6px;
+	height: 78px;
+	width: 80px;
+	margin-right: 16px;
+	margin-top: 6px;
+	float: left;
+}
+#mainHeader #headerMiddle div.tutorial {
+	background-position: -405px -6px;
+}
+#mainHeader #headerMiddle div.school {
+	background-position: -324px -6px;
+}
+#mainHeader #headerMiddle div.shop {
+	background-position: -651px -6px;
+}
+#mainHeader #headerMiddle div.forumSdz {
+	background-position: 0px -6px;
+}
+#mainHeader #headerMiddle div.noway {
+	background-position: -568px -6px;
+}
+#mainHeader #headerMiddle h1{
+	margin: 0;
+	line-height: 36px;
+	padding-top: 18px;
+}
+#mainHeader #headerMiddle h1, #mainHeader #headerMiddle h1 a {
+	color: #2d2a29;
+	font-weight: normal;
+	font-size: 46px;
+	text-shadow: 0 1px 0 #fff;
+}
+#mainHeader #headerMiddle p {
+	margin: 0 0 10px;
+	padding: 6px 0 0 0;
+	color: #696969;
+	text-shadow: 0 1px 0 #fff;
+}
+
 #mainHeader #headerBreadcrumb {
 	border-top: 2px solid white;
 	border-bottom: 1px solid white;

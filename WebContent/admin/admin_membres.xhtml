@@ -3,6 +3,8 @@
 				template="/WEB-INF/templates/template_admin.xhtml">
 	<ui:define name="admin_breadcrumb">
 		<ui:param name="breadCrumb" value="#{adminMembresBean.getBreadCrumb()}"/>
+		<ui:param name="titrePage" value="Gestion des membres"/>
+		<ui:param name="descriptionPage" value="Des coups de fouet tu donneras !"/>
 	</ui:define>
 	<ui:define name="admin_content">
 	<p:tabView id="tabView" dynamic="true" cache="true">

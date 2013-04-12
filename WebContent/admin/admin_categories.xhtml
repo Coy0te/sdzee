@@ -1,6 +1,10 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
 				xmlns:p="http://primefaces.org/ui" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 				template="/WEB-INF/templates/template_admin.xhtml">
+	<ui:define name="admin_breadcrumb">
+		<ui:param name="titrePage" value="Gestion des catégories"/>
+		<ui:param name="descriptionPage" value="Range ta chambre !"/>
+	</ui:define>
 	<ui:define name="admin_content">
 		<h2>Liste des catégories</h2>
 		<h:form id="formOrdeCategories">
