@@ -758,22 +758,57 @@ div.forumCategory > a > .forumLastMessage {
 	width: 250px;
 }
 
-
-/* Forms --------------------------------------------------------------------------------------- */
-
-form label {
-    float: left;
-    width: 200px;
-    margin: 3px 0px 0px 0px;
+#formulaire .username, #formulaire .password, #formulaire .auto-connection, #formulaire .password-forgotten, #formulaire #FbLogin, #formulaire #GoogleLogin {
+	float: left;
+	width: 48%!important;
+}
+#formulaire .username, #formulaire .auto-connection, #formulaire #FbLogin {
+	margin-right: 4%!important;
+}
+#formulaire input[type="text"], #formulaire input[type="password"] {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-webkit-transition: border linear .2s,box-shadow linear .2s;
+	-moz-transition: border linear .2s,box-shadow linear .2s;
+	-o-transition: border linear .2s,box-shadow linear .2s;
+	transition: border linear .2s,box-shadow linear .2s;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	height: 33px!important;
+	width: 100%!important;
+	padding: 5px 10px;
+	-webkit-box-shadow: inset 0 2px 2px 0 #e5e5e5;
+	-moz-box-shadow: inset 0 2px 2px 0 #e5e5e5;
+	box-shadow: inset 0 2px 2px 0 #e5e5e5;
+	color: #333;
+	font-size: 13px;
+	padding: 5px 10px;
+	margin: 0;
+	line-height: 20px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	vertical-align: middle;
+	display: inline-block;
 }
 
-form input {
-    margin: 3px 3px 0px 0px;
-    border: 1px #999 solid;
+form#formulaire label {
+	font-size: 14px;
+	width: 90%;
+	margin: 0 0 3px;
+	display: inline-block;
+	vertical-align: top;
+	color: #333;
 }
 
-form input.sansLabel {
-    margin-left: 200px;
+#formulaire hr{
+	display: block;
+	width: 100%!important;
+	border: 0;
+	clear: both;
+	border-top: 1px solid #ececec;
+	margin: 17px 0;
 }
 
 form .requis {
@@ -784,6 +819,9 @@ form .erreur {
     color: #900;
 }
 
+.clear{
+	clear:both;
+}
 form .succes {
     color: #090;
 }
