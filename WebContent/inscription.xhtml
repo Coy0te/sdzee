@@ -11,9 +11,10 @@
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">
+	  <h1>
+	  	<h:link>Inscription</h:link>
+	  </h1>
       <h:form id="formulaire">
-         <fieldset>
-         	<legend>Inscription</legend>
 	     	<h:outputLabel for="email">Adresse email <span class="requis">*</span></h:outputLabel>
 	        <h:inputText id="email" value="#{inscrireBean.membre.email}" size="20" maxlength="60">
 	            <f:ajax event="blur" render="emailMessage" />
@@ -52,7 +53,6 @@
 	            <f:ajax execute="@form" render="@form" />
 	        </h:commandButton>
 	        <br />
-          </fieldset>
         </h:form> 
 	</ui:define>
 	<ui:define name="footer">

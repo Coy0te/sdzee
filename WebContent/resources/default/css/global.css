@@ -758,6 +758,10 @@ div.forumCategory > a > .forumLastMessage {
 	width: 250px;
 }
 
+#formulaire{
+	width: 621px;
+	float: left;
+}
 #formulaire .username, #formulaire .password, #formulaire .auto-connection, #formulaire .password-forgotten, #formulaire #FbLogin, #formulaire #GoogleLogin {
 	float: left;
 	width: 48%!important;
@@ -809,6 +813,148 @@ form#formulaire label {
 	clear: both;
 	border-top: 1px solid #ececec;
 	margin: 17px 0;
+}
+
+#formulaire label[for='remember_me'] {
+	display: inline-block;
+	vertical-align: -10%;
+}
+
+.login-aside {
+	width: 300px;
+	float: left;
+	display: block;
+}
+
+#formulaire #sdz_create_account {
+	/* background: url('/bundles/common/images/spreadsheetV32.png') no-repeat scroll -260px -448px; */
+	display: inline-block;
+	vertical-align: middle;
+	height: 60px;
+	width: 60px;
+}
+
+#formulaire .validation_button {
+	overflow: hidden;
+	display: block;
+	text-decoration: none;
+	padding: 2px 18px;
+	width: 224px;
+	height: 38px;
+	margin: auto;
+	font-size: 21px;
+	text-align: center;
+	margin-top: 6px;
+}
+#formulaire .btn-primary {
+	color: #fff!important;
+	border: 1px solid #00293a;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-webkit-box-shadow: inset 0 1px 1px 0 #478caa;
+	-moz-box-shadow: inset 0 1px 1px 0 #478caa;
+	box-shadow: inset 0 1px 1px 0 #478caa;
+	background-color: #024967;
+	background-image: -webkit-linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	background-image: -moz-linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	background-image: -o-linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	background-image: -ms-linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	background-image: linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	text-shadow: 0 -1px 0 #1c181b;
+}
+#formulaire .btn-primary:hover {
+	color: #fff!important;
+	border: 1px solid #00293a;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-webkit-box-shadow: inset 0 0 10px 0 #00b4ff;
+	-moz-box-shadow: inset 0 0 10px 0 #00b4ff;
+	box-shadow: inset 0 0 10px 0 #00b4ff;
+	background-color: #024967;
+	background-image: -webkit-linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	background-image: -moz-linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	background-image: -o-linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	background-image: -ms-linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	background-image: linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
+	text-shadow: 0 -1px 0 #1c181b;
+}
+#formulaire p a {
+	color: #03638b;
+}
+
+#formulaire a#FbLogin {
+	display: inline-block;
+	width: 286px;
+	line-height: 28px;
+	background-color: #5c7bb4;
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#6885bf),color-stop(50%,#6381b8),color-stop(51%,#5173b0),to(#3f65a3));
+	background-image: -webkit-linear-gradient(#6885bf,#6381b8 50%,#5173b0 51%,#3f65a3);
+	background-image: -moz-linear-gradient(top,#6885bf,#6381b8 50%,#5173b0 51%,#3f65a3);
+	background-image: -ms-linear-gradient(#6885bf,#6381b8 50%,#5173b0 51%,#3f65a3);
+	background-image: -o-linear-gradient(#6885bf,#6381b8 50%,#5173b0 51%,#3f65a3);
+	background-image: linear-gradient(#6885bf,#6381b8 50%,#5173b0 51%,#3f65a3);
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6885bf',endColorstr='#3f65a3',GradientType=0);
+	color: #fff;
+	text-shadow: 1px 1px 1px #2e4b7d;
+	border: 1px solid #4f5a6f;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.27);
+	text-decoration: none;
+	font-size: 11.5px;
+	font-weight: bold;
+	cursor: pointer;
+	width: 46%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#formulaire a#GoogleLogin {
+	display: inline-block;
+	width: 286px;
+	line-height: 28px;
+	background-color: #ce523c;
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#df5e4d),color-stop(50%,#d35945),color-stop(51%,#cc4730),to(#bc3519));
+	background-image: -webkit-linear-gradient(#df5e4d,#d35945 50%,#cc4730 51%,#bc3519);
+	background-image: -moz-linear-gradient(top,#df5e4d,#d35945 50%,#cc4730 51%,#bc3519);
+	background-image: -ms-linear-gradient(#df5e4d,#d35945 50%,#cc4730 51%,#bc3519);
+	background-image: -o-linear-gradient(#df5e4d,#d35945 50%,#cc4730 51%,#bc3519);
+	background-image: linear-gradient(#df5e4d,#d35945 50%,#cc4730 51%,#bc3519);
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#df5e4d',endColorstr='#bc3519',GradientType=0);
+	color: #fff;
+	text-shadow: 1px 1px 1px #2e4b7d;
+	border: 1px solid #901d05;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.27);
+	text-decoration: none;
+	font-size: 11.5px;
+	font-weight: bold;
+	cursor: pointer;
+	width: 46%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#formulaire a#GoogleLogin span, #formulaire a#FbLogin span {
+	display: inline-block;
+	margin-right: 5px;
+	width: 26px;
+	height: 28px;
+	float: left;
+	/* background-image: url('/bundles/common/images/spreadsheetV32.png'); */
+	background-repeat: no-repeat;
+	background-position: -200px -473px;
+}
+.zozor_glasses {
+	margin-top: 34px;
+	margin-left: 35px;
 }
 
 form .requis {

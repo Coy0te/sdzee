@@ -30,6 +30,7 @@ public class ConnecterBean implements Serializable {
 
     private String              pseudo;
     private String              motDePasse;
+    private String              connexionAuto;
     private String              urlOrigine;
 
     @EJB
@@ -87,6 +88,14 @@ public class ConnecterBean implements Serializable {
 
     public void setMotDePasse( String motDePasse ) {
         this.motDePasse = motDePasse;
+    }
+
+    public String getConnexionAuto() {
+        return connexionAuto;
+    }
+
+    public void setConnexionAuto( String connexionAuto ) {
+        this.connexionAuto = connexionAuto;
     }
 
     public List<BreadCrumbItem> getBreadCrumb() {
