@@ -15,14 +15,25 @@
 							<div id="login">Rejoignez-nous</div>
 						</h:link>
 
-						<h:outputText value="#{membre.pseudo}" rendered="#{membre != null}" />
-						<h:form rendered="#{membre != null}">
-							<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
-						</h:form>
-
-						<ui:fragment rendered="#{membre != null}">
+						<h:panelGroup rendered="#{membre != null}">
+							<div class="userInfos">
+								<span class="separatorBig"></span>
+								<div class="headerUser">
+									<h:link id="profileHeader" outcome="/membres" styleClass="dropdown-toggle secondaryLink">
+										<f:param name="idMembre" value="#{membre.id}"/>
+										<div class="ProfileLink"></div>
+										<h:graphicImage styleClass="memberAvatar" library="default" name="images/membres/avatar_defaut.png" alt="avatar" />
+									</h:link>
+								</div>
+							</div>
+							
+	
+							<h:outputText value="#{membre.pseudo}"/>
+							<h:form>
+								<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
+							</h:form>
 							<ui:include src="inc_menu.xhtml" />
-						</ui:fragment>
+						</h:panelGroup>
 					</div>
 				</div>
 				<div id="menuDown">

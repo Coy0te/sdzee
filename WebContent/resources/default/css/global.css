@@ -123,6 +123,40 @@ legend {
 	font-size: 16px;
 }
 
+#memberInfos .userInfos {
+	display: inline-block;
+	width: 57px;
+	height: 45px;
+	position: relative;
+	float: left;
+	width: 33px;
+	margin-top: 3px;
+	height: 15px;
+}
+#memberInfos .separatorBig {
+	box-shadow: 1px 0 rgba(3,99,139,0.5),-1px 0 rgba(0,0,0,0.5) inset;
+	display: inline-block;
+	width: 1px;
+	float: right;
+	margin: 2px 6px 0 0;
+	height: 32px;
+}
+#memberInfos .memberAvatar {
+	margin-top: -68px;
+	vertical-align: middle!important;
+	display: inline-block;
+	max-width: 32px;
+	max-height: 32px;
+}
+#memberInfos .ProfileLink {
+	/* background: url('/bundles/common/images/spreadsheetV32.png') no-repeat -318px -2801px; */
+	width: 8px;
+	height: 5px;
+	float: right;
+	margin-top: 11px;
+	opacity: .5;
+}
+
 
 #mainHeader #mainMenu div.contentDown {
 	display: inline-block;
