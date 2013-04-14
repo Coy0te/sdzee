@@ -98,6 +98,32 @@ legend {
 	min-width: 165px;
 	margin-top: 9px;
 }
+
+#mainMenu .login {
+	display: inline-block;
+	padding: 10px 0 13px 0;
+	vertical-align: -9%;
+}
+#mainMenu .login:hover {
+	background: none repeat scroll 0 0 #024866;
+	box-shadow: 0 0 7px rgba(0,0,0,0.45) inset;
+}
+#mainMenu .login .zozorlogin {
+	/* background: url('/bundles/common/images/spreadsheetV32.png') no-repeat -1160px -1132px; */
+	width: 40px;
+	height: 51px;
+	display: inline-block;
+	position: absolute;
+	z-index: 1;
+	top: 8px;
+}
+#mainMenu .login div:first-child+div {
+	padding: 0 7px 0 45px;
+	margin: 0;
+	font-size: 16px;
+}
+
+
 #mainHeader #mainMenu div.contentDown {
 	display: inline-block;
 	vertical-align: middle;
