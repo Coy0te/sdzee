@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
@@ -20,14 +21,19 @@ import com.sdzee.forums.entities.Sujet;
 @ManagedBean( name = "sujetsBean" )
 @RequestScoped
 public class SujetsBackingBean implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long   serialVersionUID     = 1L;
+    private static final String HEADER_REQUETE_PROXY = "X-FORWARDED-FOR";
+
+    private String              texteSujet;
+    private String              titreSujet;
+    private String              sousTitreSujet;
 
     @EJB
-    private SujetDao          sujetDao;
+    private SujetDao            sujetDao;
     @EJB
-    private ForumDao          forumDao;
+    private ForumDao            forumDao;
     @EJB
-    private ReponseDao        reponseDao;
+    private ReponseDao          reponseDao;
 
     public Forum getForum( int forumId ) {
         return forumDao.trouver( forumId );
@@ -45,6 +51,17 @@ public class SujetsBackingBean implements Serializable {
         return reponseDao.decompte( sujet );
     }
 
+    public void creer() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
+                .getRequest();
+        String adresseIP = request.getHeader( HEADER_REQUETE_PROXY );
+        if ( adresseIP == null ) {
+            adresseIP = request.getRemoteAddr();
+        }
+
+        // TODO: sujetDao.creer( titreSujet, sousTitreSujet, texteSujet, adresseIP );
+    }
+
     public List<BreadCrumbItem> getBreadCrumb( int forumId ) {
         String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         Forum forum = getForum( forumId );
@@ -52,5 +69,29 @@ public class SujetsBackingBean implements Serializable {
         BreadCrumbHelper.addForumsItem( breadCrumb, chemin, true );
         BreadCrumbHelper.addItem( breadCrumb, forum.getTitre(), null );
         return breadCrumb;
+    }
+
+    public String getTexteSujet() {
+        return texteSujet;
+    }
+
+    public void setTexteSujet( String texteSujet ) {
+        this.texteSujet = texteSujet;
+    }
+
+    public String getTitreSujet() {
+        return titreSujet;
+    }
+
+    public void setTitreSujet( String titreSujet ) {
+        this.titreSujet = titreSujet;
+    }
+
+    public String getSousTitreSujet() {
+        return sousTitreSujet;
+    }
+
+    public void setSousTitreSujet( String sousTitreSujet ) {
+        this.sousTitreSujet = sousTitreSujet;
     }
 }

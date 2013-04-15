@@ -487,7 +487,7 @@ section#mainSection h1 a {
 	float: right;
 }
 
-#mainSection #newComment form .showMarkdownOverview{
+#mainSection form .showMarkdownOverview{
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -515,6 +515,41 @@ section#mainSection h1 a {
 	margin-right: 5px;
 }
 
+#mainSection form label {
+	font-size: 14px;
+	width: 95%;
+	margin: 5px 0;
+	display: inline-block;
+}
+#mainSection form input[type='text'], #mainSection form input[type='password'], #mainSection form input[type='email'] {
+	width: 95%;
+	height: 23px;
+	font-size: 13px;
+	padding: 5px 10px;
+	margin: 0;
+	-webkit-box-shadow: inset 0 2px 2px 0 #e5e5e5;
+	-moz-box-shadow: inset 0 2px 2px 0 #e5e5e5;
+	box-shadow: inset 0 2px 2px 0 #e5e5e5;
+	color: #333;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-webkit-transition: border linear .2s,box-shadow linear .2s;
+	-moz-transition: border linear .2s,box-shadow linear .2s;
+	-o-transition: border linear .2s,box-shadow linear .2s;
+	transition: border linear .2s,box-shadow linear .2s;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	vertical-align: middle;
+}
+#mainSection textarea {
+	width: 95%;
+	height: 200px;
+}
+.rowButton {
+	display: block;
+	height: 25px;
+}
 
 #mainSection ul.list {
 	width: 100%;
