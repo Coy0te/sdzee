@@ -47,7 +47,7 @@
             </li>
 		</ui:repeat>
 		</ul>
-		<h:link rendered="#{membre != null}">
+		<h:link styleClass="btn btn-primary right-flt createThread" rendered="#{membre != null}">
 			<f:param name="forumId" value="#{param['forumId']}" />
 			Créer un sujet
 		</h:link>
