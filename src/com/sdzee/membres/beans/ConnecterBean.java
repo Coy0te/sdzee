@@ -68,10 +68,10 @@ public class ConnecterBean implements Serializable {
         externalContext.redirect( urlOrigine );
     }
 
-    public String deconnecter() throws IOException {
+    public void deconnecter() throws IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.invalidateSession();
-        return "/accueil";
+        externalContext.redirect( externalContext.getRequestContextPath() + PAGE_ACCUEIL );
     }
 
     public String getPseudo() {
