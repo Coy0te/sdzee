@@ -6,16 +6,16 @@
 					<div class="UpMob">
 						<h:link id="logo" outcome="/accueil" />
 					</div>
+					<span class="sep"></span>
 					
-					<div id="memberInfos">
 						<h:link styleClass="login" outcome="/connexion" rendered="#{membre == null}">
 							<f:param name="urlOrigine" value="#{request.requestURI}" />
 							<f:param name="queryStringOrigine" value="#{request.queryString}" />
 							<div class="zozorLogin"></div>
 							<div id="login">Rejoignez-nous</div>
 						</h:link>
-
-						<h:panelGroup rendered="#{membre != null}">
+					<h:panelGroup rendered="#{membre != null}">
+						<div id="memberInfos">
 							<div class="userInfos">
 								<span class="separatorBig"></span>
 								<div class="headerUser">
@@ -33,8 +33,8 @@
 								<h:commandLink value="Déconnexion." action="#{connecterBean.deconnecter}" />
 							</h:form>
 							<ui:include src="inc_menu.xhtml" />
-						</h:panelGroup>
-					</div>
+						</div>
+					</h:panelGroup>
 				</div>
 				<div id="menuDown">
 					<div class="contentDown">
