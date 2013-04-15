@@ -773,6 +773,9 @@ div.forumCategory > a:nth-child(1) {
 	padding-right: 6px;
 	padding-top: 3px;
 }
+div.forumCategory > a:nth-child(1) > img {
+	width: 45px;
+}
 div.forumCategory > a:nth-child(2) {
 	width: 480px;
 }
