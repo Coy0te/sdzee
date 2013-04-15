@@ -432,7 +432,7 @@ section#mainSection h1 a {
 	height: 200px;
 	width: 97%;
 }
-#mainSection #newComment form .btn {
+.btn {
 	display: inline-block;
 	padding: 4px 12px;
 	margin-bottom: 0;
@@ -467,7 +467,7 @@ section#mainSection h1 a {
 	padding: 2px 20px;
 	outline: 0!important;
 }
-#mainSection #newComment form .btn-primary {
+.btn-primary {
 	color: #fff!important;
 	border: 1px solid #00293a;
 	border-radius: 3px;
@@ -918,7 +918,7 @@ form#formulaire label {
 	text-align: center;
 	margin-top: 6px;
 }
-#formulaire .btn-primary {
+.btn-primary {
 	color: #fff!important;
 	border: 1px solid #00293a;
 	border-radius: 3px;
@@ -935,7 +935,7 @@ form#formulaire label {
 	background-image: linear-gradient(top,#036289 0,#195b77 49%,#024967 50%,#002e41 100%);
 	text-shadow: 0 -1px 0 #1c181b;
 }
-#formulaire .btn-primary:hover {
+.btn-primary:hover {
 	color: #fff!important;
 	border: 1px solid #00293a;
 	border-radius: 3px;
