@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -29,7 +30,8 @@ public class InscrireBean implements Serializable {
     private MembreDao           membreDao;
 
     // Initialisation de l'entité utilisateur
-    public InscrireBean() {
+    @PostConstruct
+    public void init() {
         membre = new Membre();
     }
 

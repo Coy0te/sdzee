@@ -16,7 +16,7 @@ import com.sdzee.forums.entities.Sujet;
 @Stateless
 public class ReponseDao {
     private static final String JPQL_COMPTE_REPONSES_PAR_SUJET = "SELECT count(r) FROM Reponse r WHERE r.sujet=:sujet";
-    private static final String JPQL_LISTE_REPONSES_PAR_SUJET  = "SELECT r FROM Reponse r WHERE r.sujet=:sujet ORDER BY r.id DESC";
+    private static final String JPQL_LISTE_REPONSES_PAR_SUJET  = "SELECT r FROM Reponse r WHERE r.sujet=:sujet ORDER BY r.id";
     private static final String PARAM_SUJET                    = "sujet";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
