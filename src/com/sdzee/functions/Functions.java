@@ -45,7 +45,7 @@ public final class Functions {
         Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 
         DateTimeFormatter fullDateFmt = DateTimeFormat.forPattern( "dd MMMM yyyy à HH:mm" ).withLocale( locale );
-        DateTimeFormatter timeFmt = DateTimeFormat.forPattern( "hh:mm" ).withLocale( locale );
+        DateTimeFormatter timeFmt = DateTimeFormat.forPattern( "HH:mm" ).withLocale( locale );
 
         String rendu;
         if ( period.getDays() > 0 ) {
@@ -55,11 +55,14 @@ public final class Functions {
                 rendu = "Le " + dateTime.toString( fullDateFmt );
             }
         } else if ( period.getHours() > 0 ) {
-            rendu = "Il y a environ " + period.getHours() + " heures";
+            rendu = "Il y a environ " + period.getHours();
+            rendu += period.getHours() > 1 ? " heures" : " heure";
         } else if ( period.getMinutes() > 0 ) {
-            rendu = "Il y a " + period.getMinutes() + " minutes";
+            rendu = "Il y a " + period.getMinutes();
+            rendu += period.getMinutes() > 1 ? " minutes" : " minute";
         } else {
-            rendu = "Il y a " + period.getSeconds() + " secondes";
+            rendu = "Il y a " + period.getSeconds();
+            rendu += period.getSeconds() > 1 ? " secondes" : " seconde";
         }
         return rendu;
     }
