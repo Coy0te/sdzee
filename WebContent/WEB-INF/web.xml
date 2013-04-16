@@ -9,6 +9,10 @@
     <javaee:param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</javaee:param-name>
     <javaee:param-value>true</javaee:param-value>
   </context-param>
+  <context-param>
+    <param-name>facelets.LIBRARIES</param-name>
+    <param-value>/META-INF/functions.taglib.xml</param-value>
+  </context-param>
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
