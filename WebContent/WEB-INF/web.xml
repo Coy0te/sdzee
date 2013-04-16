@@ -10,7 +10,7 @@
     <javaee:param-value>true</javaee:param-value>
   </context-param>
   <context-param>
-    <param-name>facelets.LIBRARIES</param-name>
+    <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
     <param-value>/META-INF/functions.taglib.xml</param-value>
   </context-param>
   <servlet>
@@ -31,4 +31,12 @@
     <filter-name>characterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/404.jsf</location>
+  </error-page>
+  <error-page>
+    <exception-type>javax.servlet.ServletException</exception-type>
+    <location>/404.jsf</location>
+  </error-page>
 </web-app>

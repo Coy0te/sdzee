@@ -1105,3 +1105,58 @@ form .info {
     font-style: italic;
     color: #E8A22B;
 }
+
+#mainSection .error404 {
+	margin-top: 20px;
+	margin-bottom: 30px;
+	margin-left: -15px;
+}
+div#zozor404{
+	width: 413px;
+	float: left;
+	min-height: 1px;
+	margin-left: 15px;
+}
+div#zozor404 img {
+	max-width: none;
+}
+div#error404 {
+	display: inline-block;
+	vertical-align: top;
+	color: #000;
+	margin: 83px 0 0 45px;
+	width: 453px;
+	float: left;
+	min-height: 1px;
+}
+div#error404 h1 {
+	font-size: 80px;
+	padding: 0 0 19px;
+}
+div#error404 h2 {
+	font-size: 19px;
+	text-align: center;
+	margin: 0;
+	color: #2d2a29;
+}
+div#error404 form {
+	float: none;
+	margin: 44px 0 40px;
+}
+div#error404 label {
+	font-size: 18px;
+}
+#error404 input[type="text"] {
+	width: 420px;
+	padding-right: 0;
+	background: -moz-linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#f0f8ff);
+	background: -webkit-gradient(linear,left top,left bottom,from(#ededed),to(#f0f8ff),color-stop(0.05,#ededed),color-stop(0.15,#fff));
+	background: -webkit-linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#f0f8ff);
+	background: -o-linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#f0f8ff);
+	background: linear-gradient(top,#ededed,#ededed 5%,#fff 15%,#f0f8ff);
+}
+div#error404 p {
+	font-size: 17px;
+	color: #03638b;
+	cursor: pointer;
+}

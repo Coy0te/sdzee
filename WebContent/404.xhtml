@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				template="/WEB-INF/templates/template_base.xhtml">
+	<ui:define name="title">
+		Erreur 404
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="titrePage" value="Erreur 404"/>
+			<ui:param name="descriptionPage" value="Page introuvable !"/>
+		</ui:include>
+	</ui:define>
+	<ui:define name="body">
+	<div class="row error404">
+		<div id="zozor404"><h:graphicImage styleClass="zozor_img404" library="default" name="images/zozor_404.png" alt="404" /></div>
+		<div id="error404">
+			<h1>Hu hu ! 404 !</h1>
+			<h2>La page que vous cherchez n'existe pas (ou plus).</h2>
+			<h:form styleClass="searchForm">
+				<h:outputLabel for="recherche404">Que cherches-tu, explorateur ?</h:outputLabel>
+				<h:inputText id="recherche404" placeholder="Recherche" name="q"/>
+				<h:commandButton action="recherche"/>
+			</h:form>
+			<p onclick="history.back()"><span id="css-arrow-big"></span>Retournez à la page précédente</p>
+		</div>
+	</div>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>
