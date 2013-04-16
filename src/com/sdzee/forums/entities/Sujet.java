@@ -24,8 +24,11 @@ public class Sujet {
     private Long      id;
 
     @NotNull( message = "{forums.sujet.titre.notnull}" )
-    @Size( max = 100, message = "{forums.sujet.titre.taille}" )
+    @Size( max = 60, message = "{forums.sujet.titre.taille}" )
     private String    titre;
+
+    @Size( max = 80, message = "{forums.sujet.sousTitre.taille}" )
+    private String    sousTitre;
 
     @NotNull( message = "{forums.sujet.texte.notnull}" )
     private String    texte;
@@ -152,5 +155,13 @@ public class Sujet {
 
     public void setAdresseIP( String adresseIP ) {
         this.adresseIP = adresseIP;
+    }
+
+    public String getSousTitre() {
+        return sousTitre;
+    }
+
+    public void setSousTitre( String sousTitre ) {
+        this.sousTitre = sousTitre;
     }
 }
