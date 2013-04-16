@@ -486,6 +486,28 @@ section#mainSection h1 a {
 	margin-top: 10px;
 	float: right;
 }
+.btn-inverse {
+	margin-top: 10px;
+	margin-right: 5px;
+	float: right;
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+	background-color: #363636;
+	background-image: -moz-linear-gradient(top,#444,#222);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#444),to(#222));
+	background-image: -webkit-linear-gradient(top,#444,#222);
+	background-image: -o-linear-gradient(top,#444,#222);
+	background-image: linear-gradient(to bottom,#444,#222);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff444444',endColorstr='#ff222222',GradientType=0);
+	border-color: #222 #222222 #000;
+	border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.btn-inverse:hover, .btn-inverse:active, .btn-inverse.active {
+	color: #fff;
+	background-color: #222;
+}
 
 #mainSection form .showMarkdownOverview{
 	border-radius: 3px;
@@ -517,12 +539,12 @@ section#mainSection h1 a {
 
 #mainSection form label {
 	font-size: 14px;
-	width: 95%;
+	width: 97%;
 	margin: 5px 0;
 	display: inline-block;
 }
 #mainSection form input[type='text'], #mainSection form input[type='password'], #mainSection form input[type='email'] {
-	width: 95%;
+	width: 97%;
 	height: 23px;
 	font-size: 13px;
 	padding: 5px 10px;
@@ -543,7 +565,7 @@ section#mainSection h1 a {
 	vertical-align: middle;
 }
 #mainSection textarea {
-	width: 95%;
+	width: 97%;
 	height: 200px;
 }
 .rowButton {
