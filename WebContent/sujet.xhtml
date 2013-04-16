@@ -1,5 +1,5 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:o="http://omnifaces.org/ui"
+				xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_base.xhtml">
 	<ui:param name="sujet" value="#{reponsesBean.getSujet(param['sujetId'])}"/>
 	<f:metadata>
@@ -43,7 +43,7 @@
 					<div class="content">
 						<h:link class="date">
 							<f:param name="sujetId" value="#{param['sujetId']}" />
-							Le #{sujet.dateCreation}
+							#{uf:convertDateTime(sujet.dateCreation)}
 						</h:link>
 						<div class="message">
 							#{sujet.texte}
@@ -71,7 +71,7 @@
 					<div class="content">
 						<h:link class="date">
 							<f:param name="sujetId" value="#{param['sujetId']}" />
-							Le #{reponse.dateCreation}
+							#{uf:convertDateTime(reponse.dateCreation)}
 						</h:link>
 						<div class="message">
 							#{reponse.texte}

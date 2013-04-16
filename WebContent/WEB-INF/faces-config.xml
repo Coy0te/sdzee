@@ -8,6 +8,9 @@
     <application>
         <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
         <resource-handler>org.omnifaces.resourcehandler.UnmappedResourceHandler</resource-handler>
+        <locale-config>
+           <default-locale>fr</default-locale>
+        </locale-config>
     </application>
     <factory>
         <render-kit-factory>org.omnifaces.renderkit.Html5RenderKitFactory</render-kit-factory>

@@ -15,9 +15,10 @@ import com.sdzee.forums.entities.Sujet;
 
 @Stateless
 public class ReponseDao {
-    private static final String JPQL_COMPTE_REPONSES_PAR_SUJET = "SELECT count(r) FROM Reponse r WHERE r.sujet=:sujet";
-    private static final String JPQL_LISTE_REPONSES_PAR_SUJET  = "SELECT r FROM Reponse r WHERE r.sujet=:sujet ORDER BY r.id";
-    private static final String PARAM_SUJET                    = "sujet";
+    private static final String JPQL_COMPTE_REPONSES_PAR_SUJET     = "SELECT count(r) FROM Reponse r WHERE r.sujet=:sujet";
+    private static final String JPQL_LISTE_REPONSES_PAR_SUJET      = "SELECT r FROM Reponse r WHERE r.sujet=:sujet ORDER BY r.id ASC";
+    private static final String JPQL_LISTE_REPONSES_PAR_SUJET_DESC = "SELECT r FROM Reponse r WHERE r.sujet=:sujet ORDER BY r.id DESC";
+    private static final String PARAM_SUJET                        = "sujet";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
@@ -54,7 +55,7 @@ public class ReponseDao {
     /* Récupération de la dernière réponse pour un sujet donné */
     public Reponse trouverDerniere( Sujet sujet ) throws DAOException {
         try {
-            Query query = em.createQuery( JPQL_LISTE_REPONSES_PAR_SUJET );
+            Query query = em.createQuery( JPQL_LISTE_REPONSES_PAR_SUJET_DESC );
             query.setParameter( PARAM_SUJET, sujet );
             return (Reponse) query.setMaxResults( 1 ).getSingleResult();
         } catch ( NoResultException e ) {
