@@ -1,5 +1,5 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions"
+				xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_base.xhtml">
 	<f:metadata>
 	    <o:viewParam id="forumId" name="forumId" value="#{sujetsBean.queryString}" />
@@ -57,18 +57,21 @@
 		</h:link>
 		<div id="newThread">
 			<o:form includeViewParams="true" styleClass="formHidden" rendered="#{membre != null}">
+				<p:growl id="growl" showDetail="true" sticky="true" /> 
 				<h2>Créer un sujet</h2>
 				<h:outputLabel for="titre">Titre <span class="requis">*</span></h:outputLabel>
 				<h:inputText id="titre" value="#{sujetsBean.sujet.titre}" maxlength="60" />
-				<h:message id="titreMessage" for="titre" errorClass="erreur" />
-				<h:outputLabel for="sousTitre">Sous-titre <span class="requis">*</span></h:outputLabel>
+				<p:message id="titreMessage" for="titre" errorClass="erreur" />
+				<h:outputLabel for="sousTitre">Sous-titre</h:outputLabel>
 				<h:inputText id="sousTitre" value="#{sujetsBean.sujet.sousTitre}" maxlength="80" />
-				<h:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
+				<p:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
 				<h:outputLabel for="texte">Message <span class="requis">*</span></h:outputLabel>
 				<h:inputTextarea id="texte" placeholder="Rédigez votre message ici" value="#{sujetsBean.sujet.texte}" />
-				<h:message id="texteMessage" for="texte" errorClass="erreur" />
+				<p:message id="texteMessage" for="texte" errorClass="erreur" />
 				<div class="rowButton">
-					<h:commandButton value="Envoyer" type="submit" action="#{sujetsBean.creer(membre, sujetsBean.getForum(param['forumId']))}" styleClass="btn btn-primary right-flt" />
+					<h:commandButton value="Envoyer" type="submit" action="#{sujetsBean.creer(membre, sujetsBean.getForum(param['forumId']))}" styleClass="btn btn-primary right-flt" update="growl">
+						<f:ajax execute="@form" render="@form" />
+					</h:commandButton>
 					<h:commandButton value="Aperçu" type="button" styleClass="btn showMarkdownOverview" />
 				</div>
 			</o:form>

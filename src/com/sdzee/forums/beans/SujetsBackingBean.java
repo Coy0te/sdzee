@@ -1,13 +1,16 @@
 package com.sdzee.forums.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,6 +30,7 @@ import com.sdzee.membres.entities.Membre;
 public class SujetsBackingBean implements Serializable {
     private static final long   serialVersionUID     = 1L;
     private static final String HEADER_REQUETE_PROXY = "X-FORWARDED-FOR";
+    private static final String URL_PAGE_SUJET       = "/sujet.jsf?sujetId=";
 
     private Sujet               sujet;
 
@@ -60,7 +64,9 @@ public class SujetsBackingBean implements Serializable {
         return reponseDao.decompte( sujet );
     }
 
-    public void creer( Membre membre, Forum forum ) {
+    public void creer( Membre membre, Forum forum ) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         // TODO: remplacer par la méthode propre issue de OmniFaces
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
                 .getRequest();
@@ -74,8 +80,14 @@ public class SujetsBackingBean implements Serializable {
         sujet.setForum( forum );
         try {
             sujetDao.creer( sujet );
-            sujet = null;
+            context.addMessage( null, new FacesMessage( FacesMessage.SEVERITY_INFO, "Nouveau sujet créé avec succès",
+                    sujet.getTitre() ) );
+            ExternalContext externalContext = context.getExternalContext();
+            externalContext.redirect( externalContext.getRequestContextPath() + URL_PAGE_SUJET
+                    + String.valueOf( sujet.getId() ) );
         } catch ( DAOException e ) {
+            context.addMessage( null, new FacesMessage( FacesMessage.SEVERITY_ERROR, "Echec de la création du sujet",
+                    "Une erreur est survenue..." ) );
             // TODO: logger
         }
     }
