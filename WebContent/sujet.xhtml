@@ -46,8 +46,16 @@
 							#{uf:convertDateTime(sujet.dateCreation)}
 						</h:link>
 						<div class="message">
-							#{sujet.texte}
+							<p>#{sujet.texte}</p>
 						</div>
+						<span class="commentVote">
+							<span class="noVote" style="visibility: #{sujet.votesPositifs > 0 or sujet.votesNegatifs > 0 ? 'visible' : 'hidden'};"> 
+								<span class="votePlus">#{sujet.votesPositifs > 0 ? '+'.concat(sujet.votesPositifs) : ''}</span>
+								<a href="/message/vote/haut/84252353?token=ce46c4cebda00bae73f46516864e7f01" class="voteUpAction voteButton"><span class="draw"></span></a>
+								<span class="voteMoins">#{sujet.votesNegatifs > 0 ? '-'.concat(sujet.votesNegatifs) : ''}</span>
+								<a href="/message/vote/bas/84252353?token=ce46c4cebda00bae73f46516864e7f01" class="voteDownAction voteButton"><span class="draw"></span></a>
+							</span> 
+						</span>
 					</div>
 				</div>
 			</div>
@@ -74,8 +82,16 @@
 							#{uf:convertDateTime(reponse.dateCreation)}
 						</h:link>
 						<div class="message">
-							#{reponse.texte}
+							<p>#{reponse.texte}</p>
 						</div>
+						<span class="commentVote">
+							<span class="noVote" style="visibility: #{reponse.votesPositifs > 0 or reponse.votesNegatifs > 0 ? 'visible' : 'hidden'};"> 
+								<span class="votePlus">#{reponse.votesPositifs > 0 ? '+'.concat(reponse.votesPositifs) : ''}</span>
+								<a href="/message/vote/haut/84252353?token=ce46c4cebda00bae73f46516864e7f01" class="voteUpAction voteButton"><span class="draw"></span></a>
+								<span class="voteMoins">#{reponse.votesNegatifs > 0 ? '-'.concat(reponse.votesNegatifs) : ''}</span>
+								<a href="/message/vote/bas/84252353?token=ce46c4cebda00bae73f46516864e7f01" class="voteDownAction voteButton"><span class="draw"></span></a>
+							</span> 
+						</span>
 					</div>
 				</div>
 			</div>

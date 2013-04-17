@@ -37,6 +37,10 @@ public class Reponse {
     @NotNull( message = "{forums.reponse.dateCreation.notnull}" )
     private Timestamp dateCreation;
 
+    private Integer   votesPositifs;
+
+    private Integer   votesNegatifs;
+
     @NotNull( message = "{forums.reponse.adresseIP.notnull}" )
     private String    adresseIP;
 
@@ -78,6 +82,22 @@ public class Reponse {
 
     public void setDateCreation( Timestamp dateCreation ) {
         this.dateCreation = dateCreation;
+    }
+
+    public Integer getVotesPositifs() {
+        return votesPositifs;
+    }
+
+    public void setVotesPositifs( Integer votesPositifs ) {
+        this.votesPositifs = votesPositifs;
+    }
+
+    public Integer getVotesNegatifs() {
+        return votesNegatifs;
+    }
+
+    public void setVotesNegatifs( Integer votesNegatifs ) {
+        this.votesNegatifs = votesNegatifs;
     }
 
     public String getAdresseIP() {

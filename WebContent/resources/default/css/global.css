@@ -392,7 +392,10 @@ section#mainSection h1 a {
 	opacity: .5;
 }
 #mainSection div.comments div.comment div.message {
-	margin-top: 15px;
+	max-width: 815px;
+	word-wrap: break-word;
+	overflow: hidden;
+	margin: 15px 0 10px;;
 }
 #mainSection h2 {
 	margin: 0;
@@ -633,6 +636,51 @@ section#mainSection h1 a {
 	font-weight: normal;
 	padding-bottom: 0!important;
 	color: #696969;
+}
+
+.voteButton {
+	background: -webkit-linear-gradient(top,#f3f3ed,#f3f3ed 50%,#e7e7db 51%,#e7e7db 100%);
+	background: -moz-linear-gradient(top,#f3f3ed,#f3f3ed 50%,#e7e7db 51%,#e7e7db 100%);
+	background: -o-linear-gradient(top,#f3f3ed,#f3f3ed 50%,#e7e7db 51%,#e7e7db 100%);
+	background: -ms-linear-gradient(top,#f3f3ed,#f3f3ed 50%,#e7e7db 51%,#e7e7db 100%);
+	background: linear-gradient(top,#f3f3ed,#f3f3ed 50%,#e7e7db 51%,#e7e7db 100%);
+	border: 1px solid #696969;
+	box-shadow: 1px 1px 0 rgba(255,255,255,0.75) inset;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	width: 21px;
+	height: 21px;
+}
+#mainSection div.comment div.message p {
+	margin: 0 0 15px;
+}
+#mainSection div.comment span.commentVote {
+	color: #696969;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}
+#mainSection div.comment span.commentVote a {
+	margin-right: 10px;
+	opacity: .5;
+}
+#mainSection div.comment span.commentVote a, #mainSection div.comment span.commentVote span {
+	display: inline-block;
+	vertical-align: middle;
+}
+#mainSection div.comment span.commentVote span.draw {
+	height: 15px;
+	width: 15px;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 4px;
+}
+#mainSection div.comment span.commentVote a.voteUpAction span.draw {
+	background: url(#{resource['default/css/images/votes.png']}) -8px -6px no-repeat;
+}
+#mainSection div.comment span.commentVote a.voteDownAction span.draw {
+	background: url(#{resource['default/css/images/votes.png']}) -45px -6px no-repeat;
 }
 
 #mainFooter {
