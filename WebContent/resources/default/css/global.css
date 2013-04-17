@@ -598,6 +598,8 @@ section#mainSection h1 a {
 	vertical-align: middle;
 }
 #mainSection ul.list li div.row div.cell{
+	color: rgba(51,51,51,0.5)!important;
+	font-size: 12px;
 	margin-left: 15px;
 	padding: 0;
 }
@@ -614,12 +616,24 @@ section#mainSection h1 a {
 	width: 219px;
 }
 #mainSection ul.list li div.row div.cell a {
+	color: rgba(51,51,51,0.5)!important;
 	padding: 12px 15px;
 	display: block;
 	width: auto;
+}
+#mainSection ul.list li div.row div.cell h3{
+	margin: 0;
+	line-height: 14px;
+	font-size: 15px;
+	height: 17px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 330px;
+	font-weight: normal;
+	padding-bottom: 0!important;
 	color: #696969;
 }
-
 
 #mainFooter {
 	background-color: #002d40;

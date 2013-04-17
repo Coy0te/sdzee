@@ -44,7 +44,7 @@
 			          		Dernier message par
 			          		<strong>#{sujetsBean.getDerniereReponse(sujet) != null ? sujetsBean.getDerniereReponse(sujet).auteur.pseudo : sujet.auteur.pseudo}</strong>
 			        		<br/>
-			        		<strong>#{sujetsBean.getDerniereReponse(sujet) != null ? uf:convertDateTime(sujetsBean.getDerniereReponse(sujet).dateCreation) : uf:convertDateTime(sujet.dateCreation)}</strong>
+			        		#{sujetsBean.getDerniereReponse(sujet) != null ? uf:convertDateTime(sujetsBean.getDerniereReponse(sujet).dateCreation) : uf:convertDateTime(sujet.dateCreation)}
 		        		</h:link>
 	    			</div>
                 </div>
