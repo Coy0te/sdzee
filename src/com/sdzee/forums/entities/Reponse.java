@@ -92,12 +92,28 @@ public class Reponse {
         this.votesPositifs = votesPositifs;
     }
 
+    public void addVotePositif() {
+        this.votesPositifs++;
+    }
+
+    public void removeVotePositif() {
+        this.votesPositifs--;
+    }
+
     public Integer getVotesNegatifs() {
         return votesNegatifs;
     }
 
     public void setVotesNegatifs( Integer votesNegatifs ) {
         this.votesNegatifs = votesNegatifs;
+    }
+
+    public void addVoteNegatif() {
+        this.votesNegatifs++;
+    }
+
+    public void removeVoteNegatif() {
+        this.votesNegatifs--;
     }
 
     public String getAdresseIP() {

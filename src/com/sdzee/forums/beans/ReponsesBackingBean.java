@@ -16,8 +16,10 @@ import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
 import com.sdzee.forums.dao.ReponseDao;
 import com.sdzee.forums.dao.SujetDao;
+import com.sdzee.forums.dao.VoteDao;
 import com.sdzee.forums.entities.Reponse;
 import com.sdzee.forums.entities.Sujet;
+import com.sdzee.forums.entities.Vote;
 import com.sdzee.membres.entities.Membre;
 
 @ManagedBean( name = "reponsesBean" )
@@ -26,6 +28,8 @@ public class ReponsesBackingBean implements Serializable {
     private static final long   serialVersionUID     = 1L;
     private static final String HEADER_REQUETE_PROXY = "X-FORWARDED-FOR";
     private static final String URL_PAGE_FORUM       = "/forum.jsf?forumId=";
+    private static final int    VOTE_POSITIF         = 1;
+    private static final int    VOTE_NEGATIF         = -1;
 
     private Reponse             reponse;
 
@@ -35,6 +39,8 @@ public class ReponsesBackingBean implements Serializable {
     private ReponseDao          reponseDao;
     @EJB
     private SujetDao            sujetDao;
+    @EJB
+    private VoteDao             voteDao;
 
     @PostConstruct
     public void init() {
@@ -71,18 +77,43 @@ public class ReponsesBackingBean implements Serializable {
 
     public void voteUp( Membre membre, Reponse reponse ) {
         // TODO
+        Vote vote = voteDao.trouver( membre, reponse );
+        if ( vote == null ) {
+            // le membre n'a pas encore voté sur ce message
+            vote = new Vote();
+            vote.setMembre( membre );
+            vote.setReponse( reponse );
+            vote.setValeur( VOTE_POSITIF );
+            voteDao.creer( vote );
+            reponse.addVotePositif();
+            // TODO: reponseDao.update( reponse );
+        } else if ( vote.getValeur() == VOTE_POSITIF ) {
+            // le membre a déjà voté pouce en l'air, donc on supprime son vote
+            voteDao.supprimer( vote );
+            reponse.removeVotePositif();
+            // TODO: reponseDao.update( reponse )
+        } else {
+            // le membre a déjà voté, mais pouce en bas, donc on remplace son vote
+            vote.setValeur( VOTE_POSITIF );
+            // TODO: voteDao.update( vote );
+            reponse.addVotePositif();
+            reponse.addVotePositif();
+        }
     }
 
     public void voteDown( Membre membre, Reponse reponse ) {
         // TODO
+        reponse.addVoteNegatif();
     }
 
     public void voteUp( Membre membre, Sujet sujet ) {
         // TODO
+        sujet.addVotePositif();
     }
 
     public void voteDown( Membre membre, Sujet sujet ) {
         // TODO
+        sujet.addVoteNegatif();
     }
 
     public List<BreadCrumbItem> getBreadCrumb( Sujet sujet ) {
