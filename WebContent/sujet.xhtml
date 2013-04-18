@@ -94,16 +94,20 @@
 						<span class="actionIcon iconCite"></span>Citer
 						</a>
 					</li>
+					<ui:fragment rendered="#{membre.droits>=3 or reponse.auteur.pseudo==membre.pseudo}">
 					<li>
 						<a href="/message/editer/84247162" class="editAction">
 						<span class="actionIcon iconEdit"></span>Modifier
 						</a>
 					</li>
+					</ui:fragment>
+					<ui:fragment rendered="#{membre.droits>=3}">
 					<li>
 						<a class="moderateAction " data-toggle="modal" href="#moderateActionModal" data-simpleit-delete="/message/supprimer/84247162" data-simpleit-moderate="/message/moderer/84247162" data-simpleit-alert="false">
 						<span class="actionIcon iconModerate"></span><span class="actionDesc">Modérer</span>
 						</a>
 					</li>
+					</ui:fragment>
 				</ul>
 					<div class="content">
 						<h:link class="date">
