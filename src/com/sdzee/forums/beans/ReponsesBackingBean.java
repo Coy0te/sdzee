@@ -69,6 +69,22 @@ public class ReponsesBackingBean implements Serializable {
         }
     }
 
+    public void voteUp( Membre membre, Reponse reponse ) {
+        // TODO
+    }
+
+    public void voteDown( Membre membre, Reponse reponse ) {
+        // TODO
+    }
+
+    public void voteUp( Membre membre, Sujet sujet ) {
+        // TODO
+    }
+
+    public void voteDown( Membre membre, Sujet sujet ) {
+        // TODO
+    }
+
     public List<BreadCrumbItem> getBreadCrumb( Sujet sujet ) {
         String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );

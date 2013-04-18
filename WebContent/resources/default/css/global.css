@@ -660,28 +660,24 @@ section#mainSection h1 a {
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
+	font-size: 12px;
 }
-#mainSection div.comment span.commentVote a {
+#mainSection div.comment span.commentVote input {
+	padding: 0;
 	margin-right: 10px;
+	margin-left: 3px;
 	opacity: .5;
 }
-#mainSection div.comment span.commentVote a, #mainSection div.comment span.commentVote span {
+#mainSection div.comment span.commentVote input, #mainSection div.comment span.commentVote span {
 	display: inline-block;
 	vertical-align: middle;
 }
-#mainSection div.comment span.commentVote span.draw {
-	height: 15px;
-	width: 15px;
-	display: inline-block;
-	vertical-align: middle;
-	margin: 4px;
-}
-#mainSection div.comment span.commentVote a.voteUpAction span.draw {
+/*#mainSection div.comment span.commentVote input.voteUpAction {
 	background: url(#{resource['default/css/images/votes.png']}) -8px -6px no-repeat;
 }
-#mainSection div.comment span.commentVote a.voteDownAction span.draw {
+#mainSection div.comment span.commentVote input.voteDownAction {
 	background: url(#{resource['default/css/images/votes.png']}) -45px -6px no-repeat;
-}
+}*/
 
 #mainFooter {
 	background-color: #002d40;
