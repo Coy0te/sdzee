@@ -48,7 +48,7 @@
 						<div class="message">
 							<p>#{sujet.texte}</p>
 						</div>
-						<span class="commentVote">
+						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
 							<span class="noVote" style="visibility: #{sujet.votesPositifs > 0 or sujet.votesNegatifs > 0 ? 'visible' : 'hidden'};"> 
 							<h:form id="voteSujetForm">
 								<span class="votePlus">#{sujet.votesPositifs > 0 ? '+'.concat(sujet.votesPositifs) : ''}</span>
@@ -61,7 +61,8 @@
 								</h:commandButton>
 							</h:form>
 							</span> 
-						</span>
+						</h:panelGroup>
+						<div class="signature">#{sujet.auteur.signature}</div>
 					</div>
 				</div>
 			</div>
@@ -82,6 +83,28 @@
 					</div>
 				</div>
 				<div class="comment">
+				<ul class="actions">
+					<li>
+						<a class="alertAction" data-toggle="modal" href="#alertActionModal" data-simpleit-alert="/message/alerte/signaler/message/84247162">
+						<span class="actionIcon iconAlert"></span><span class="actionDesc">Signaler</span>
+					</a>
+					</li>
+					<li>
+						<a href="#" class="citeAction">
+						<span class="actionIcon iconCite"></span>Citer
+						</a>
+					</li>
+					<li>
+						<a href="/message/editer/84247162" class="editAction">
+						<span class="actionIcon iconEdit"></span>Modifier
+						</a>
+					</li>
+					<li>
+						<a class="moderateAction " data-toggle="modal" href="#moderateActionModal" data-simpleit-delete="/message/supprimer/84247162" data-simpleit-moderate="/message/moderer/84247162" data-simpleit-alert="false">
+						<span class="actionIcon iconModerate"></span><span class="actionDesc">Modérer</span>
+						</a>
+					</li>
+				</ul>
 					<div class="content">
 						<h:link class="date">
 							<f:param name="sujetId" value="#{param['sujetId']}" />
@@ -90,7 +113,7 @@
 						<div class="message">
 							<p>#{reponse.texte}</p>
 						</div>
-						<span class="commentVote">
+						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
 							<span class="noVote" style="visibility: #{reponse.votesPositifs > 0 or reponse.votesNegatifs > 0 ? 'visible' : 'hidden'};"> 
 							<h:form id="voteReponseForm">
 								<span class="votePlus">#{reponse.votesPositifs > 0 ? '+'.concat(reponse.votesPositifs) : ''}</span>
@@ -103,7 +126,8 @@
 								</h:commandButton>
 							</h:form>
 							</span> 
-						</span>
+						</h:panelGroup>
+						<div class="signature">#{reponse.auteur.signature}</div>
 					</div>
 				</div>
 			</div>

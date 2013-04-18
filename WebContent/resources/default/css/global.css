@@ -43,9 +43,27 @@ legend {
 	content: "";
 	line-height: 0;
 }
+ul.list li.read div.row:hover{
+	background:rgba(219,218,206,0.5);
+}
+ul.list li.read div.row:hover div.cell{
+	color: #000;
+}
 .cell{
 	display: inline-block;
 	padding: 5px;
+}
+
+#mainSection div.comment .signature {
+	width: 100%;
+	border-top: 1px solid #e3e3e3;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding-top: 6px;
+	font-size: 12px;
+	max-height: 18px;
+	opacity: 0.6;
 }
 
 /* Layout -------------------------------------------------------------------------------------- */
@@ -597,11 +615,15 @@ section#mainSection h1 a {
 	background: rgba(231,231,219,0.3);
 	color: #696969;
 }
+#mainSection ul.list li.notRead {
+	background: #fff;
+	color: #333;
+}
 #mainSection ul.list li div {
 	vertical-align: middle;
 }
 #mainSection ul.list li div.row div.cell{
-	color: rgba(51,51,51,0.5)!important;
+	color: rgba(51,51,51,0.5);
 	font-size: 12px;
 	margin-left: 15px;
 	padding: 0;
@@ -619,7 +641,7 @@ section#mainSection h1 a {
 	width: 219px;
 }
 #mainSection ul.list li div.row div.cell a {
-	color: rgba(51,51,51,0.5)!important;
+	color: rgba(51,51,51,0.5);
 	padding: 12px 15px;
 	display: block;
 	width: auto;
@@ -661,6 +683,7 @@ section#mainSection h1 a {
 	display: inline-block;
 	vertical-align: middle;
 	font-size: 12px;
+	margin-bottom: 10px;
 }
 #mainSection div.comment span.commentVote input {
 	padding: 0;
@@ -678,6 +701,47 @@ section#mainSection h1 a {
 #mainSection div.comment span.commentVote input.voteDownAction {
 	background: url(#{resource['default/css/images/votes.png']}) -45px -6px no-repeat;
 }*/
+
+
+#mainSection div.comment ul.actions {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	height: 23px;
+	float: right;
+}
+#mainSection div.comment ul.actions li {
+	display: inline-block;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+#mainSection ul.actions a {
+	color: #696969!important;
+	opacity: .5;
+	text-decoration: none;
+	padding-right: 15px;
+}
+#mainSection ul.actions a span.actionIcon {
+	display: inline-block;
+	background: url(#{resource['default/css/images/actions.png']}) no-repeat;
+	height: 18px;
+	width: 17px;
+	margin: 3px 0 0 7px;
+	float: left;
+}
+#mainSection ul.actions a span.actionIcon.iconAlert {
+	background-position: -84px -8px;
+}
+#mainSection ul.actions a span.actionIcon.iconCite {
+	background-position: -124px -8px;
+}
+#mainSection ul.actions a span.actionIcon.iconEdit {
+	background-position: -46px -8px;
+}
+#mainSection ul.actions a span.actionIcon.iconModerate {
+	background-position: -8px -8px;
+}
 
 #mainFooter {
 	background-color: #002d40;

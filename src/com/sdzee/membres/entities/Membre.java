@@ -55,6 +55,8 @@ public class Membre {
 
     private String              avatar;
 
+    private String              signature;
+
     public Long getId() {
         return id;
     }
@@ -77,11 +79,10 @@ public class Membre {
 
     public void setMotDePasse( String motDePasse ) {
         /*
-         * Utilisation de la bibliothèque Jasypt pour chiffrer le mot de passe
-         * efficacement.
+         * Utilisation de la bibliothèque Jasypt pour chiffrer le mot de passe efficacement.
          * 
-         * L'algorithme SHA-256 est ici utilisé, avec par défaut un salage
-         * aléatoire et un grand nombre d'itérations de la fonction de hashage.
+         * L'algorithme SHA-256 est ici utilisé, avec par défaut un salage aléatoire et un grand nombre d'itérations de la fonction de
+         * hashage.
          * 
          * La String retournée est de longueur 56 et contient le hash en Base64.
          */
@@ -147,6 +148,14 @@ public class Membre {
 
     public void setAvatar( String avatar ) {
         this.avatar = avatar;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature( String signature ) {
+        this.signature = signature;
     }
 
 }
