@@ -743,6 +743,14 @@ section#mainSection h1 a {
 	background-position: -8px -8px;
 }
 
+#mainSection div.comments .row {
+	-moz-box-shadow: 0 2px 0 0 #dbdace;
+	-webkit-box-shadow: 0 2px 0 0 #dbdace;
+	-o-box-shadow: 0 2px 0 0 #dbdace;
+	box-shadow: 0 2px 0 0 #dbdace;
+}
+
+
 #mainFooter {
 	background-color: #002d40;
 	border-top: 5px solid #03638b;
