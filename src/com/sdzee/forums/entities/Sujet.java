@@ -52,6 +52,9 @@ public class Sujet {
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )
     private Boolean   sticky;
 
+    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
+    private Boolean   resolu;
+
     private Integer   vues;
 
     private Integer   votesPositifs;
