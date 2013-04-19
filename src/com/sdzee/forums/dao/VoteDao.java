@@ -8,12 +8,11 @@ import javax.persistence.Query;
 
 import com.sdzee.dao.DAOException;
 import com.sdzee.forums.entities.Vote;
-import com.sdzee.membres.entities.Membre;
 
 @Stateless
 public class VoteDao {
-    private static final String JPQL_SELECT_UNIQUE_VOTE = "SELECT v FROM Vote v WHERE v.membre=:membre AND v.idObjet=:idObjet AND v.typeObjet=:typeObjet";
-    private static final String PARAM_MEMBRE            = "membre";
+    private static final String JPQL_SELECT_UNIQUE_VOTE = "SELECT v FROM Vote v WHERE v.idMembre=:idMembre AND v.idObjet=:idObjet AND v.typeObjet=:typeObjet";
+    private static final String PARAM_ID_MEMBRE         = "idMembre";
     private static final String PARAM_ID_OBJET          = "idObjet";
     private static final String PARAM_TYPE_OBJET        = "typeObjet";
 
@@ -30,10 +29,10 @@ public class VoteDao {
     }
 
     /* Récupération du vote pour un membre, un objet et un type d'objet donnés */
-    public Vote trouver( Membre membre, Long idObjet, String typeObjet ) throws DAOException {
+    public Vote trouver( Long idMembre, Long idObjet, String typeObjet ) throws DAOException {
         try {
             Query query = em.createQuery( JPQL_SELECT_UNIQUE_VOTE );
-            query.setParameter( PARAM_MEMBRE, membre );
+            query.setParameter( PARAM_ID_MEMBRE, idMembre );
             query.setParameter( PARAM_ID_OBJET, idObjet );
             query.setParameter( PARAM_TYPE_OBJET, typeObjet );
             return (Vote) query.getSingleResult();

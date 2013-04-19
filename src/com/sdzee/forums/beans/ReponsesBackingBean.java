@@ -77,12 +77,12 @@ public class ReponsesBackingBean implements Serializable {
         }
     }
 
-    public void vote( Membre membre, Long idObjet, String typeObjet, int valeur, Reponse reponse, Sujet sujet ) {
-        Vote vote = voteDao.trouver( membre, idObjet, typeObjet );
+    public void vote( Long idMembre, Long idObjet, String typeObjet, int valeur, Reponse reponse, Sujet sujet ) {
+        Vote vote = voteDao.trouver( idMembre, idObjet, typeObjet );
         if ( vote == null ) {
             // le membre n'a pas encore voté sur ce message
             vote = new Vote();
-            vote.setMembre( membre );
+            vote.setIdMembre( idMembre );
             vote.setIdObjet( idObjet );
             vote.setTypeObjet( typeObjet );
             vote.setValeur( valeur );
@@ -149,21 +149,21 @@ public class ReponsesBackingBean implements Serializable {
         }
     }
 
+    // TODO : refaire ça avec du if(objet instanceOf Reponse)... et ainsi se débarrasser des arguments superflus
+
     public void voteUp( Membre membre, Reponse reponse ) {
-        vote( membre, reponse.getId(), TYPE_REPONSE, VOTE_POSITIF, reponse, null );
+        vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_POSITIF, reponse, null );
     }
 
     public void voteDown( Membre membre, Reponse reponse ) {
-        vote( membre, reponse.getId(), TYPE_REPONSE, VOTE_NEGATIF, reponse, null );
+        vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_NEGATIF, reponse, null );
     }
 
-    public void voteUp( Membre membre, Sujet sujet ) {
-        vote( membre, sujet.getId(), TYPE_SUJET, VOTE_POSITIF, null, sujet );
-    }
-
-    public void voteDown( Membre membre, Sujet sujet ) {
-        vote( membre, sujet.getId(), TYPE_SUJET, VOTE_NEGATIF, null, sujet );
-    }
+    /*
+     * public void voteUp( Membre membre, Sujet sujet ) { vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_POSITIF, null, sujet ); }
+     * 
+     * public void voteDown( Membre membre, Sujet sujet ) { vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_NEGATIF, null, sujet ); }
+     */
 
     public List<BreadCrumbItem> getBreadCrumb( Sujet sujet ) {
         String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();

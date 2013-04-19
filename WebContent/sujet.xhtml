@@ -49,17 +49,17 @@
 							<p>#{sujet.texte}</p>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
-							<span class="noVote" style="visibility: #{sujet.votesPositifs > 0 or sujet.votesNegatifs > 0 ? 'visible' : 'hidden'};"> 
-							<h:form id="voteSujetForm">
+							<span class="noVote" style="visibility: #{sujet.votesPositifs > 0 or sujet.votesNegatifs > 0 ? 'visible' : 'visible'};"> 
+							<o:form includeViewParams="true" id="voteSujetForm">
 								<span class="votePlus">#{sujet.votesPositifs > 0 ? '+'.concat(sujet.votesPositifs) : ''}</span>
-								<h:commandButton type="submit" value="+" action="#{reponsesBean.voteUp(membre, sujet)}" styleClass="voteUpAction voteButton">
+								<h:commandButton value="+" action="#{reponsesBean.voteUp(membre, sujet)}" styleClass="voteUpAction voteButton">
 									<f:ajax execute="@form" render="@form" />
 								</h:commandButton>
 								<span class="voteMoins">#{sujet.votesNegatifs > 0 ? '-'.concat(sujet.votesNegatifs) : ''}</span>
-								<h:commandButton type="submit" value="-" action="#{reponsesBean.voteDown(membre, sujet)}" styleClass="voteDownAction voteButton">
+								<h:commandButton value="-" action="#{reponsesBean.voteDown(membre, sujet)}" styleClass="voteDownAction voteButton">
 									<f:ajax execute="@form" render="@form" />
 								</h:commandButton>
-							</h:form>
+							</o:form>
 							</span> 
 						</h:panelGroup>
 						<div class="signature">#{sujet.auteur.signature}</div>
@@ -120,17 +120,17 @@
 							<p>#{reponse.texte}</p>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
-							<span class="noVote" style="visibility: #{reponse.votesPositifs > 0 or reponse.votesNegatifs > 0 ? 'visible' : 'hidden'};"> 
-							<h:form id="voteReponseForm">
+							<span class="noVote" style="visibility: #{reponse.votesPositifs > 0 or reponse.votesNegatifs > 0 ? 'visible' : 'visible'};"> 
+							<o:form includeViewParams="true" id="voteReponseForm">
 								<span class="votePlus">#{reponse.votesPositifs > 0 ? '+'.concat(reponse.votesPositifs) : ''}</span>
-								<h:commandButton type="submit" value="+" action="#{reponsesBean.voteUp(membre, reponse)}" styleClass="voteUpAction voteButton">
+								<h:commandButton value="+" action="#{reponsesBean.voteUp(membre, reponse)}" styleClass="voteUpAction voteButton">
 									<f:ajax execute="@form" render="@form" />
 								</h:commandButton>
 								<span class="voteMoins">#{reponse.votesNegatifs > 0 ? '-'.concat(reponse.votesNegatifs) : ''}</span>
-								<h:commandButton type="submit" value="-" action="#{reponsesBean.voteDown(membre, reponse)}" styleClass="voteDownAction voteButton">
+								<h:commandButton value="-" action="#{reponsesBean.voteDown(membre, reponse)}" styleClass="voteDownAction voteButton">
 									<f:ajax execute="@form" render="@form" />
 								</h:commandButton>
-							</h:form>
+							</o:form>
 							</span> 
 						</h:panelGroup>
 						<div class="signature">#{reponse.auteur.signature}</div>

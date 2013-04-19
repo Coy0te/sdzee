@@ -2,40 +2,40 @@ package com.sdzee.forums.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
-import com.sdzee.membres.entities.Membre;
-
 @Entity
 @Table( name = "forum_vote",
         uniqueConstraints = { @UniqueConstraint( columnNames = { "id_membre", "id_objet", "type_objet" } ) } )
+@IdClass( VoteId.class )
 public class Vote {
-    @NotNull( message = "{forums.vote.membre.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
-    @JoinColumn( name = "id_membre" )
-    private Membre membre;
+    @NotNull( message = "{forums.vote.idMembre.notnull}" )
+    @Column( name = "id_membre" )
+    @Id
+    private Long   idMembre;
 
     @NotNull( message = "{forums.vote.idObjet.notnull}" )
     @Column( name = "id_objet" )
+    @Id
     private Long   idObjet;
 
     @NotNull( message = "{forums.vote.tpyeObjet.notnull}" )
     @Column( name = "type_objet" )
+    @Id
     private String typeObjet;
 
     private int    valeur;
 
-    public Membre getMembre() {
-        return membre;
+    public Long getIdMembre() {
+        return idMembre;
     }
 
-    public void setMembre( Membre membre ) {
-        this.membre = membre;
+    public void setIdMembre( Long idMembre ) {
+        this.idMembre = idMembre;
     }
 
     public Long getIdObjet() {
@@ -61,4 +61,11 @@ public class Vote {
     public void setValeur( int valeur ) {
         this.valeur = valeur;
     }
+}
+
+/* Classe de définition de la clé primaire composite */
+class VoteId {
+    Long   idMembre;
+    Long   idObjet;
+    String typeObjet;
 }
