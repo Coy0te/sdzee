@@ -85,8 +85,8 @@ CREATE TABLE `forum_reponse` (
   `auteur` int(11) NOT NULL,
   `sujet` int(11) NOT NULL,
   `texte` text NOT NULL,
-  `votesPositifs` int(11) DEFAULT '0',
-  `votesNegatifs` int(11) DEFAULT '0',
+  `votesPositifs` int(11) NOT NULL DEFAULT '0',
+  `votesNegatifs` int(11) NOT NULL DEFAULT '0',
   `dateCreation` datetime NOT NULL,
   `adresseIP` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
@@ -103,7 +103,7 @@ CREATE TABLE `forum_reponse` (
 
 LOCK TABLES `forum_reponse` WRITE;
 /*!40000 ALTER TABLE `forum_reponse` DISABLE KEYS */;
-INSERT INTO `forum_reponse` VALUES (1,1,1,'C\'est toi qui sent la moule !',1,1,'2013-03-22 10:47:15','192.168.12.34'),(2,2,1,'Test d\'un message content dés accents èn pagaïlle.',9,16,'2013-04-15 09:43:01','127.0.0.1'),(3,2,1,'caca',0,6,'2013-04-16 10:53:10','127.0.0.1'),(4,1,1,'test de la date du message.',0,2,'2013-04-16 16:41:54','127.0.0.1'),(5,2,11,'PErsonne ?. Damnéd.',NULL,NULL,'2013-04-18 15:53:54','127.0.0.1'),(6,2,1,'?????????',NULL,NULL,'2013-04-19 16:02:49','127.0.0.1');
+INSERT INTO `forum_reponse` VALUES (1,1,1,'C\'est toi qui sent la moule !',1,1,'2013-03-22 10:47:15','192.168.12.34'),(2,2,1,'Test d\'un message content dés accents èn pagaïlle.',9,16,'2013-04-15 09:43:01','127.0.0.1'),(3,2,1,'caca',0,6,'2013-04-16 10:53:10','127.0.0.1'),(4,1,1,'test de la date du message.',0,2,'2013-04-16 16:41:54','127.0.0.1'),(5,2,11,'PErsonne ?. Damnéd.',0,0,'2013-04-18 15:53:54','127.0.0.1'),(6,2,1,'?????????',0,0,'2013-04-19 16:02:49','127.0.0.1');
 /*!40000 ALTER TABLE `forum_reponse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,4 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-04-19 18:31:09
+-- Dump completed on 2013-04-19 18:44:33
