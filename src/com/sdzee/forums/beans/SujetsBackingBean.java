@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ import com.sdzee.forums.entities.Sujet;
 import com.sdzee.membres.entities.Membre;
 
 @ManagedBean( name = "sujetsBean" )
-@RequestScoped
+@ViewScoped
 public class SujetsBackingBean implements Serializable {
     private static final long   serialVersionUID     = 1L;
     private static final String HEADER_REQUETE_PROXY = "X-FORWARDED-FOR";

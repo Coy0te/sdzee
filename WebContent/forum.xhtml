@@ -70,7 +70,7 @@
 				<p:message id="texteMessage" for="texte" errorClass="erreur" />
 				<div class="rowButton">
 					<h:commandButton value="Envoyer" type="submit" action="#{sujetsBean.creer(membre, sujetsBean.getForum(param['forumId']))}" styleClass="btn btn-primary right-flt" update="growl">
-						<f:ajax execute="@form" render="@form" />
+						<f:ajax execute="@form :forumId" render="@form" />
 					</h:commandButton>
 					<h:commandButton value="Aperçu" type="button" styleClass="btn showMarkdownOverview" />
 				</div>
