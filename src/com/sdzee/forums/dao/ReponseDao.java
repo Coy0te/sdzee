@@ -77,6 +77,15 @@ public class ReponseDao {
         }
     }
 
+    /* Mise à jour d'une réponse */
+    public void update( Reponse reponse ) throws DAOException {
+        try {
+            em.merge( reponse );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
     /* Suppression d'une réponse */
     public void supprimer( Reponse reponse ) throws DAOException {
         try {

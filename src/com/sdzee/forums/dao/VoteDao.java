@@ -7,15 +7,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.sdzee.dao.DAOException;
-import com.sdzee.forums.entities.Reponse;
 import com.sdzee.forums.entities.Vote;
 import com.sdzee.membres.entities.Membre;
 
 @Stateless
 public class VoteDao {
-    private static final String JPQL_VOTE_PAR_MEMBRE_PAR_MESSAGE = "SELECT v FROM Vote v WHERE v.membre=:membre AND v.message=:reponse";
-    private static final String PARAM_MEMBRE                     = "membre";
-    private static final String PARAM_REPONSE                    = "reponse";
+    private static final String JPQL_SELECT_UNIQUE_VOTE = "SELECT v FROM Vote v WHERE v.membre=:membre AND v.idObjet=:idObjet AND v.typeObjet=:typeObjet";
+    private static final String PARAM_MEMBRE            = "membre";
+    private static final String PARAM_ID_OBJET          = "idObjet";
+    private static final String PARAM_TYPE_OBJET        = "typeObjet";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
@@ -29,16 +29,26 @@ public class VoteDao {
         }
     }
 
-    /* Récupération du vote pour un membre et un message donné */
-    public Vote trouver( Membre membre, Reponse reponse ) throws DAOException {
+    /* Récupération du vote pour un membre, un objet et un type d'objet donnés */
+    public Vote trouver( Membre membre, Long idObjet, String typeObjet ) throws DAOException {
         try {
-            Query query = em.createQuery( JPQL_VOTE_PAR_MEMBRE_PAR_MESSAGE );
+            Query query = em.createQuery( JPQL_SELECT_UNIQUE_VOTE );
             query.setParameter( PARAM_MEMBRE, membre );
-            query.setParameter( PARAM_REPONSE, reponse );
+            query.setParameter( PARAM_ID_OBJET, idObjet );
+            query.setParameter( PARAM_TYPE_OBJET, typeObjet );
             return (Vote) query.getSingleResult();
         } catch ( NoResultException e ) {
             // Si aucune vote trouvé, on retourne null.
             return null;
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /* Mise à jour d'un vote */
+    public void update( Vote vote ) throws DAOException {
+        try {
+            em.merge( vote );
         } catch ( Exception e ) {
             throw new DAOException( e );
         }

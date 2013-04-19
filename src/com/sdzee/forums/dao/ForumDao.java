@@ -59,6 +59,15 @@ public class ForumDao {
         }
     }
 
+    /* Mise à jour d'un forum */
+    public void update( Forum forum ) throws DAOException {
+        try {
+            em.merge( forum );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
     /* Suppression d'un forum */
     public void supprimer( Forum forum ) throws DAOException {
         try {

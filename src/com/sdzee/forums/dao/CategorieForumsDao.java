@@ -45,6 +45,15 @@ public class CategorieForumsDao {
         }
     }
 
+    /* Mise à jour d'une catégorie */
+    public void update( CategorieForum categorie ) throws DAOException {
+        try {
+            em.merge( categorie );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
     /* Suppression d'une catégorie */
     public void supprimer( CategorieForum categorie ) throws DAOException {
         try {

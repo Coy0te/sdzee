@@ -10,5 +10,6 @@
 		<class>com.sdzee.forums.entities.Forum</class>
 		<class>com.sdzee.forums.entities.Sujet</class>
 		<class>com.sdzee.forums.entities.Reponse</class>
+		<class>com.sdzee.forums.entities.Vote</class>
 	</persistence-unit>   
 </persistence>

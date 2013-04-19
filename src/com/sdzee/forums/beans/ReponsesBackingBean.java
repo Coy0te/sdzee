@@ -30,6 +30,8 @@ public class ReponsesBackingBean implements Serializable {
     private static final String URL_PAGE_FORUM       = "/forum.jsf?forumId=";
     private static final int    VOTE_POSITIF         = 1;
     private static final int    VOTE_NEGATIF         = -1;
+    private static final String TYPE_REPONSE         = "reponse";
+    private static final String TYPE_SUJET           = "sujet";
 
     private Reponse             reponse;
 
@@ -75,45 +77,92 @@ public class ReponsesBackingBean implements Serializable {
         }
     }
 
-    public void voteUp( Membre membre, Reponse reponse ) {
-        // TODO
-        Vote vote = voteDao.trouver( membre, reponse );
+    public void vote( Membre membre, Long idObjet, String typeObjet, int valeur, Reponse reponse, Sujet sujet ) {
+        Vote vote = voteDao.trouver( membre, idObjet, typeObjet );
         if ( vote == null ) {
             // le membre n'a pas encore voté sur ce message
             vote = new Vote();
             vote.setMembre( membre );
-            vote.setReponse( reponse );
-            vote.setValeur( VOTE_POSITIF );
+            vote.setIdObjet( idObjet );
+            vote.setTypeObjet( typeObjet );
+            vote.setValeur( valeur );
             voteDao.creer( vote );
-            reponse.addVotePositif();
-            // TODO: reponseDao.update( reponse );
-        } else if ( vote.getValeur() == VOTE_POSITIF ) {
-            // le membre a déjà voté pouce en l'air, donc on supprime son vote
+            // il faut ensuite MAJ le compteur dénormalisé sur la table réponse ou sujet
+            if ( valeur > 0 ) {
+                if ( TYPE_REPONSE.equals( typeObjet ) ) {
+                    reponse.addVotePositif();
+                    reponseDao.update( reponse );
+                } else {
+                    sujet.addVotePositif();
+                    sujetDao.update( sujet );
+                }
+            } else {
+                if ( TYPE_REPONSE.equals( typeObjet ) ) {
+                    reponse.addVoteNegatif();
+                    reponseDao.update( reponse );
+                } else {
+                    sujet.addVoteNegatif();
+                    sujetDao.update( sujet );
+                }
+            }
+        } else if ( vote.getValeur() == valeur ) {
+            // le membre avait déjà effectué le même vote, donc c'est un re-clic et il faut annuler son précédent vote
             voteDao.supprimer( vote );
-            reponse.removeVotePositif();
-            // TODO: reponseDao.update( reponse )
+            if ( TYPE_REPONSE.equals( typeObjet ) ) {
+                if ( valeur > 0 ) {
+                    reponse.removeVotePositif();
+                } else {
+                    reponse.removeVoteNegatif();
+                }
+                reponseDao.update( reponse );
+            } else {
+                if ( valeur > 0 ) {
+                    sujet.removeVotePositif();
+                } else {
+                    sujet.removeVoteNegatif();
+                }
+                sujetDao.update( sujet );
+            }
         } else {
-            // le membre a déjà voté, mais pouce en bas, donc on remplace son vote
-            vote.setValeur( VOTE_POSITIF );
-            // TODO: voteDao.update( vote );
-            reponse.addVotePositif();
-            reponse.addVotePositif();
+            // le membre avait déjà voté, mais différemment, donc il faut remplacer son ancien vote
+            vote.setValeur( valeur );
+            voteDao.update( vote ); // TODO : nécessaire ou pas ? Si l'entité vote n'est pas détachée...
+            if ( TYPE_REPONSE.equals( typeObjet ) ) {
+                if ( valeur > 0 ) {
+                    reponse.removeVoteNegatif();
+                    reponse.addVotePositif();
+                } else {
+                    reponse.removeVotePositif();
+                    reponse.addVoteNegatif();
+                }
+                reponseDao.update( reponse );
+            } else {
+                if ( valeur > 0 ) {
+                    sujet.removeVoteNegatif();
+                    sujet.addVotePositif();
+                } else {
+                    sujet.removeVotePositif();
+                    sujet.addVoteNegatif();
+                }
+                sujetDao.update( sujet );
+            }
         }
     }
 
+    public void voteUp( Membre membre, Reponse reponse ) {
+        vote( membre, reponse.getId(), TYPE_REPONSE, VOTE_POSITIF, reponse, null );
+    }
+
     public void voteDown( Membre membre, Reponse reponse ) {
-        // TODO
-        reponse.addVoteNegatif();
+        vote( membre, reponse.getId(), TYPE_REPONSE, VOTE_NEGATIF, reponse, null );
     }
 
     public void voteUp( Membre membre, Sujet sujet ) {
-        // TODO
-        sujet.addVotePositif();
+        vote( membre, sujet.getId(), TYPE_SUJET, VOTE_POSITIF, null, sujet );
     }
 
     public void voteDown( Membre membre, Sujet sujet ) {
-        // TODO
-        sujet.addVoteNegatif();
+        vote( membre, sujet.getId(), TYPE_SUJET, VOTE_NEGATIF, null, sujet );
     }
 
     public List<BreadCrumbItem> getBreadCrumb( Sujet sujet ) {

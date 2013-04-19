@@ -1,5 +1,6 @@
 package com.sdzee.forums.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -12,19 +13,22 @@ import com.sdzee.membres.entities.Membre;
 
 @Entity
 @Table( name = "forum_vote",
-        uniqueConstraints = { @UniqueConstraint( columnNames = { "id_membre", "id_message" } ) } )
+        uniqueConstraints = { @UniqueConstraint( columnNames = { "id_membre", "id_objet", "type_objet" } ) } )
 public class Vote {
     @NotNull( message = "{forums.vote.membre.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_membre" )
-    private Membre  membre;
+    private Membre membre;
 
-    @NotNull( message = "{forums.vote.reponse.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
-    @JoinColumn( name = "id_message" )
-    private Reponse reponse;
+    @NotNull( message = "{forums.vote.idObjet.notnull}" )
+    @Column( name = "id_objet" )
+    private Long   idObjet;
 
-    private int     valeur;
+    @NotNull( message = "{forums.vote.tpyeObjet.notnull}" )
+    @Column( name = "type_objet" )
+    private String typeObjet;
+
+    private int    valeur;
 
     public Membre getMembre() {
         return membre;
@@ -34,12 +38,20 @@ public class Vote {
         this.membre = membre;
     }
 
-    public Reponse getReponse() {
-        return reponse;
+    public Long getIdObjet() {
+        return idObjet;
     }
 
-    public void setReponse( Reponse reponse ) {
-        this.reponse = reponse;
+    public void setIdObjet( Long idObjet ) {
+        this.idObjet = idObjet;
+    }
+
+    public String getTypeObjet() {
+        return typeObjet;
+    }
+
+    public void setTypeObjet( String typeObjet ) {
+        this.typeObjet = typeObjet;
     }
 
     public int getValeur() {

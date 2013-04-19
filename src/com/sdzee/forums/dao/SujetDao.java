@@ -75,6 +75,15 @@ public class SujetDao {
         }
     }
 
+    /* Mise à jour d'un sujet */
+    public void update( Sujet sujet ) throws DAOException {
+        try {
+            em.merge( sujet );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
     /* Suppression d'un sujet */
     public void supprimer( Sujet sujet ) throws DAOException {
         try {
