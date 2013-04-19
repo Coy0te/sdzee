@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.28, for osx10.6 (i386)
+-- MySQL dump 10.13  Distrib 5.5.29, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: bdd_sdzee
 -- ------------------------------------------------------
--- Server version	5.5.28
+-- Server version	5.5.29-0ubuntu0.12.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,7 +28,8 @@ CREATE TABLE `forum_categorie` (
   `dateCreation` datetime NOT NULL,
   `position` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `titre` (`titre`)
+  UNIQUE KEY `titre` (`titre`),
+  KEY `position_index` (`position`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -93,7 +94,7 @@ CREATE TABLE `forum_reponse` (
   KEY `fk_sujet_reponse` (`sujet`),
   CONSTRAINT `fk_auteur_reponse` FOREIGN KEY (`auteur`) REFERENCES `membre` (`id`),
   CONSTRAINT `fk_sujet_reponse` FOREIGN KEY (`sujet`) REFERENCES `forum_sujet` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +103,7 @@ CREATE TABLE `forum_reponse` (
 
 LOCK TABLES `forum_reponse` WRITE;
 /*!40000 ALTER TABLE `forum_reponse` DISABLE KEYS */;
-INSERT INTO `forum_reponse` VALUES (1,1,1,'C\'est toi qui sent la moule !',0,0,'2013-03-22 10:47:15','192.168.12.34'),(2,2,1,'Essai de rÃ©ponse depuis le forum.',0,0,'2013-04-14 18:06:52','0:0:0:0:0:0:0:1%0'),(3,1,1,'Qu\'est-ce que c\'est que ce bordel...',0,0,'2013-04-15 18:06:52','0:0:0:0:0:0:0:1%0'),(4,2,1,'Bon, a priori les accents c\'est encore pas trop Ã§a... faudrait vÃ©rifier que l\'encodage par dÃ©faut est bien UTF-8, et si c\'est pas le cas, alors il faut utiliser un filtre de derriÃ¨re les fagots de chez OmniFaces :)',0,0,'2013-04-15 19:06:52','0:0:0:0:0:0:0:1%0'),(5,2,1,'C\'est encore tout niqué ou pas ? Ça va bien 5 minutes ces élugubrations...',0,0,'2013-04-15 22:30:01','127.0.0.1'),(6,1,1,'áàö Ó ç í crubluZor.',0,0,'2013-04-15 22:34:05','0:0:0:0:0:0:0:1%0'),(7,1,1,'k',0,0,'2013-04-15 22:47:28','0:0:0:0:0:0:0:1%0'),(8,2,1,'test 435',0,0,'2013-04-16 13:20:19','0:0:0:0:0:0:0:1%0'),(9,2,1,'On tente de répondre au sujet, avec des accents et on vérifie que la date s\'affiche correctement.',0,0,'2013-04-16 18:33:04','0:0:0:0:0:0:0:1%0'),(10,2,2,'Qu\'est-ce qu\'y dit?',0,0,'2013-04-16 21:20:00','0:0:0:0:0:0:0:1%0'),(11,2,3,'Les \r\nsauts\r\nde\r\nligne\r\n\r\na priori\r\nc\'est\r\n\r\nencore\r\n\r\n\r\n\r\npas\r\nça.',0,0,'2013-04-16 21:37:09','0:0:0:0:0:0:0:1%0'),(12,1,2,'Osef dude, osef.',0,0,'2013-04-16 21:42:46','0:0:0:0:0:0:0:1%0');
+INSERT INTO `forum_reponse` VALUES (1,1,1,'C\'est toi qui sent la moule !',1,1,'2013-03-22 10:47:15','192.168.12.34'),(2,2,1,'Test d\'un message content dés accents èn pagaïlle.',9,16,'2013-04-15 09:43:01','127.0.0.1'),(3,2,1,'caca',0,6,'2013-04-16 10:53:10','127.0.0.1'),(4,1,1,'test de la date du message.',0,2,'2013-04-16 16:41:54','127.0.0.1'),(5,2,11,'PErsonne ?. Damnéd.',NULL,NULL,'2013-04-18 15:53:54','127.0.0.1'),(6,2,1,'?????????',NULL,NULL,'2013-04-19 16:02:49','127.0.0.1');
 /*!40000 ALTER TABLE `forum_reponse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,7 +133,7 @@ CREATE TABLE `forum_sujet` (
   KEY `fk_forum_sujet` (`forum`),
   CONSTRAINT `fk_auteur_sujet` FOREIGN KEY (`auteur`) REFERENCES `membre` (`id`),
   CONSTRAINT `fk_forum_sujet` FOREIGN KEY (`forum`) REFERENCES `forum_forum` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +142,7 @@ CREATE TABLE `forum_sujet` (
 
 LOCK TABLES `forum_sujet` WRITE;
 /*!40000 ALTER TABLE `forum_sujet` DISABLE KEYS */;
-INSERT INTO `forum_sujet` VALUES (1,'Un sujet au pif','','Alors que dans la moule d\'argentine la teneur en mouléïte n\'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.',1,2,'2013-03-21 16:13:44',0,0,0,0,0,'192.168.1.2'),(2,'Essai de nouveau sujet','Pour la première fois...','OH my god they killed kenny!',1,2,'2013-04-16 21:19:15',NULL,NULL,NULL,NULL,NULL,'0:0:0:0:0:0:0:1%0'),(3,'Premier test en categorie HTML','ça pique!','Blabla bli lala.\r\n\r\nCoyote.',2,1,'2013-04-16 21:21:03',NULL,NULL,NULL,NULL,NULL,'0:0:0:0:0:0:0:1%0');
+INSERT INTO `forum_sujet` VALUES (1,'Un sujet au pif','','Alors que dans la moule d\'argentine la teneur en mouléïte n\'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.',1,2,'2013-03-21 16:13:44',0,0,0,0,2,'192.168.1.2'),(2,'Alignement d\'un bloc horizontalement et verticalement','blabla CSS','dfsd f sdf sdfmjsd gp?diogj sd\r\nf$gl ds$fpgojk sdpgl dqf$gpk \r\nsdfôgj d\r\nspgjk sd$pflgjk zàçij p$)àa i =)\r\nkàpf\r\n$ sdlg\r\n sd=$k',1,1,'2013-04-17 10:22:06',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(3,'Balise canvas et jQuery','Mic mac (do)','Rédigez votre message ici',2,1,'2013-04-17 10:40:42',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(4,'test numéro 3','vérif de l\'action','test',2,1,'2013-04-17 10:42:22',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(5,'Blablaz','sodfsdpfij sdfpi d','dfo sij sdfuohsd opusdh opfisdf',1,1,'2013-04-17 10:43:46',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(6,'Ca devient casse-couilles là...','Cette histoire de redirection après submit','Ca va bien un moment...',2,1,'2013-04-17 10:45:57',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(7,'sdfsd ','sdf sdf ','sdf sdf ',1,1,'2013-04-17 10:46:44',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(8,'Dernier essai de création + redirection après succès...','ou pas','???',2,1,'2013-04-17 10:49:46',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(9,'Boucle forEach sur un resultat SQL',NULL,'blabkjkfsdo jkâzopdjkqs^piojsiopfj sdiofjqp soidfj qsd\r\nfg$sdfgk fpgoj \r\nqsdfp?k \r\nsdf$pk spgiojsdfo jkd$gopd$sfg p\r\nopjazàeiopj sdjaioàzjqdà_çdjpoé\"jd) çéu \"çà&é)éuéi\"ç) éè_\"çà)',1,3,'2013-04-17 10:56:51',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(10,'Création pour test growl',NULL,'Avec succès du message cette fois.',2,3,'2013-04-17 11:16:50',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(11,'Boucle forEach sur un resultat SQL','cxcv','xcvxcv ',2,3,'2013-04-17 11:17:36',NULL,NULL,NULL,NULL,NULL,'127.0.0.1'),(12,'Avec un sous-titre','histoire de vérifier qu\'on l\'affiche bien derrière','sdfsdf sdf sdf ',2,1,'2013-04-17 11:18:32',NULL,NULL,NULL,NULL,NULL,'127.0.0.1');
 /*!40000 ALTER TABLE `forum_sujet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,13 +155,12 @@ DROP TABLE IF EXISTS `forum_vote`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `forum_vote` (
   `id_membre` int(11) NOT NULL,
-  `id_message` int(11) NOT NULL,
+  `id_objet` int(11) NOT NULL,
+  `type_objet` varchar(10) NOT NULL,
   `valeur` tinyint(1) NOT NULL DEFAULT '0',
-  UNIQUE KEY `id_membre` (`id_membre`,`id_message`),
+  UNIQUE KEY `id_membre` (`id_membre`,`id_objet`,`type_objet`),
   KEY `fk_membre_vote` (`id_membre`),
-  KEY `fk_message_vote` (`id_message`),
-  CONSTRAINT `fk_membre_vote` FOREIGN KEY (`id_membre`) REFERENCES `membre` (`id`),
-  CONSTRAINT `fk_message_vote` FOREIGN KEY (`id_message`) REFERENCES `forum_reponse` (`id`)
+  CONSTRAINT `fk_membre_vote` FOREIGN KEY (`id_membre`) REFERENCES `membre` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -170,6 +170,7 @@ CREATE TABLE `forum_vote` (
 
 LOCK TABLES `forum_vote` WRITE;
 /*!40000 ALTER TABLE `forum_vote` DISABLE KEYS */;
+INSERT INTO `forum_vote` VALUES (1,1,'reponse',1),(1,1,'sujet',-1),(1,3,'reponse',-1),(1,4,'reponse',-1),(2,1,'reponse',-1),(2,1,'sujet',-1),(2,2,'reponse',1),(2,3,'reponse',-1),(2,4,'reponse',-1);
 /*!40000 ALTER TABLE `forum_vote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +205,7 @@ CREATE TABLE `membre` (
 
 LOCK TABLES `membre` WRITE;
 /*!40000 ALTER TABLE `membre` DISABLE KEYS */;
-INSERT INTO `membre` VALUES (1,'coyote@test.com','baSDuV8d+My8W/M84MTBK42acjjKWeY9RrfboLDH/R7ot72cCi/KkA==','Med',NULL,NULL,'2013-03-21 16:12:48',NULL,1,NULL,'Oh my god, they killed Kenny!'),(2,'coy@ote.fr','baSDuV8d+My8W/M84MTBK42acjjKWeY9RrfboLDH/R7ot72cCi/KkA==','Coyote',NULL,NULL,'2013-03-21 16:12:48',NULL,4,NULL,'Test de signature');
+INSERT INTO `membre` VALUES (1,'coyote@test.com','baSDuV8d+My8W/M84MTBK42acjjKWeY9RrfboLDH/R7ot72cCi/KkA==','Med',NULL,NULL,'2013-03-21 16:12:48',NULL,1,NULL,'Compte de test pour voir la tronche des signatures.'),(2,'coy@ote.fr','baSDuV8d+My8W/M84MTBK42acjjKWeY9RrfboLDH/R7ot72cCi/KkA==','Coyote',NULL,NULL,'2013-03-21 16:12:48',NULL,4,NULL,'Créez votre application avec Java EE');
 /*!40000 ALTER TABLE `membre` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -217,4 +218,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-04-18 22:12:56
+-- Dump completed on 2013-04-19 16:55:21
