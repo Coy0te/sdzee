@@ -37,9 +37,9 @@ public class Reponse {
     @NotNull( message = "{forums.reponse.dateCreation.notnull}" )
     private Timestamp dateCreation;
 
-    private Integer   votesPositifs;
+    private Integer   votesPositifs = 0;
 
-    private Integer   votesNegatifs;
+    private Integer   votesNegatifs = 0;
 
     @NotNull( message = "{forums.reponse.adresseIP.notnull}" )
     private String    adresseIP;
