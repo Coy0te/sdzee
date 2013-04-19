@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.29, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.28, for osx10.6 (i386)
 --
 -- Host: localhost    Database: bdd_sdzee
 -- ------------------------------------------------------
--- Server version	5.5.29-0ubuntu0.12.04.2
+-- Server version	5.5.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -122,12 +122,12 @@ CREATE TABLE `forum_sujet` (
   `auteur` int(11) NOT NULL,
   `forum` int(11) NOT NULL,
   `dateCreation` datetime NOT NULL,
-  `ferme` tinyint(1) DEFAULT '0',
-  `sticky` tinyint(1) DEFAULT '0',
+  `ferme` tinyint(1) NOT NULL DEFAULT '0',
+  `sticky` tinyint(1) NOT NULL DEFAULT '0',
   `resolu` tinyint(1) DEFAULT '0',
-  `vues` int(11) DEFAULT '0',
-  `votesPositifs` int(11) DEFAULT '0',
-  `votesNegatifs` int(11) DEFAULT '0',
+  `vues` int(11) NOT NULL DEFAULT '0',
+  `votesPositifs` int(11) NOT NULL DEFAULT '0',
+  `votesNegatifs` int(11) NOT NULL DEFAULT '0',
   `adresseIP` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_auteur_sujet` (`auteur`),
@@ -143,7 +143,7 @@ CREATE TABLE `forum_sujet` (
 
 LOCK TABLES `forum_sujet` WRITE;
 /*!40000 ALTER TABLE `forum_sujet` DISABLE KEYS */;
-INSERT INTO `forum_sujet` VALUES (1,'Un sujet au pif','','Alors que dans la moule d\'argentine la teneur en mouléïte n\'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.',1,2,'2013-03-21 16:13:44',0,0,0,0,0,2,'192.168.1.2'),(2,'Alignement d\'un bloc horizontalement et verticalement','blabla CSS','dfsd f sdf sdfmjsd gp?diogj sd\r\nf$gl ds$fpgojk sdpgl dqf$gpk \r\nsdfôgj d\r\nspgjk sd$pflgjk zàçij p$)àa i =)\r\nkàpf\r\n$ sdlg\r\n sd=$k',1,1,'2013-04-17 10:22:06',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(3,'Balise canvas et jQuery','Mic mac (do)','Rédigez votre message ici',2,1,'2013-04-17 10:40:42',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(4,'test numéro 3','vérif de l\'action','test',2,1,'2013-04-17 10:42:22',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(5,'Blablaz','sodfsdpfij sdfpi d','dfo sij sdfuohsd opusdh opfisdf',1,1,'2013-04-17 10:43:46',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(6,'Ca devient casse-couilles là...','Cette histoire de redirection après submit','Ca va bien un moment...',2,1,'2013-04-17 10:45:57',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(7,'sdfsd ','sdf sdf ','sdf sdf ',1,1,'2013-04-17 10:46:44',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(8,'Dernier essai de création + redirection après succès...','ou pas','???',2,1,'2013-04-17 10:49:46',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(9,'Boucle forEach sur un resultat SQL',NULL,'blabkjkfsdo jkâzopdjkqs^piojsiopfj sdiofjqp soidfj qsd\r\nfg$sdfgk fpgoj \r\nqsdfp?k \r\nsdf$pk spgiojsdfo jkd$gopd$sfg p\r\nopjazàeiopj sdjaioàzjqdà_çdjpoé\"jd) çéu \"çà&é)éuéi\"ç) éè_\"çà)',1,3,'2013-04-17 10:56:51',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(10,'Création pour test growl',NULL,'Avec succès du message cette fois.',2,3,'2013-04-17 11:16:50',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(11,'Boucle forEach sur un resultat SQL','cxcv','xcvxcv ',2,3,'2013-04-17 11:17:36',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1'),(12,'Avec un sous-titre','histoire de vérifier qu\'on l\'affiche bien derrière','sdfsdf sdf sdf ',2,1,'2013-04-17 11:18:32',NULL,NULL,0,NULL,NULL,NULL,'127.0.0.1');
+INSERT INTO `forum_sujet` VALUES (1,'Un sujet au pif','','Alors que dans la moule d\'argentine la teneur en mouléïte n\'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.',1,2,'2013-03-21 16:13:44',0,0,0,0,0,2,'192.168.1.2'),(2,'Alignement d\'un bloc horizontalement et verticalement','blabla CSS','dfsd f sdf sdfmjsd gp?diogj sd\r\nf$gl ds$fpgojk sdpgl dqf$gpk \r\nsdfôgj d\r\nspgjk sd$pflgjk zàçij p$)àa i =)\r\nkàpf\r\n$ sdlg\r\n sd=$k',1,1,'2013-04-17 10:22:06',0,0,0,0,0,0,'127.0.0.1'),(3,'Balise canvas et jQuery','Mic mac (do)','Rédigez votre message ici',2,1,'2013-04-17 10:40:42',0,0,0,0,0,0,'127.0.0.1'),(4,'test numéro 3','vérif de l\'action','test',2,1,'2013-04-17 10:42:22',0,0,0,0,0,0,'127.0.0.1'),(5,'Blablaz','sodfsdpfij sdfpi d','dfo sij sdfuohsd opusdh opfisdf',1,1,'2013-04-17 10:43:46',0,0,0,0,0,0,'127.0.0.1'),(6,'Ca devient casse-couilles là...','Cette histoire de redirection après submit','Ca va bien un moment...',2,1,'2013-04-17 10:45:57',0,0,0,0,0,0,'127.0.0.1'),(7,'sdfsd ','sdf sdf ','sdf sdf ',1,1,'2013-04-17 10:46:44',0,0,0,0,0,0,'127.0.0.1'),(8,'Dernier essai de création + redirection après succès...','ou pas','???',2,1,'2013-04-17 10:49:46',0,0,0,0,0,0,'127.0.0.1'),(9,'Boucle forEach sur un resultat SQL',NULL,'blabkjkfsdo jkâzopdjkqs^piojsiopfj sdiofjqp soidfj qsd\r\nfg$sdfgk fpgoj \r\nqsdfp?k \r\nsdf$pk spgiojsdfo jkd$gopd$sfg p\r\nopjazàeiopj sdjaioàzjqdà_çdjpoé\"jd) çéu \"çà&é)éuéi\"ç) éè_\"çà)',1,3,'2013-04-17 10:56:51',0,0,0,0,0,0,'127.0.0.1'),(10,'Création pour test growl',NULL,'Avec succès du message cette fois.',2,3,'2013-04-17 11:16:50',0,0,0,0,0,0,'127.0.0.1'),(11,'Boucle forEach sur un resultat SQL','cxcv','xcvxcv ',2,3,'2013-04-17 11:17:36',0,0,0,0,0,0,'127.0.0.1'),(12,'Avec un sous-titre','histoire de vérifier qu\'on l\'affiche bien derrière','sdfsdf sdf sdf ',2,1,'2013-04-17 11:18:32',0,0,0,0,0,0,'127.0.0.1');
 /*!40000 ALTER TABLE `forum_sujet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,4 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-04-19 17:18:20
+-- Dump completed on 2013-04-19 18:31:09
