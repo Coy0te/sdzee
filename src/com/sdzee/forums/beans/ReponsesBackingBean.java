@@ -151,19 +151,21 @@ public class ReponsesBackingBean implements Serializable {
 
     // TODO : refaire ça avec du if(objet instanceOf Reponse)... et ainsi se débarrasser des arguments superflus
 
-    public void voteUp( Membre membre, Reponse reponse ) {
+    public void voteUpReponse( Membre membre, Reponse reponse ) {
         vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_POSITIF, reponse, null );
     }
 
-    public void voteDown( Membre membre, Reponse reponse ) {
+    public void voteDownReponse( Membre membre, Reponse reponse ) {
         vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_NEGATIF, reponse, null );
     }
 
-    /*
-     * public void voteUp( Membre membre, Sujet sujet ) { vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_POSITIF, null, sujet ); }
-     * 
-     * public void voteDown( Membre membre, Sujet sujet ) { vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_NEGATIF, null, sujet ); }
-     */
+    public void voteUpSujet( Membre membre, Sujet sujet ) {
+        vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_POSITIF, null, sujet );
+    }
+
+    public void voteDownSujet( Membre membre, Sujet sujet ) {
+        vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_NEGATIF, null, sujet );
+    }
 
     public List<BreadCrumbItem> getBreadCrumb( Sujet sujet ) {
         String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
