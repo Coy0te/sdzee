@@ -47,19 +47,19 @@ public class Sujet {
     private Timestamp dateCreation;
 
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )
-    private Boolean   ferme;
+    private boolean   ferme         = false;
 
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )
-    private Boolean   sticky;
+    private boolean   sticky        = false;
 
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )
-    private Boolean   resolu;
+    private boolean   resolu        = false;
 
-    private Integer   vues;
+    private Integer   vues          = 0;
 
-    private Integer   votesPositifs;
+    private Integer   votesPositifs = 0;
 
-    private Integer   votesNegatifs;
+    private Integer   votesNegatifs = 0;
 
     @NotNull( message = "{forums.sujet.adresseIP.notnull}" )
     private String    adresseIP;
