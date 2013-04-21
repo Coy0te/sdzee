@@ -16,10 +16,12 @@
 			<ui:param name="logoPage" value="forumSdz"/>
 		</ui:include>
 	</ui:define>
-	<ui:define name="messageBanner" rendered="#{sujet.ferme}">
+	<ui:define name="messageBanner">
+	<ui:fragment rendered="#{sujet.ferme}">
 		<div class="banner">
 			<p class="lock"><span></span>Ce sujet est fermé.</p>
 		</div>
+	</ui:fragment>
 	</ui:define>
 	<ui:define name="body">
 		<h1>
@@ -29,10 +31,12 @@
 			</h:link>
 		</h1>
 		<h2>#{sujet.sousTitre}</h2>
-		<div class="resolved" style="">
+		<ui:fragment rendered="#{sujet.resolu}">
+		<div class="resolved">
             <div class="iconResolved"></div>
             <div>Sujet résolu</div>
         </div>
+		</ui:fragment>
 		<div class="comments">
 			<div class="row" id="op">
 				<div class="userInfos">
