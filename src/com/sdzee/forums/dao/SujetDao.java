@@ -15,9 +15,10 @@ import com.sdzee.forums.entities.Sujet;
 
 @Stateless
 public class SujetDao {
-    private static final String JPQL_LISTE_SUJETS           = "SELECT s FROM Sujet s ORDER BY s.id";
-    private static final String JPQL_LISTE_SUJETS_PAR_FORUM = "SELECT s FROM Sujet s WHERE s.forum=:forum ORDER BY s.id DESC";
-    private static final String PARAM_FORUM                 = "forum";
+    private static final String JPQL_LISTE_SUJETS                    = "SELECT s FROM Sujet s ORDER BY s.id";
+    private static final String JPQL_LISTE_SUJETS_PAR_FORUM          = "SELECT s FROM Sujet s WHERE s.forum=:forum AND s.sticky=false ORDER BY s.id DESC";
+    private static final String JPQL_LISTE_SUJETS_STICKIES_PAR_FORUM = "SELECT s FROM Sujet s WHERE s.forum=:forum AND s.sticky=true ORDER BY s.id DESC";
+    private static final String PARAM_FORUM                          = "forum";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
@@ -68,6 +69,17 @@ public class SujetDao {
     public List<Sujet> lister( Forum forum ) throws DAOException {
         try {
             TypedQuery<Sujet> query = em.createQuery( JPQL_LISTE_SUJETS_PAR_FORUM, Sujet.class );
+            query.setParameter( PARAM_FORUM, forum );
+            return query.getResultList();
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /* Récupération de la liste des sujets marqués "sticky" pour un forum donné */
+    public List<Sujet> listerStickies( Forum forum ) throws DAOException {
+        try {
+            TypedQuery<Sujet> query = em.createQuery( JPQL_LISTE_SUJETS_STICKIES_PAR_FORUM, Sujet.class );
             query.setParameter( PARAM_FORUM, forum );
             return query.getResultList();
         } catch ( Exception e ) {

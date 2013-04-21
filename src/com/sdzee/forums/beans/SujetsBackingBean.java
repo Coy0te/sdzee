@@ -34,6 +34,7 @@ public class SujetsBackingBean implements Serializable {
 
     private Sujet               sujet;
 
+    private Forum               forum                = null;
     private String              queryString;
 
     @EJB
@@ -49,11 +50,15 @@ public class SujetsBackingBean implements Serializable {
     }
 
     public Forum getForum( int forumId ) {
-        return forumDao.trouver( forumId );
+        return forum == null ? forumDao.trouver( forumId ) : forum;
     }
 
     public List<Sujet> getSujets( int forumId ) {
-        return sujetDao.lister( forumDao.trouver( forumId ) );
+        return sujetDao.lister( getForum( forumId ) );
+    }
+
+    public List<Sujet> getSujetsStickies( int forumId ) {
+        return sujetDao.listerStickies( getForum( forumId ) );
     }
 
     public Reponse getDerniereReponse( Sujet sujet ) {

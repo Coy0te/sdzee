@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:uf="http://sdzee.com/functions/functions"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <title>Liste des sujets</title>
+        <h:outputStylesheet library="default" name="css/form.css"  />
+    </h:head>
+    <h:body>
+		<ui:composition>  
+		<li class="read#{sujet.ferme ? ' lock' : ''}">
+            <div class="row">
+               <div class="cell">
+                   <h:panelGroup styleClass="postit" rendered="#{sujet.sticky}"></h:panelGroup>
+                   <h:panelGroup styleClass="lockSecure" rendered="#{sujet.ferme}"></h:panelGroup>
+                   <h:panelGroup styleClass="resolved" rendered="#{sujet.resolu and !sujet.sticky}"></h:panelGroup>
+		     	   <h:link outcome="/sujet">
+		        		<f:param name="sujetId" value="#{sujet.id}" />
+                          <h3>#{sujet.titre}</h3>
+                          <span>Par <strong>#{sujet.auteur.pseudo} </strong> #{uf:convertDateTime(sujet.dateCreation)}</span>
+                   </h:link>
+               </div>
+               <div class="cell">
+			      <p>#{sujetsBean.getDecompteReponses(sujet) + 1} #{sujetsBean.getDecompteReponses(sujet) == 0 ? 'message' : 'messages' }</p>
+			   </div>
+			   <div class="cell">lu/non lu</div>
+               <div class="cell">
+		         <h:link outcome="/sujet">
+		        	<f:param name="sujetId" value="#{sujet.id}" />
+		        	<f:param name="reponseId" value="#{sujetsBean.getDerniereReponse(sujet).id}" />
+	          		Dernier message par
+	          		<strong>#{sujetsBean.getDerniereReponse(sujet) != null ? sujetsBean.getDerniereReponse(sujet).auteur.pseudo : sujet.auteur.pseudo}</strong>
+	        		<br/>
+	        		#{sujetsBean.getDerniereReponse(sujet) != null ? uf:convertDateTime(sujetsBean.getDerniereReponse(sujet).dateCreation) : uf:convertDateTime(sujet.dateCreation)}
+        		 </h:link>
+   			  </div>
+           </div>
+        </li>		
+		</ui:composition>
+    </h:body>
+</html>
