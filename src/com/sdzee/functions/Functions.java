@@ -48,7 +48,8 @@ public final class Functions {
         DateTimeFormatter timeFmt = DateTimeFormat.forPattern( "HH:mm" ).withLocale( locale );
 
         String rendu;
-        if ( period.getDays() > 0 ) {
+        // TODO: réécrire cette méthode un peu plus proprement que ça
+        if ( period.getDays() > 0 || period.getWeeks() > 0 || period.getMonths() > 0 || period.getYears() > 0 ) {
             if ( dateTime.toLocalDate().equals( yesterday.toLocalDate() ) ) {
                 rendu = "Hier à " + dateTime.toString( timeFmt );
             } else {
