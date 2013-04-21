@@ -328,6 +328,48 @@ ul.list li.read div.row:hover div.cell{
 	position: absolute;
 	left: 15px;
 }
+#mainSection div.resolved {
+	background-color: #e5f0cb;
+	height: 40px;
+	line-height: 40px;
+	color: #3b8416;
+	box-shadow: 0 1px 1px #e5e5e5;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	padding-left: 20px;
+}
+#mainSection div.resolved div.iconResolved {
+	background: url(#{resource['default/css/images/sujet_resolu.png']}) no-repeat 0px 5px;
+	width: 40px;
+	height: 40px;
+}
+#mainSection div.resolved div {
+	display: inline-block;
+	vertical-align: top;
+}
+.banner {
+	background-color: #e4e3df;
+	height: 42px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	color: #696969;
+}
+.banner .lock {
+	height: 42px;
+	display: inline-block;
+	line-height: 42px;
+	margin: 0 0 10px;
+}
+.banner .lock span {
+	display: inline-block;
+	background: url(#{resource['default/css/images/sujet_ferme.png']}) no-repeat 0 2px;
+	width: 42px;
+	height: 42px;
+	vertical-align: middle;
+}
 
 #mainHeader #headerBreadcrumb {
 	border-top: 2px solid white;
@@ -393,6 +435,14 @@ section#mainSection h1 {
 section#mainSection h1 a {
 	color: #2e2b2a;
 	text-decoration: none;
+}
+section#mainSection h1+h2 {
+	color: grey;
+	font-size: 14px;
+	margin-bottom: 7px;
+	margin-top: -27px;
+	text-shadow: 0 1px 0 #fff;
+	line-height: 36px;
 }
 
 #mainSection div.comments div.row {
