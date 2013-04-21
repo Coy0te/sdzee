@@ -183,4 +183,12 @@ public class Sujet {
     public void setSousTitre( String sousTitre ) {
         this.sousTitre = sousTitre;
     }
+
+    public boolean isResolu() {
+        return resolu;
+    }
+
+    public void setResolu( boolean resolu ) {
+        this.resolu = resolu;
+    }
 }

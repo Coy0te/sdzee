@@ -300,6 +300,35 @@ ul.list li.read div.row:hover div.cell{
 	text-shadow: 0 1px 0 #fff;
 }
 
+#mainSection ul.list li div span.postit, #mainSection ul.list li div span.resolved {
+	background: url(#{resource['default/css/images/sujet_speciaux.png']}) -45px -2px;
+	display: block;
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	left: -15px;
+	top: 15px;
+}
+#mainSection ul.list li div span.resolved {
+	background-position: -10px -2px;
+}
+#mainSection ul.list li.lock {
+	background: rgba(231,231,219,0.3);
+	color: #696969;
+	position: relative;
+}
+#mainSection ul.list li.lock h3 {
+	padding-left: 8px;
+}
+#mainSection ul.list li.lock span.lockSecure {
+	background: url(#{resource['default/css/images/sujet_speciaux.png']}) -86px 0px;
+	width: 25px;
+	height: 29px;
+	display: block;
+	position: absolute;
+	left: 15px;
+}
+
 #mainHeader #headerBreadcrumb {
 	border-top: 2px solid white;
 	border-bottom: 1px solid white;
