@@ -54,6 +54,7 @@ public class SujetsBackingBean implements Serializable {
     }
 
     public List<Sujet> getSujets( int forumId ) {
+        // TODO: pagination à 25 sujets par page
         return sujetDao.lister( getForum( forumId ) );
     }
 

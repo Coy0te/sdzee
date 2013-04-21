@@ -68,6 +68,7 @@ public class SujetDao {
     /* Récupération de la liste des sujets pour un forum donné */
     public List<Sujet> lister( Forum forum ) throws DAOException {
         try {
+            // TODO: pagination à 25 sujets par page
             TypedQuery<Sujet> query = em.createQuery( JPQL_LISTE_SUJETS_PAR_FORUM, Sujet.class );
             query.setParameter( PARAM_FORUM, forum );
             return query.getResultList();

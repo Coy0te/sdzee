@@ -30,6 +30,7 @@
 			</ui:include>
 		</ui:repeat>
 		</ul>
+		<!-- TODO: Pagination à 25 sujets par page -->
     	<ul class="list">
 		<ui:repeat value="#{sujetsBean.getSujets(param['forumId'])}" var="sujet">
 			<ui:include src="/WEB-INF/snippets/body/inc_sujet.xhtml">
