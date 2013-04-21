@@ -1,5 +1,5 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions"
+				xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_base.xhtml">
 	<f:metadata>
 	    <o:viewParam id="forumId" name="forumId" value="#{sujetsBean.queryString}" />
@@ -30,9 +30,23 @@
 			</ui:include>
 		</ui:repeat>
 		</ul>
-		<!-- TODO: Pagination à 25 sujets par page -->
+		<!-- TODO: N'afficher que le début et la fin de la pagination, et pas l'intégralité des pages... -->
+		<ui:fragment rendered="#{sujetsBean.getNombreDePages(param['forumId']) > 1}">
+		<div class="pagination">
+		<ui:param name="pageParam" value="#{empty param['page'] ? 1 : param['page']}"/>
+		<ui:repeat value="#{of:createArray(sujetsBean.getNombreDePages(param['forumId']))}" varStatus="loop">
+			<h:panelGroup styleClass="current" rendered="#{loop.index + 1 == pageParam}">#{loop.index + 1}</h:panelGroup>
+			<h:link styleClass="paginate page" rendered="#{loop.index + 1 != pageParam}">
+				<f:param name="forumId" value="#{param['forumId']}" />
+				<f:param name="page" value="#{loop.index + 1}" />
+				#{loop.index + 1}
+			</h:link> 
+		</ui:repeat>
+		</div>
+		</ui:fragment>
+		
     	<ul class="list">
-		<ui:repeat value="#{sujetsBean.getSujets(param['forumId'])}" var="sujet">
+		<ui:repeat value="#{sujetsBean.getSujets(param['forumId'], param['page'])}" var="sujet">
 			<ui:include src="/WEB-INF/snippets/body/inc_sujet.xhtml">
 				<ui:param name="sujet" value="#{sujet}"/>
 				<ui:param name="sujetsBean" value="#{sujetsBean}"/>
@@ -45,7 +59,6 @@
 		</h:link>
 		<div id="newThread">
 			<o:form includeViewParams="true" styleClass="formHidden" rendered="#{membre != null}">
-				<p:growl id="growl" showDetail="true" sticky="true" /> 
 				<h2>Créer un sujet</h2>
 				<h:outputLabel for="titre">Titre <span class="requis">*</span></h:outputLabel>
 				<h:inputText id="titre" value="#{sujetsBean.sujet.titre}" maxlength="60" />
@@ -57,7 +70,7 @@
 				<h:inputTextarea id="texte" placeholder="Rédigez votre message ici" value="#{sujetsBean.sujet.texte}" />
 				<p:message id="texteMessage" for="texte" errorClass="erreur" />
 				<div class="rowButton">
-					<h:commandButton value="Envoyer" type="submit" action="#{sujetsBean.creer(membre, sujetsBean.getForum(param['forumId']))}" styleClass="btn btn-primary right-flt" update="growl">
+					<h:commandButton value="Envoyer" type="submit" action="#{sujetsBean.creer(membre, sujetsBean.getForum(param['forumId']))}" styleClass="btn btn-primary right-flt">
 						<f:ajax execute="@form :forumId" render="@form" />
 					</h:commandButton>
 					<h:commandButton value="Aperçu" type="button" styleClass="btn showMarkdownOverview" />

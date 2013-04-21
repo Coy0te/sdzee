@@ -16,6 +16,7 @@ import com.sdzee.forums.entities.Sujet;
 @Stateless
 public class SujetDao {
     private static final String JPQL_LISTE_SUJETS                    = "SELECT s FROM Sujet s ORDER BY s.id";
+    private static final String JPQL_COUNT_SUJETS_PAR_FORUM          = "SELECT COUNT(s) FROM Sujet s WHERE s.forum=:forum AND s.sticky=false";
     private static final String JPQL_LISTE_SUJETS_PAR_FORUM          = "SELECT s FROM Sujet s WHERE s.forum=:forum AND s.sticky=false ORDER BY s.id DESC";
     private static final String JPQL_LISTE_SUJETS_STICKIES_PAR_FORUM = "SELECT s FROM Sujet s WHERE s.forum=:forum AND s.sticky=true ORDER BY s.id DESC";
     private static final String PARAM_FORUM                          = "forum";
@@ -66,15 +67,22 @@ public class SujetDao {
     }
 
     /* Récupération de la liste des sujets pour un forum donné */
-    public List<Sujet> lister( Forum forum ) throws DAOException {
+    public List<Sujet> lister( Forum forum, int numeroPage, int nbSujetsParPage ) throws DAOException {
         try {
-            // TODO: pagination à 25 sujets par page
             TypedQuery<Sujet> query = em.createQuery( JPQL_LISTE_SUJETS_PAR_FORUM, Sujet.class );
-            query.setParameter( PARAM_FORUM, forum );
+            query.setParameter( PARAM_FORUM, forum ).setFirstResult( ( numeroPage - 1 ) * nbSujetsParPage ).setMaxResults( nbSujetsParPage );
             return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );
         }
+    }
+
+    /* Récupération du nombre de pages pour un forum et un nombre de sujets par page donnés */
+    public int getNombreDePages( Forum forum, int nbSujetsParPage ) {
+        Query countSujets = em.createQuery( JPQL_COUNT_SUJETS_PAR_FORUM );
+        countSujets.setParameter( PARAM_FORUM, forum );
+        double count = ( (Long) countSujets.getSingleResult() ).doubleValue();
+        return (int) Math.ceil( count / nbSujetsParPage );
     }
 
     /* Récupération de la liste des sujets marqués "sticky" pour un forum donné */

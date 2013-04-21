@@ -31,10 +31,12 @@ public class SujetsBackingBean implements Serializable {
     private static final long   serialVersionUID     = 1L;
     private static final String HEADER_REQUETE_PROXY = "X-FORWARDED-FOR";
     private static final String URL_PAGE_SUJET       = "/sujet.jsf?sujetId=";
+    private static final int    NB_SUJETS_PAR_PAGE   = 5;
 
     private Sujet               sujet;
 
     private Forum               forum                = null;
+    private Integer             nbPages              = null;
     private String              queryString;
 
     @EJB
@@ -50,12 +52,21 @@ public class SujetsBackingBean implements Serializable {
     }
 
     public Forum getForum( int forumId ) {
-        return forum == null ? forumDao.trouver( forumId ) : forum;
+        if ( forum == null ) {
+            forum = forumDao.trouver( forumId );
+        }
+        return forum;
     }
 
-    public List<Sujet> getSujets( int forumId ) {
-        // TODO: pagination à 25 sujets par page
-        return sujetDao.lister( getForum( forumId ) );
+    public int getNombreDePages( int forumId ) {
+        if ( nbPages == null ) {
+            nbPages = sujetDao.getNombreDePages( getForum( forumId ), NB_SUJETS_PAR_PAGE );
+        }
+        return nbPages;
+    }
+
+    public List<Sujet> getSujets( Integer forumId, Integer numeroPage ) {
+        return sujetDao.lister( getForum( forumId ), numeroPage == null || numeroPage == 0 ? 1 : numeroPage, NB_SUJETS_PAR_PAGE );
     }
 
     public List<Sujet> getSujetsStickies( int forumId ) {

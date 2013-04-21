@@ -371,6 +371,42 @@ ul.list li.read div.row:hover div.cell{
 	vertical-align: middle;
 }
 
+.pagination {
+	margin: 0;
+	height: 25px;
+}
+.pagination span.current {
+	display: inline-block;
+	text-align: center;
+	width: auto;
+	padding: 0 6px;
+	margin: 0 3px 0 0;
+	height: 20px;
+	line-height: 19px;
+	background-color: #eee5d0;
+	color: #696969;
+	border: 1px solid #eee5d0;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	float: none;
+}
+.pagination a.paginate {
+	line-height: 19px;
+	display: inline-block;
+	text-align: center;
+	border: 1px solid #eee5d0;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	height: 20px;
+	float: none;
+	padding: 0 6px;
+	margin: 0 3px 0 0;
+	background: #fff;
+	color: #333!important;
+}
+
 #mainHeader #headerBreadcrumb {
 	border-top: 2px solid white;
 	border-bottom: 1px solid white;
