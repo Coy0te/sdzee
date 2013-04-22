@@ -56,6 +56,10 @@ CREATE TABLE `forum_forum` (
   `description` varchar(255) NOT NULL,
   `categorie` int(11) NOT NULL,
   `dateCreation` datetime NOT NULL,
+  `auth_view` tinyint(1) NOT NULL DEFAULT '0',
+  `auth_post` tinyint(1) NOT NULL DEFAULT '0',
+  `auth_topic` tinyint(1) NOT NULL DEFAULT '0',
+  `auth_modo` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `titre` (`titre`),
   KEY `fk_categorie_forum` (`categorie`),
@@ -69,7 +73,7 @@ CREATE TABLE `forum_forum` (
 
 LOCK TABLES `forum_forum` WRITE;
 /*!40000 ALTER TABLE `forum_forum` DISABLE KEYS */;
-INSERT INTO `forum_forum` VALUES (1,'HTML / CSS','Vos questions sur la réalisation de sites web en HTML et CSS',1,'2013-03-21 16:13:09'),(2,'Javascript','Vos questions à propos de Javascript et AJAX',1,'2013-03-21 16:13:09'),(3,'PHP','Un souci avec le PHP ? Venez demander de l\'aide !',1,'2013-03-21 16:13:09'),(4,'Langage C','Vos questions sur le langage C',2,'2013-03-21 16:13:09'),(5,'Langage C++','Vos questions sur le langage C++',2,'2013-03-21 16:13:09'),(6,'C# .NET & VB .NET','Si vous programmez en C# ou Visual Basic, postez ici !',2,'2013-03-21 16:13:09'),(7,'Langage Java','...',2,'2013-03-21 16:13:09'),(8,'Langage Python','...',2,'2013-03-21 16:13:10'),(9,'Bases de données','...',2,'2013-03-21 16:13:10'),(10,'Mobile','...',2,'2013-03-21 16:13:10'),(11,'Autres langages','',2,'2013-03-21 16:13:10'),(12,'Windows','Un souci avec Windows ? Il y aura quelqu\'un pour vous répondre.',3,'2013-03-21 16:13:10'),(13,'Linux & FreeBSD','Vous avez un problème avec Linux ou FreeBSD ?',3,'2013-03-21 16:13:10'),(14,'Mac OS X','Une question à propos de Mac OS ? Vous êtes au bon endroit !',3,'2013-03-21 16:13:10'),(15,'Graphisme 3D','',4,'2013-03-21 16:13:10'),(16,'Graphisme 2D','',4,'2013-03-21 16:13:10'),(17,'Discussions informatiques','Un problème en informatique ? C\'est par ici que ça se passe !',5,'2013-03-21 16:13:10'),(18,'Choix du matériel & configuration','Vous voulez personnaliser votre configuration ? Par ici !',5,'2013-03-21 16:13:10'),(19,'Problèmes techniques','Un problème matériel ? Posez votre question !',5,'2013-03-21 16:13:10'),(20,'Discussions jeux vidéo','Toutes les discussions autour des jeux vidéo.',6,'2013-03-21 16:13:10'),(21,'Mapping & modding','Des questions sur la création de maps et de mods  ?',6,'2013-03-21 16:13:10');
+INSERT INTO `forum_forum` VALUES (1,'HTML / CSS','Vos questions sur la réalisation de sites web en HTML et CSS',1,'2013-03-21 16:13:09',0,0,0,0),(2,'Javascript','Vos questions à propos de Javascript et AJAX',1,'2013-03-21 16:13:09',0,0,0,0),(3,'PHP','Un souci avec le PHP ? Venez demander de l\'aide !',1,'2013-03-21 16:13:09',0,0,0,0),(4,'Langage C','Vos questions sur le langage C',2,'2013-03-21 16:13:09',0,0,0,0),(5,'Langage C++','Vos questions sur le langage C++',2,'2013-03-21 16:13:09',0,0,0,0),(6,'C# .NET & VB .NET','Si vous programmez en C# ou Visual Basic, postez ici !',2,'2013-03-21 16:13:09',0,0,0,0),(7,'Langage Java','...',2,'2013-03-21 16:13:09',0,0,0,0),(8,'Langage Python','...',2,'2013-03-21 16:13:10',0,0,0,0),(9,'Bases de données','...',2,'2013-03-21 16:13:10',0,0,0,0),(10,'Mobile','...',2,'2013-03-21 16:13:10',0,0,0,0),(11,'Autres langages','',2,'2013-03-21 16:13:10',0,0,0,0),(12,'Windows','Un souci avec Windows ? Il y aura quelqu\'un pour vous répondre.',3,'2013-03-21 16:13:10',0,0,0,0),(13,'Linux & FreeBSD','Vous avez un problème avec Linux ou FreeBSD ?',3,'2013-03-21 16:13:10',0,0,0,0),(14,'Mac OS X','Une question à propos de Mac OS ? Vous êtes au bon endroit !',3,'2013-03-21 16:13:10',0,0,0,0),(15,'Graphisme 3D','',4,'2013-03-21 16:13:10',0,0,0,0),(16,'Graphisme 2D','',4,'2013-03-21 16:13:10',0,0,0,0),(17,'Discussions informatiques','Un problème en informatique ? C\'est par ici que ça se passe !',5,'2013-03-21 16:13:10',0,0,0,0),(18,'Choix du matériel & configuration','Vous voulez personnaliser votre configuration ? Par ici !',5,'2013-03-21 16:13:10',0,0,0,0),(19,'Problèmes techniques','Un problème matériel ? Posez votre question !',5,'2013-03-21 16:13:10',0,0,0,0),(20,'Discussions jeux vidéo','Toutes les discussions autour des jeux vidéo.',6,'2013-03-21 16:13:10',0,0,0,0),(21,'Mapping & modding','Des questions sur la création de maps et de mods  ?',6,'2013-03-21 16:13:10',0,0,0,0);
 /*!40000 ALTER TABLE `forum_forum` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,4 +223,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-04-22 13:02:59
+-- Dump completed on 2013-04-22 14:04:25
