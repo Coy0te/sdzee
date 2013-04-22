@@ -14,9 +14,12 @@ import org.omnifaces.filter.HttpFilter;
 import com.sdzee.membres.entities.Membre;
 
 @WebFilter( "/admin/*" )
+/** 
+ * Filtre de limitation d'accès à l'administration du site
+ */
 public class ConnexionRequiseFilter extends HttpFilter {
     private static final String SESSION_MEMBRE      = "membre";
-    // Rappel: visiteur < inscrit < modo < admin
+    // Rappel: visiteur < membre < staff < admin
     private static final int    DROITS_ADMIN        = 4;
     private static final String PARAM_URL_ORIGINE   = "?urlOrigine=";
     private static final String PAGE_CONNEXION      = "/connexion.jsf";
