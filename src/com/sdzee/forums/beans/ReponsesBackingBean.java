@@ -1,5 +1,6 @@
 package com.sdzee.forums.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,13 +26,16 @@ import com.sdzee.membres.entities.Membre;
 @ManagedBean( name = "reponsesBean" )
 @ViewScoped
 public class ReponsesBackingBean implements Serializable {
-    private static final long   serialVersionUID     = 1L;
-    private static final String HEADER_REQUETE_PROXY = "X-FORWARDED-FOR";
-    private static final String URL_PAGE_FORUM       = "/forum.jsf?forumId=";
-    private static final int    VOTE_POSITIF         = 1;
-    private static final int    VOTE_NEGATIF         = -1;
-    private static final String TYPE_REPONSE         = "reponse";
-    private static final String TYPE_SUJET           = "sujet";
+    private static final long   serialVersionUID          = 1L;
+    private static final String HEADER_REQUETE_PROXY      = "X-FORWARDED-FOR";
+    private static final String URL_PAGE_FORUM            = "/forum.jsf?forumId=";
+    private static final int    VOTE_POSITIF              = 1;
+    private static final int    VOTE_NEGATIF              = -1;
+    private static final String TYPE_REPONSE              = "reponse";
+    private static final String TYPE_SUJET                = "sujet";
+    private static final int    DROITS_REQUIS_SUPPRESSION = 3;
+    private static final int    DROITS_REQUIS_MASQUAGE    = 3;
+    private static final String SESSION_MEMBRE            = "membre";
 
     private Reponse             reponse;
 
@@ -165,6 +169,38 @@ public class ReponsesBackingBean implements Serializable {
 
     public void voteDownSujet( Membre membre, Sujet sujet ) {
         vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_NEGATIF, null, sujet );
+    }
+
+    public void signaler( Reponse reponse ) throws IOException {
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get( SESSION_MEMBRE );
+        if ( membre != null ) {
+            // TODO : créer une table d'alertes ? si oui, le DAO et l'entité qui vont avec.
+            // alerteDao.signaler( reponse );
+        }
+    }
+
+    public void masquer( Reponse reponse ) throws IOException {
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get( SESSION_MEMBRE );
+        if ( membre != null && membre.getDroits() >= DROITS_REQUIS_MASQUAGE ) {
+            reponseDao.supprimer( reponse );
+        }
+    }
+
+    public void supprimer( Reponse reponse ) throws IOException {
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get( SESSION_MEMBRE );
+        if ( membre != null && membre.getDroits() >= DROITS_REQUIS_SUPPRESSION ) {
+            // TODO: implémenter une méthode de masquage, avec un champ supp en BDD ?
+            // reponseDao.masquer( reponse );
+        }
+    }
+
+    public void supprimer( Sujet sujet ) throws IOException {
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get( SESSION_MEMBRE );
+        if ( membre != null && membre.getDroits() >= DROITS_REQUIS_SUPPRESSION ) {
+            // TODO: vérifier que la méthode de suppression du DAO va bien effectuer la suppression du sujet et de toutes ses réponses, par
+            // effet de cascade sur les relations étrangères.
+            sujetDao.supprimer( sujet );
+        }
     }
 
     public List<BreadCrumbItem> getBreadCrumb( Sujet sujet ) {
