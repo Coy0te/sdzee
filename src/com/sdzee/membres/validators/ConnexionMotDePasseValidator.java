@@ -11,6 +11,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
+import org.omnifaces.util.Messages;
 
 import com.sdzee.membres.dao.MembreDao;
 import com.sdzee.membres.entities.Membre;
@@ -29,8 +30,8 @@ public class ConnexionMotDePasseValidator implements Validator {
     @Override
     public void validate( FacesContext context, UIComponent component, Object value ) throws ValidatorException {
         /*
-         * Récupération de l'attribut pseudo parmi la liste des attributs du
-         * composant motDePasse, puis récupération de sa valeur (pseudo saisi)
+         * Récupération de l'attribut pseudo parmi la liste des attributs du composant motDePasse, puis récupération de sa valeur (pseudo
+         * saisi)
          */
         UIInput composantPseudo = (UIInput) component.getAttributes().get( CHAMP_PSEUDO );
         String pseudo = (String) composantPseudo.getValue();
@@ -43,8 +44,8 @@ public class ConnexionMotDePasseValidator implements Validator {
         /* Récupération du membre correspondant au pseudo saisi */
         Membre membreInscrit = membreDao.trouver( "pseudo", pseudo );
         if ( membreInscrit == null ) {
-            throw new ValidatorException(
-                    new FacesMessage( FacesMessage.SEVERITY_ERROR, MAUVAIS_PSEUDO, null ) );
+            Messages.addError( "formulaire:pseudo", MAUVAIS_PSEUDO );
+            throw new ValidatorException( new FacesMessage() ); // message vide car erreur sur le champ pseudo, et pas sur le mdp
         } else if ( !passwordEncryptor.checkPassword( motDePasseEnClair, membreInscrit.getMotDePasse() ) ) {
             throw new ValidatorException(
                     new FacesMessage( FacesMessage.SEVERITY_ERROR, MAUVAIS_MOT_DE_PASSE, null ) );
