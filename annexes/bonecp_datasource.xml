@@ -91,7 +91,7 @@
      <property name="partitionCount" value="1"/>
    
      <!-- Sets the JDBC connection URL. -->
-     <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/bdd_sdzee"/>
+     <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/bdd_sdzee?useUnicode=true&amp;characterEncoding=utf-8"/>
    
      <!-- Sets username to use for connections. -->
      <property name="username" value="java"/>
