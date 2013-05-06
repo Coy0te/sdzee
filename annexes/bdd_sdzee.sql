@@ -24,13 +24,13 @@ DROP TABLE IF EXISTS `forum_categorie`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `forum_categorie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `titre` varchar(60) NOT NULL,
+  `titre` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `dateCreation` datetime NOT NULL,
   `position` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `titre` (`titre`),
   KEY `position_index` (`position`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,8 +52,8 @@ DROP TABLE IF EXISTS `forum_forum`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `forum_forum` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `titre` varchar(60) CHARACTER SET latin1 NOT NULL,
-  `description` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `titre` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `categorie` int(11) NOT NULL,
   `dateCreation` datetime NOT NULL,
   `auth_view` tinyint(1) NOT NULL DEFAULT '0',
@@ -64,7 +64,7 @@ CREATE TABLE `forum_forum` (
   UNIQUE KEY `titre` (`titre`),
   KEY `fk_categorie_forum` (`categorie`),
   CONSTRAINT `fk_categorie_forum` FOREIGN KEY (`categorie`) REFERENCES `forum_categorie` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,17 +88,17 @@ CREATE TABLE `forum_reponse` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `auteur` int(11) NOT NULL,
   `sujet` int(11) NOT NULL,
-  `texte` text CHARACTER SET latin1 NOT NULL,
+  `texte` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `votesPositifs` int(11) NOT NULL DEFAULT '0',
   `votesNegatifs` int(11) NOT NULL DEFAULT '0',
   `dateCreation` datetime NOT NULL,
-  `adresseIP` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `adresseIP` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_auteur_reponse` (`auteur`),
   KEY `fk_sujet_reponse` (`sujet`),
   CONSTRAINT `fk_auteur_reponse` FOREIGN KEY (`auteur`) REFERENCES `membre` (`id`),
   CONSTRAINT `fk_sujet_reponse` FOREIGN KEY (`sujet`) REFERENCES `forum_sujet` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,9 +120,9 @@ DROP TABLE IF EXISTS `forum_sujet`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `forum_sujet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `titre` varchar(60) CHARACTER SET latin1 NOT NULL,
-  `sousTitre` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
-  `texte` text CHARACTER SET latin1 NOT NULL,
+  `titre` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `sousTitre` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `texte` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `auteur` int(11) NOT NULL,
   `forum` int(11) NOT NULL,
   `dateCreation` datetime NOT NULL,
@@ -132,13 +132,13 @@ CREATE TABLE `forum_sujet` (
   `vues` int(11) NOT NULL DEFAULT '0',
   `votesPositifs` int(11) NOT NULL DEFAULT '0',
   `votesNegatifs` int(11) NOT NULL DEFAULT '0',
-  `adresseIP` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `adresseIP` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_auteur_sujet` (`auteur`),
   KEY `fk_forum_sujet` (`forum`),
   CONSTRAINT `fk_auteur_sujet` FOREIGN KEY (`auteur`) REFERENCES `membre` (`id`),
   CONSTRAINT `fk_forum_sujet` FOREIGN KEY (`forum`) REFERENCES `forum_forum` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,12 +161,12 @@ DROP TABLE IF EXISTS `forum_vote`;
 CREATE TABLE `forum_vote` (
   `id_membre` int(11) NOT NULL,
   `id_objet` int(11) NOT NULL,
-  `type_objet` varchar(10) CHARACTER SET latin1 NOT NULL,
+  `type_objet` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `valeur` tinyint(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `id_membre` (`id_membre`,`id_objet`,`type_objet`),
   KEY `fk_membre_vote` (`id_membre`),
   CONSTRAINT `fk_membre_vote` FOREIGN KEY (`id_membre`) REFERENCES `membre` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,20 +188,20 @@ DROP TABLE IF EXISTS `membre`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `membre` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(60) CHARACTER SET latin1 NOT NULL,
-  `motDePasse` varchar(64) CHARACTER SET latin1 NOT NULL,
-  `pseudo` varchar(20) CHARACTER SET latin1 NOT NULL,
-  `prenom` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
-  `nom` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `motDePasse` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `pseudo` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `prenom` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nom` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `dateInscription` datetime NOT NULL,
   `dateDerniereConnexion` datetime DEFAULT NULL,
   `droits` int(2) DEFAULT '1',
-  `avatar` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
-  `signature` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
+  `avatar` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `signature` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `pseudo` (`pseudo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,4 +223,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-05-06 12:00:56
+-- Dump completed on 2013-05-06 15:01:29

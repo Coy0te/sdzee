@@ -17,7 +17,7 @@ caractère en carton (chinois, etc.) fera son apparition !!
 
 DROP DATABASE IF EXISTS bdd_sdzee;
 
-CREATE DATABASE bdd_sdzee DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE bdd_sdzee DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 use bdd_sdzee;
 
 CREATE TABLE  bdd_sdzee.membre (
