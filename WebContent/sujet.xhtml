@@ -51,6 +51,7 @@
 							<f:param name="membreId" value="#{sujet.auteur.id}"/>
 							<h:graphicImage library="default" name="images/membres/#{sujet.auteur.avatar == null ? 'avatar_defaut.png' : sujet.auteur.avatar}" alt="avatar" />
 						</h:link>
+						<p class="adresseIP">#{membre.droits>=3 ? sujet.adresseIP : ''}</p>
 					</div>
 				</div>
 				<div class="comment">
@@ -94,6 +95,7 @@
 							<f:param name="membreId" value="#{reponse.auteur.id}"/>
 							<h:graphicImage library="default" name="images/membres/#{reponse.auteur.avatar == null ? 'avatar_defaut.png' : reponse.auteur.avatar}" alt="avatar" />
 						</h:link>
+						<p class="adresseIP">#{membre.droits>=3 ? reponse.adresseIP : ''}</p>
 					</div>
 				</div>
 				<div class="comment">
