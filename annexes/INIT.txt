@@ -1,3 +1,25 @@
+################################################ UTF-8 ALERT ################################################
+
+Avant de créer la BDD, il faut commencer par s'assurer que l'encoding sous Eclipse est bien "UTF-8" PARTOUT.
+Si ce n'est pas le cas, ça va merder un jour ou l'autre, et ça sera le caca à démerder...
+Bref, bien vérifier que partout où ça parle d'encoding dans les menu Eclipse, c'est précisé "UTF-8".
+
+Vérifier ensuite que GlassFish est bien paramétré (plus précisément, le pool de connexion qui est utilisé), 
+c-a-d que les  paramètres characterEncoding=utf-8 et useUnicode=true sont bien mis en place. 
+Si ce n'est pas le cas, ça ne fonctionnera pas.
+
+Ensuite seulement, on peut attaquer avec sérénité la création de la BDD avec l'encodage UTF-8.
+
+Je répète : s'il manque un seul truc quelque part, c'est foutu et ça va déconner dès qu'un 
+caractère en carton (chinois, etc.) fera son apparition !!
+
+################################################ UTF-8 ALERT ################################################
+
+DROP DATABASE IF EXISTS bdd_sdzee;
+
+CREATE DATABASE bdd_sdzee DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+use bdd_sdzee;
+
 CREATE TABLE  bdd_sdzee.membre (
   id INT( 11 ) NOT NULL AUTO_INCREMENT ,  
   email VARCHAR( 60 ) NOT NULL ,  

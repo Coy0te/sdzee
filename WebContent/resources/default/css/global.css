@@ -514,6 +514,10 @@ section#mainSection h1+h2 {
 	max-width: 80px;
 	max-height: 80px;
 }
+#mainSection div.comments div.row div.avatar p.adresseIP{
+	margin: 0;
+	font-size: 10px;
+}
 #mainSection div.comments div.comment {
 	width: 88%;
 	margin-left: 20px;
