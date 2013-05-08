@@ -132,7 +132,7 @@
 							<f:param name="sujetId" value="#{param['sujetId']}" />
 							#{uf:convertDateTime(reponse.dateCreation)}
 						</h:link>
-						<div class="message">
+						<div class="message" id="msg#{reponse.id}">
 							<p>#{reponse.texte}</p>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
@@ -168,5 +168,7 @@
 	</ui:define>
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+		<h:outputScript library="default" name="js/jquery.js" />
+		<h:outputScript library="default" name="js/forums.js" />
 	</ui:define>
 </ui:composition>
