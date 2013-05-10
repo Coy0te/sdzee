@@ -137,7 +137,7 @@
 							<o:form includeViewParams="true" styleClass="hidden" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
 								<h:inputTextarea placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
 								<h:commandButton value="Éditer" type="submit" action="#{reponsesBean.editer(membre, reponse)}" styleClass="btn btn-primary" />
-								<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview" />
+								<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview cancelEdit" />
 							</o:form>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
