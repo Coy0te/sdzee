@@ -12,28 +12,28 @@
 	</ui:define>
 	<ui:define name="body">
 	  <h1>
-	  	<h:link>Connexion</h:link>
+	  	<h:link>#{i18n.h1Connexion}</h:link>
 	  </h1>
       <h:form id="formulaire">
-		  <h2>Via Facebook ou Google</h2>
+		  <h2>#{i18n.h2ConnexionFacebookGoogle}</h2>
 		  <a id="FbLogin" onclick="window.open('https://www.facebook.com/dialog/oauth?display=popup&amp;redirect_uri=http%3A%2F%2Fwww.siteduzero.com%2Fsocial%2Fregister%2Ffb%2F&amp;response_type=code&amp;client_id=277769842283905&amp;scope=email', 'loginWindow', 'height=400, width=800');">
 			<span></span>
-			Connexion avec votre compte Facebook
+			#{i18n.connexionFacebook}
 		  </a>
 		  <a id="GoogleLogin" onclick="window.open('https://accounts.google.com/o/oauth2/auth?display=popup&amp;redirect_uri=http%3A%2F%2Fwww.siteduzero.com%2Fsocial%2Fregister%2Fgg%2F&amp;response_type=code&amp;client_id=132418960718-jdnmpug3g9e6ub2p41ergcci1492qh82.apps.googleusercontent.com&amp;scope=email', 'loginWindow', 'height=400, width=800');">
 			<span></span>
-			Connexion avec votre compte Google
+			#{i18n.connexionGoogle}
 		  </a>
 		  <div class="clear"></div>
 	      <hr/>
-		  <h2>Via votre compte Site du Zéro</h2>
+		  <h2>#{i18n.h2ConnexionSdZ}</h2>
         	<div class="username">
-	          <h:outputLabel for="pseudo">Pseudo <span class="requis">*</span></h:outputLabel>
+	          <h:outputLabel for="pseudo">#{i18n.labelInputPseudoConnexion} <span class="requis">*</span></h:outputLabel>
 	          <h:inputText id="pseudo" value="#{connecterBean.pseudo}" binding="#{composantPseudo}" maxlength="20" />
 	          <h:message id="pseudoMessage" for="pseudo" errorClass="erreur" />
           </div>
     	  <div class="password">
-	        <h:outputLabel for="motdepasse">Mot de passe <span class="requis">*</span></h:outputLabel>
+	        <h:outputLabel for="motdepasse">#{i18n.labelInputMdpConnexion} <span class="requis">*</span></h:outputLabel>
 	        <h:inputSecret id="motdepasse" value="#{connecterBean.motDePasse}" size="20" maxlength="20">
 	          	<f:attribute name="composantPseudo" value="#{composantPseudo}" />
 	       	    <f:validator binding="#{connexionMotDePasseValidator}" />
@@ -45,16 +45,16 @@
           <h:messages globalOnly="true" infoClass="info" />
           <div class="auto-connection">
 			<h:selectBooleanCheckbox id="connexionAuto" name="connexionAuto" value="#{connecterBean.connexionAuto}" />
-		    <h:outputLabel for="connexionAuto">Connexion automatique</h:outputLabel>
+		    <h:outputLabel for="connexionAuto">#{i18n.labelConnexionAuto}</h:outputLabel>
 		  </div>
 		  <div class="password-forgotten">
-			<h:outputLink href="/reinitialisation/request">Mot de passe oublié ?</h:outputLink>
+			<h:outputLink href="/reinitialisation/request">#{i18n.connexionMdpOublie}</h:outputLink>
 		  </div>
 		  <input type="hidden" name="urlOrigine" value="#{param.urlOrigine}" />
 		  <input type="hidden" name="queryStringOrigine" value="#{param.queryStringOrigine}" />
           <div class="clear"></div>
           <hr/>
-          <h:commandButton styleClass="btn-primary validation_button" value="Connexion" action="#{connecterBean.connecter}">
+          <h:commandButton styleClass="btn-primary validation_button" value="#{i18n.buttonConnexion}" action="#{connecterBean.connecter}">
             <f:ajax execute="@form" render="@form" />
           </h:commandButton>
           <hr/>
@@ -67,7 +67,7 @@
     	  <hr/>
       </h:form>
       <div class="login-aside">
-		<p>* Informations requises</p>
+		<p>* #{i18n.connexionInfosRequises}</p>
 		<h:graphicImage styleClass="zozor_glasses" library="default" name="images/membres/zozor_lunette.png" alt="zozor" />
 	  </div>
       <div class="clear"></div>
