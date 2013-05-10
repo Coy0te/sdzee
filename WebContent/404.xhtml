@@ -13,14 +13,14 @@
 	<div class="row error404">
 		<div id="zozor404"><h:graphicImage styleClass="zozor_img404" library="default" name="images/zozor_404.png" alt="404" /></div>
 		<div id="error404">
-			<h1>Hu hu ! 404 !</h1>
-			<h2>La page que vous cherchez n'existe pas (ou plus).</h2>
+			<h1>#{i18n.h1Recherche404}</h1>
+			<h2>#{i18n.h2Recherche404}</h2>
 			<h:form styleClass="searchForm">
-				<h:outputLabel for="recherche404">Que cherches-tu, explorateur ?</h:outputLabel>
-				<h:inputText id="recherche404" placeholder="Recherche" name="q"/>
+				<h:outputLabel for="recherche404">#{i18n.labelInputRecherche404}</h:outputLabel>
+				<h:inputText id="recherche404" placeholder="#{i18n.placeholderInputRecherche404}" name="q"/>
 				<h:commandButton action="recherche"/>
 			</h:form>
-			<p onclick="history.back()"><span id="css-arrow-big"></span>Retournez à la page précédente</p>
+			<p onclick="history.back()"><span id="css-arrow-big"></span>#{i18n.pagePrecedente404}</p>
 		</div>
 	</div>
 	</ui:define>
