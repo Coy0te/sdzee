@@ -3,7 +3,7 @@
 	  xmlns:uf="http://sdzee.com/functions/functions"> 
     <h:head>
         <meta charset="utf-8" />
-        <title>Liste des sujets</title>
+        <title>#{i18n.pageForumTitre}</title>
         <h:outputStylesheet library="default" name="css/form.css"  />
     </h:head>
     <h:body>
@@ -17,18 +17,18 @@
 		     	   <h:link outcome="/sujet">
 		        		<f:param name="sujetId" value="#{sujet.id}" />
                           <h3>#{sujet.titre}</h3>
-                          <span>Par <strong>#{sujet.auteur.pseudo} </strong> #{uf:convertDateTime(sujet.dateCreation)}</span>
+                          <span>#{i18n.sujetPar} <strong>#{sujet.auteur.pseudo} </strong> #{uf:convertDateTime(sujet.dateCreation)}</span>
                    </h:link>
                </div>
                <div class="cell">
-			      <p>#{sujetsBean.getDecompteReponses(sujet) + 1} #{sujetsBean.getDecompteReponses(sujet) == 0 ? 'message' : 'messages' }</p>
+			      <p>#{sujetsBean.getDecompteReponses(sujet) + 1} #{sujetsBean.getDecompteReponses(sujet) == 0 ? i18n.sujetMessage : i18n.sujetMessages }</p>
 			   </div>
 			   <div class="cell">lu/non lu</div>
                <div class="cell">
 		         <h:link outcome="/sujet">
 		        	<f:param name="sujetId" value="#{sujet.id}" />
 		        	<f:param name="reponseId" value="#{sujetsBean.getDerniereReponse(sujet).id}" />
-	          		Dernier message par
+	          		#{i18n.sujetDernierMessagePar}
 	          		<strong>#{sujetsBean.getDerniereReponse(sujet) != null ? sujetsBean.getDerniereReponse(sujet).auteur.pseudo : sujet.auteur.pseudo}</strong>
 	        		<br/>
 	        		#{sujetsBean.getDerniereReponse(sujet) != null ? uf:convertDateTime(sujetsBean.getDerniereReponse(sujet).dateCreation) : uf:convertDateTime(sujet.dateCreation)}
