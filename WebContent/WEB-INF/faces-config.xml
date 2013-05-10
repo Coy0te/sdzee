@@ -12,7 +12,7 @@
            <default-locale>fr</default-locale>
         </locale-config>
 		<resource-bundle>
-			<base-name>i18n.messages</base-name>
+			<base-name>com.sdzee.tools.UTF8ResourceBundle</base-name>
 			<var>i18n</var>
 		</resource-bundle>
     </application>
