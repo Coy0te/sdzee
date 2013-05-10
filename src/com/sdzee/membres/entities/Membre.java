@@ -1,5 +1,6 @@
 package com.sdzee.membres.entities;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 @Entity
 @Table( name = "membre" )
-public class Membre {
+public class Membre implements Serializable {
     private static final String ALGO_CHIFFREMENT = "SHA-256";
     private static final String REGEX_EMAIL      = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)";
 

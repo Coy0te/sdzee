@@ -10,7 +10,7 @@
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
-			<ui:param name="breadCrumb" value="#{reponsesBean.getBreadCrumb(sujet)}"/>
+			<ui:param name="breadCrumb" value="#{reponsesBean.getBreadCrumb(param['sujetId'])}"/>
 			<ui:param name="titrePage" value="#{i18n.titrePageSujet}"/>
 			<ui:param name="descriptionPage" value="#{i18n.descriptionPageSujet}"/>
 			<ui:param name="logoPage" value="forumSdz"/>
@@ -134,11 +134,11 @@
 						</h:link>
 						<div class="message" id="msg#{reponse.id}">
 							<p>#{reponse.texte}</p>
-							<h:form styleClass="hidden" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
+							<o:form includeViewParams="true" styleClass="hidden" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
 								<h:inputTextarea placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
 								<h:commandButton value="Éditer" type="submit" action="#{reponsesBean.editer(membre, reponse)}" styleClass="btn btn-primary" />
 								<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview" />
-							</h:form>
+							</o:form>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
 							<span class="noVote" style="visibility: #{reponse.votesPositifs > 0 or reponse.votesNegatifs > 0 ? 'visible' : 'visible'};"> 

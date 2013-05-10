@@ -55,11 +55,11 @@
 		</ul>
 		<h:link styleClass="btn btn-primary right-flt createThread" rendered="#{membre != null}">
 			<f:param name="forumId" value="#{param['forumId']}" />
-			Créer un sujet
+			#{i18n.creerSujet}
 		</h:link>
 		<div id="newThread">
 			<o:form includeViewParams="true" styleClass="formHidden" rendered="#{membre != null}">
-				<h2>#{i18n.h2CreerSujet}</h2>
+				<h2>#{i18n.creerSujet}</h2>
 				<h:outputLabel for="titre">#{i18n.labelInputTitreSujet} <span class="requis">*</span></h:outputLabel>
 				<h:inputText id="titre" value="#{sujetsBean.sujet.titre}" maxlength="60" />
 				<p:message id="titreMessage" for="titre" errorClass="erreur" />

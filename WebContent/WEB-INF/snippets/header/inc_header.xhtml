@@ -1,4 +1,5 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:f="http://java.sun.com/jsf/core" xmlns:o="http://omnifaces.org/ui">
 	<div id="mainHeader">
 		<div id="headerTop">
 			<div id="mainMenu" class="largeurLimite">
@@ -28,9 +29,9 @@
 							</div>
 	
 							<h:outputText value="#{membre.pseudo}"/>
-							<h:form>
+							<o:form includeViewParams="true">
 								<h:commandLink value="Déconnexion" action="#{connecterBean.deconnecter}" />
-							</h:form>
+							</o:form>
 							<ui:include src="inc_menu.xhtml" />
 						</div>
 					</h:panelGroup>

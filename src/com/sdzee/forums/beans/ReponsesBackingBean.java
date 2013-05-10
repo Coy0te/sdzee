@@ -212,9 +212,10 @@ public class ReponsesBackingBean implements Serializable {
         }
     }
 
-    public List<BreadCrumbItem> getBreadCrumb( Sujet sujet ) {
+    public List<BreadCrumbItem> getBreadCrumb( int sujetId ) {
         String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
+        Sujet sujet = getSujet( sujetId );
         BreadCrumbHelper.addForumsItem( breadCrumb, chemin, true );
         BreadCrumbHelper.addItem( breadCrumb, sujet.getForum().getTitre(), chemin + URL_PAGE_FORUM
                 + sujet.getForum().getId() );
