@@ -1,12 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
 				template="/WEB-INF/templates/template_base.xhtml">
 	<ui:define name="title">
-		Erreur 404
+		#{i18n.page404Titre}
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
-			<ui:param name="titrePage" value="Erreur 404"/>
-			<ui:param name="descriptionPage" value="Page introuvable !"/>
+			<ui:param name="titrePage" value="#{i18n.titrePage404}"/>
+			<ui:param name="descriptionPage" value="#{i18n.descriptionPage404}"/>
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">

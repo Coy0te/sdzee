@@ -6,13 +6,13 @@
 	    <o:viewParam id="sujetId" name="sujetId" value="#{reponsesBean.queryString}" />
 	</f:metadata>
 	<ui:define name="title">
-		Liste des réponses au sujet
+		#{i18n.pageSujetTitre}
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
 			<ui:param name="breadCrumb" value="#{reponsesBean.getBreadCrumb(sujet)}"/>
-			<ui:param name="titrePage" value="Forums des Zéros"/>
-			<ui:param name="descriptionPage" value="Une question ? Pas de panique, on va vous aider !"/>
+			<ui:param name="titrePage" value="#{i18n.titrePageSujet}"/>
+			<ui:param name="descriptionPage" value="#{i18n.descriptionPageSujet}"/>
 			<ui:param name="logoPage" value="forumSdz"/>
 		</ui:include>
 	</ui:define>
@@ -170,5 +170,8 @@
 		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
 		<h:outputScript library="default" name="js/jquery.js" />
 		<h:outputScript library="default" name="js/forums.js" />
+		<h:outputText value="#{reponsesBean.testDouble}">
+			<f:convertNumber groupingUsed="true" locale="lv" pattern="#,##0.00"/>
+		</h:outputText>
 	</ui:define>
 </ui:composition>

@@ -282,6 +282,9 @@ ul.list li.read div.row:hover div.cell{
 #mainHeader #headerMiddle div.noway {
 	background-position: -568px -6px;
 }
+#mainHeader #headerMiddle div.search {
+	background-position: -735px -6px;
+}
 #mainHeader #headerMiddle h1{
 	margin: 0;
 	line-height: 36px;

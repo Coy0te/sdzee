@@ -11,6 +11,10 @@
         <locale-config>
            <default-locale>fr</default-locale>
         </locale-config>
+		<resource-bundle>
+			<base-name>i18n.messages</base-name>
+			<var>i18n</var>
+		</resource-bundle>
     </application>
     <factory>
         <render-kit-factory>org.omnifaces.renderkit.Html5RenderKitFactory</render-kit-factory>

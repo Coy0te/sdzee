@@ -5,13 +5,13 @@
 	    <o:viewParam id="forumId" name="forumId" value="#{sujetsBean.queryString}" />
 	</f:metadata>
 	<ui:define name="title">
-		Liste des sujets du forum
+		#{i18n.pageForumTitre}
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
 			<ui:param name="breadCrumb" value="#{sujetsBean.getBreadCrumb(param['forumId'])}"/>
-			<ui:param name="titrePage" value="Forums des Zéros"/>
-			<ui:param name="descriptionPage" value="Une question ? Pas de panique, on va vous aider !"/>
+			<ui:param name="titrePage" value="#{i18n.titrePageForum}"/>
+			<ui:param name="descriptionPage" value="#{i18n.descriptionPageForum}"/>
 			<ui:param name="logoPage" value="forumSdz"/>
 		</ui:include>
 	</ui:define>
