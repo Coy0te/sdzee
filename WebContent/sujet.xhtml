@@ -19,7 +19,7 @@
 	<ui:define name="messageBanner">
 	<ui:fragment rendered="#{sujet.ferme}">
 		<div class="banner">
-			<p class="lock"><span></span>Ce sujet est fermé.</p>
+			<p class="lock"><span></span>#{i18n.sujetLocked}</p>
 		</div>
 	</ui:fragment>
 	</ui:define>
@@ -34,7 +34,7 @@
 		<ui:fragment rendered="#{sujet.resolu}">
 		<div class="resolved">
             <div class="iconResolved"></div>
-            <div>Sujet résolu</div>
+            <div>#{i18n.sujetResolu}</div>
         </div>
 		</ui:fragment>
 		<div class="comments">
@@ -103,25 +103,25 @@
 					<ul class="actions">
 						<li>
 							<a class="alertAction" data-toggle="modal" href="#alertActionModal" data-simpleit-alert="/message/alerte/signaler/message/84247162">
-							<span class="actionIcon iconAlert"></span><span class="actionDesc">Signaler</span>
+							<span class="actionIcon iconAlert"></span><span class="actionDesc">#{i18n.sujetMessageSignaler}</span>
 							</a>
 						</li>
 						<li>
 							<a href="#" class="citeAction">
-							<span class="actionIcon iconCite"></span>Citer
+							<span class="actionIcon iconCite"></span>#{i18n.sujetMessageCiter}
 							</a>
 						</li>
 						<ui:fragment rendered="#{membre.droits>=3 or reponse.auteur.pseudo==membre.pseudo}">
 						<li>
 							<a href="/message/editer/84247162" class="editAction">
-							<span class="actionIcon iconEdit"></span>Modifier
+							<span class="actionIcon iconEdit"></span>#{i18n.sujetMessageModifier}
 							</a>
 						</li>
 						</ui:fragment>
 						<ui:fragment rendered="#{membre.droits>=3}">
 						<li>
 							<a class="moderateAction " data-toggle="modal" href="#moderateActionModal" data-simpleit-delete="/message/supprimer/84247162" data-simpleit-moderate="/message/moderer/84247162" data-simpleit-alert="false">
-							<span class="actionIcon iconModerate"></span><span class="actionDesc">Modérer</span>
+							<span class="actionIcon iconModerate"></span><span class="actionDesc">#{i18n.sujetMessageModerer}</span>
 							</a>
 						</li>
 						</ui:fragment>
@@ -156,7 +156,7 @@
 			</ui:repeat>
 		</div>
 		<div id="newComment" class="message">
-			<h2>Répondre au sujet : #{sujet.titre}</h2>
+			<h2>#{i18n.sujetDescriptionRepondre} #{sujet.titre}</h2>
 			<o:form includeViewParams="true" rendered="#{membre != null}">
 				<h:inputTextarea id="texte" placeholder="Rédigez votre réponse ici" value="#{reponsesBean.reponse.texte}" />
 				<h:message id="texteMessage" for="texte" errorClass="erreur" />
