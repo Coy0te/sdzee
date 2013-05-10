@@ -12,10 +12,10 @@
 	</ui:define>
 	<ui:define name="body">
 	  <h1>
-	  	<h:link>Inscription</h:link>
+	  	<h:link>#{i18n.h1Inscription}</h:link>
 	  </h1>
       <h:form id="formulaire">
-	     	<h:outputLabel for="email">Adresse email <span class="requis">*</span></h:outputLabel>
+	     	<h:outputLabel for="email">#{i18n.labelInputEmailInscription} <span class="requis">*</span></h:outputLabel>
 	        <h:inputText id="email" value="#{inscrireBean.membre.email}" size="20" maxlength="60">
 	            <f:ajax event="blur" render="emailMessage" />
 	            <f:validator binding="#{existenceEmailValidator}" />
@@ -23,14 +23,14 @@
 	        <h:message id="emailMessage" for="email" errorClass="erreur" />
 	        <br />
 	
-	        <h:outputLabel for="motdepasse">Mot de passe <span class="requis">*</span></h:outputLabel>
+	        <h:outputLabel for="motdepasse">#{i18n.labelInputMdpInscription} <span class="requis">*</span></h:outputLabel>
 	        <h:inputSecret id="motdepasse" value="#{inscrireBean.membre.motDePasse}" binding="#{composantMotDePasse}" size="20" maxlength="20">
 	       	    <f:ajax event="blur" execute="motdepasse confirmation" render="motDePasseMessage confirmationMessage" />
 	        </h:inputSecret>
 	        <h:message id="motDePasseMessage" for="motdepasse" errorClass="erreur" />
 	        <br />
 	
-	        <h:outputLabel for="confirmation">Confirmation du mot de passe <span class="requis">*</span></h:outputLabel>
+	        <h:outputLabel for="confirmation">#{i18n.labelInputConfirmationInscription} <span class="requis">*</span></h:outputLabel>
 	        <h:inputSecret id="confirmation" value="#{inscrireBean.membre.motDePasse}" size="20" maxlength="20">
    				<f:validator validatorId="confirmationMotDePasseValidator" />
   			    <f:attribute name="composantMotDePasse" value="#{composantMotDePasse}" />
@@ -39,7 +39,7 @@
 	        <h:message id="confirmationMessage" for="confirmation" errorClass="erreur" />
 	        <br />
 	
-	        <h:outputLabel for="pseudo">Pseudo <span class="requis">*</span></h:outputLabel>
+	        <h:outputLabel for="pseudo">#{i18n.labelInputPseudoInscription} <span class="requis">*</span></h:outputLabel>
 	        <h:inputText id="pseudo" value="#{inscrireBean.membre.pseudo}" size="20" maxlength="20">
 	            <f:ajax event="blur" render="pseudoMessage" />
 	            <f:validator binding="#{existencePseudoValidator}" />
