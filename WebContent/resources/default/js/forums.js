@@ -1,8 +1,8 @@
 $(document).ready(function() {	
-	$('#mainSection div.message').click(function(){
-    	if($(this).children( "form" ).length){
-        	$(this).children( "p" ).hide(); 
-        	$(this).children( "form" ).show(); 
+	$('#mainSection a.editAction').click(function(){
+    	if($(this).closest( "div" ).find( "form" ).length){
+    		$(this).closest( "div" ).find( "p" ).hide(); 
+        	$(this).closest( "div" ).find( "form" ).show(); 
     	}
     	return false;
     });//end of $('#mainSection div.message').click()

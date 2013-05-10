@@ -83,10 +83,14 @@ public class ReponsesBackingBean implements Serializable {
 
     public void editer( Membre membre, Reponse reponse ) {
         // TODO: à implémenter
-        try {
-            reponseDao.update( reponse );
-        } catch ( DAOException e ) {
-            // TODO: logger
+        if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == reponse.getAuteur().getPseudo() ) ) {
+            try {
+                reponseDao.update( reponse );
+            } catch ( DAOException e ) {
+                // TODO: logger l'échec de la mise à jour en base de la réponse
+            }
+        } else {
+            // TODO: logger l'intrus qui essaie d'éditer un message sans y être autorisé...
         }
     }
 

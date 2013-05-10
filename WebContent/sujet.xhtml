@@ -81,7 +81,7 @@
 					</div>
 				</div>
 			</div>
-			<ui:repeat value="#{reponsesBean.getReponses(param['sujetId'])}" var="reponse">
+			<ui:repeat value="#{reponsesBean.getReponses(param['sujetId'])}" var="reponse" id="forEach" varStatus="loop">
 			<div class="row">
 				<div class="userInfos">
 					<div class="avatar">
@@ -113,7 +113,7 @@
 						</li>
 						<ui:fragment rendered="#{membre.droits>=3 or reponse.auteur.pseudo==membre.pseudo}">
 						<li>
-							<a href="/message/editer/84247162" class="editAction">
+							<a href="#" class="editAction">
 							<span class="actionIcon iconEdit"></span>#{i18n.sujetMessageModifier}
 							</a>
 						</li>
@@ -133,10 +133,12 @@
 							#{uf:convertDateTime(reponse.dateCreation)}
 						</h:link>
 						<div class="message" id="msg#{reponse.id}">
-							<p>#{reponse.texte}</p>
-							<o:form includeViewParams="true" styleClass="hidden" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
-								<h:inputTextarea placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
-								<h:commandButton value="Éditer" type="submit" action="#{reponsesBean.editer(membre, reponse)}" styleClass="btn btn-primary" />
+							<p><h:outputText value="#{reponse.texte}" /></p>
+							<o:form id="editReponseForm" prependId="false" includeViewParams="true" styleClass="hidden" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
+								<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
+								<h:commandButton id="editAction" value="Éditer" type="submit" action="#{reponsesBean.editer(membre, reponse)}" styleClass="btn btn-primary">
+									<f:ajax execute="@form" render="@form :forEach" />
+								</h:commandButton>
 								<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview cancelEdit" />
 							</o:form>
 						</div>
