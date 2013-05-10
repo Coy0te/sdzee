@@ -134,6 +134,11 @@
 						</h:link>
 						<div class="message" id="msg#{reponse.id}">
 							<p>#{reponse.texte}</p>
+							<h:form styleClass="hidden" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
+								<h:inputTextarea placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
+								<h:commandButton value="Éditer" type="submit" action="#{reponsesBean.editer(membre, reponse)}" styleClass="btn btn-primary" />
+								<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview" />
+							</h:form>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
 							<span class="noVote" style="visibility: #{reponse.votesPositifs > 0 or reponse.votesNegatifs > 0 ? 'visible' : 'visible'};"> 
@@ -158,7 +163,7 @@
 		<div id="newComment" class="message">
 			<h2>#{i18n.sujetDescriptionRepondre} #{sujet.titre}</h2>
 			<o:form includeViewParams="true" rendered="#{membre != null}">
-				<h:inputTextarea id="texte" placeholder="Rédigez votre réponse ici" value="#{reponsesBean.reponse.texte}" />
+				<h:inputTextarea id="texte" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponsesBean.reponse.texte}" />
 				<h:message id="texteMessage" for="texte" errorClass="erreur" />
 				<h:commandButton value="Répondre" type="submit" action="#{reponsesBean.repondre(membre, sujet)}" styleClass="btn btn-primary" />
 				<h:commandButton value="Aperçu" type="button" styleClass="btn showMarkdownOverview" />

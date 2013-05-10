@@ -81,6 +81,15 @@ public class ReponsesBackingBean implements Serializable {
         }
     }
 
+    public void editer( Membre membre, Reponse reponse ) {
+        // TODO: à implémenter
+        try {
+            reponseDao.update( reponse );
+        } catch ( DAOException e ) {
+            // TODO: logger
+        }
+    }
+
     public void vote( Long idMembre, Long idObjet, String typeObjet, int valeur, Reponse reponse, Sujet sujet ) {
         Vote vote = voteDao.trouver( idMembre, idObjet, typeObjet );
         if ( vote == null ) {

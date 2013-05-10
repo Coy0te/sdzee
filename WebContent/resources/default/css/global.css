@@ -31,7 +31,9 @@ legend {
     color: #0568CD;
 }
 
-
+.hidden{
+	display: none;
+}
 .right{
 	float:right;
 }
