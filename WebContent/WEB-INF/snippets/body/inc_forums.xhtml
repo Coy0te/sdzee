@@ -2,25 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"> 
     <h:head>
         <meta charset="utf-8" />
-        <title>Liste des forums</title>
+        <title>#{i18n.categoriesForums}</title>
         <h:outputStylesheet library="default" name="css/form.css"  />
     </h:head>
     <h:body>
 		<ui:composition>  
 		<ui:repeat value="#{forumsBean.getForums(categorie)}" var="forum">
 		<div class="forumCategory">
-	        <h:link outcome="forum">
+	        <h:link outcome="/forum">
 	        	<f:param name="forumId" value="#{forum.id}" />
 	        	<h:graphicImage library="default" name="images/forums/#{forum.id}.png" alt="#{forum.titre}" />
 	        </h:link>
-	        <h:link outcome="forum">
+	        <h:link outcome="/forum">
 	        	<f:param name="forumId" value="#{forum.id}" />
 	            <span class="forumCategoryTitle" title="#{forum.description}">#{forum.titre}</span>
 	            <span class="forumDesc">#{forum.description}</span>
 	    	</h:link>
-	        <h:link outcome="sujet">
+	        <h:link outcome="/sujet">
 	        	<f:param name="sujetId" value="#{forumsBean.getDernierSujet(forum).id}" />
-		        <span class="forumLastMessage">Dernier message :</span>
+		        <span class="forumLastMessage">#{i18n.categoriesForumsDernierMessage}</span>
 		        <span class="forumDesc">#{forumsBean.getDernierSujet(forum).titre}</span>
 		    </h:link>
 		</div>
