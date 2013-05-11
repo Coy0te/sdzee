@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -38,8 +37,9 @@ public class ReponsesBackingBean implements Serializable {
     private static final String SESSION_MEMBRE            = "membre";
 
     private Reponse             reponse;
+    private Sujet               sujet;
 
-    private String              queryString;
+    private int                 sujetId;
 
     @EJB
     private ReponseDao          reponseDao;
@@ -48,9 +48,9 @@ public class ReponsesBackingBean implements Serializable {
     @EJB
     private VoteDao             voteDao;
 
-    @PostConstruct
     public void init() {
         reponse = new Reponse();
+        sujet = sujetDao.trouver( sujetId );
     }
 
     public Sujet getSujet( int sujetId ) {
@@ -81,11 +81,26 @@ public class ReponsesBackingBean implements Serializable {
         }
     }
 
-    public void editer( Membre membre, Reponse reponse ) {
+    public void editerReponse( Membre membre, Reponse reponse ) {
+        System.out.println( ">>>>>>> REPONSE:" + reponse.getTexte() );
         // TODO: à implémenter
         if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == reponse.getAuteur().getPseudo() ) ) {
             try {
                 reponseDao.update( reponse );
+            } catch ( DAOException e ) {
+                // TODO: logger l'échec de la mise à jour en base de la réponse
+            }
+        } else {
+            // TODO: logger l'intrus qui essaie d'éditer un message sans y être autorisé...
+        }
+    }
+
+    public void editerSujet( Membre membre, Sujet sujet ) {
+        System.out.println( ">>>>>>> SUJET:" + sujet.getTexte() );
+        // TODO: à implémenter
+        if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == sujet.getAuteur().getPseudo() ) ) {
+            try {
+                sujetDao.update( sujet );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base de la réponse
             }
@@ -227,19 +242,27 @@ public class ReponsesBackingBean implements Serializable {
         return breadCrumb;
     }
 
-    public String getQueryString() {
-        return queryString;
-    }
-
-    public void setQueryString( String queryString ) {
-        this.queryString = queryString;
-    }
-
     public Reponse getReponse() {
         return reponse;
     }
 
     public void setReponse( Reponse reponse ) {
         this.reponse = reponse;
+    }
+
+    public int getSujetId() {
+        return sujetId;
+    }
+
+    public void setSujetId( int sujetId ) {
+        this.sujetId = sujetId;
+    }
+
+    public Sujet getSujet() {
+        return sujet;
+    }
+
+    public void setSujet( Sujet sujet ) {
+        this.sujet = sujet;
     }
 }

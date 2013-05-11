@@ -1,9 +1,11 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
 				xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_base.xhtml">
-	<ui:param name="sujet" value="#{reponsesBean.getSujet(param['sujetId'])}"/>
 	<f:metadata>
-	    <o:viewParam id="sujetId" name="sujetId" value="#{reponsesBean.queryString}" />
+		<o:viewParam id="sujetId" name="sujetId" value="#{reponsesBean.sujetId}">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<f:event type="preRenderView" listener="#{reponsesBean.init}" />
 	</f:metadata>
 	<ui:define name="title">
 		#{i18n.pageSujetTitre}
@@ -17,7 +19,7 @@
 		</ui:include>
 	</ui:define>
 	<ui:define name="messageBanner">
-	<ui:fragment rendered="#{sujet.ferme}">
+	<ui:fragment rendered="#{reponsesBean.sujet.ferme}">
 		<div class="banner">
 			<p class="lock"><span></span>#{i18n.sujetLocked}</p>
 		</div>
@@ -27,11 +29,11 @@
 		<h1>
 			<h:link>
 				<f:param name="sujetId" value="#{param['sujetId']}" />
-				#{sujet.titre}
+				#{reponsesBean.sujet.titre}
 			</h:link>
 		</h1>
-		<h2>#{sujet.sousTitre}</h2>
-		<ui:fragment rendered="#{sujet.resolu}">
+		<h2>#{reponsesBean.sujet.sousTitre}</h2>
+		<ui:fragment rendered="#{reponsesBean.sujet.resolu}">
 		<div class="resolved">
             <div class="iconResolved"></div>
             <div>#{i18n.sujetResolu}</div>
@@ -43,41 +45,81 @@
 					<div class="avatar">
 						<div class="author">
 							<h:link outcome="/membres">
-								<f:param name="membreId" value="#{sujet.auteur.id}"/>
-								#{sujet.auteur.pseudo}
+								<f:param name="membreId" value="#{reponsesBean.sujet.auteur.id}"/>
+								#{reponsesBean.sujet.auteur.pseudo}
 							</h:link>
 						</div>
 						<h:link outcome="/membres">
-							<f:param name="membreId" value="#{sujet.auteur.id}"/>
-							<h:graphicImage library="default" name="images/membres/#{sujet.auteur.avatar == null ? 'avatar_defaut.png' : sujet.auteur.avatar}" alt="avatar" />
+							<f:param name="membreId" value="#{reponsesBean.sujet.auteur.id}"/>
+							<h:graphicImage library="default" name="images/membres/#{reponsesBean.sujet.auteur.avatar == null ? 'avatar_defaut.png' : reponsesBean.sujet.auteur.avatar}" alt="avatar" />
 						</h:link>
-						<p class="adresseIP">#{membre.droits>=3 ? sujet.adresseIP : ''}</p>
+						<p class="adresseIP">#{membre.droits>=3 ? reponsesBean.sujet.adresseIP : ''}</p>
 					</div>
 				</div>
 				<div class="comment">
+				<ui:fragment rendered="#{membre != null}">
+					<ul class="actions">
+						<li>
+							<a class="alertAction" data-toggle="modal" href="#alertActionModal" data-simpleit-alert="/message/alerte/signaler/message/84247162">
+							<span class="actionIcon iconAlert"></span><span class="actionDesc">#{i18n.sujetMessageSignaler}</span>
+							</a>
+						</li>
+						<li>
+							<a href="#" class="citeAction">
+							<span class="actionIcon iconCite"></span>#{i18n.sujetMessageCiter}
+							</a>
+						</li>
+						<ui:fragment rendered="#{membre.droits>=3 or reponsesBean.sujet.auteur.pseudo==membre.pseudo}">
+						<li>
+							<a href="#" class="editAction">
+							<span class="actionIcon iconEdit"></span>#{i18n.sujetMessageModifier}
+							</a>
+						</li>
+						</ui:fragment>
+						<ui:fragment rendered="#{membre.droits>=3}">
+						<li>
+							<a class="moderateAction " data-toggle="modal" href="#moderateActionModal" data-simpleit-delete="/message/supprimer/84247162" data-simpleit-moderate="/message/moderer/84247162" data-simpleit-alert="false">
+							<span class="actionIcon iconModerate"></span><span class="actionDesc">#{i18n.sujetMessageModerer}</span>
+							</a>
+						</li>
+						</ui:fragment>
+					</ul>
+				</ui:fragment>
 					<div class="content">
 						<h:link class="date">
 							<f:param name="sujetId" value="#{param['sujetId']}" />
-							#{uf:convertDateTime(sujet.dateCreation)}
+							#{uf:convertDateTime(reponsesBean.sujet.dateCreation)}
 						</h:link>
-						<div class="message">
-							<p>#{sujet.texte}</p>
+						<div class="message" id="topic">
+							<o:form id="editSujetForm" prependId="false" includeViewParams="true" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponsesBean.sujet.auteur.pseudo)}">
+								<p><h:outputText value="#{reponsesBean.sujet.texte}" /></p>
+								<h:panelGroup layout="block" styleClass="hidden">
+									<h:inputTextarea id="editSujetArea" placeholder="#{i18n.placeholderTextareaSujet}" value="#{reponsesBean.sujet.texte}" />
+									<h:commandButton id="editSujetAction" value="Éditer" type="submit" action="#{reponsesBean.editerSujet(membre, reponsesBean.sujet)}" styleClass="btn btn-primary">
+										<f:ajax execute="@form" render="@form" />
+									</h:commandButton>
+									<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview cancelEdit" />
+								</h:panelGroup>
+							</o:form>
+							<h:panelGroup rendered="#{membre == null or (membre.droits lt 3 and membre.pseudo != reponsesBean.sujet.auteur.pseudo)}">
+								<p>#{reponsesBean.sujet.texte}</p>
+							</h:panelGroup>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
-							<span class="noVote" style="visibility: #{sujet.votesPositifs > 0 or sujet.votesNegatifs > 0 ? 'visible' : 'visible'};"> 
+							<span class="noVote" style="visibility: #{reponsesBean.sujet.votesPositifs > 0 or reponsesBean.sujet.votesNegatifs > 0 ? 'visible' : 'visible'};"> 
 							<o:form includeViewParams="true" id="voteSujetForm">
-								<span class="votePlus">#{sujet.votesPositifs > 0 ? '+'.concat(sujet.votesPositifs) : ''}</span>
-								<h:commandButton value="+" action="#{reponsesBean.voteUpSujet(membre, sujet)}" styleClass="voteUpAction voteButton">
+								<span class="votePlus">#{reponsesBean.sujet.votesPositifs > 0 ? '+'.concat(reponsesBean.sujet.votesPositifs) : ''}</span>
+								<h:commandButton value="+" action="#{reponsesBean.voteUpSujet(membre, reponsesBean.sujet)}" styleClass="voteUpAction voteButton">
 									<f:ajax execute="@form" render="@form" />
 								</h:commandButton>
-								<span class="voteMoins">#{sujet.votesNegatifs > 0 ? '-'.concat(sujet.votesNegatifs) : ''}</span>
-								<h:commandButton value="-" action="#{reponsesBean.voteDownSujet(membre, sujet)}" styleClass="voteDownAction voteButton">
+								<span class="voteMoins">#{reponsesBean.sujet.votesNegatifs > 0 ? '-'.concat(reponsesBean.sujet.votesNegatifs) : ''}</span>
+								<h:commandButton value="-" action="#{reponsesBean.voteDownSujet(membre, reponsesBean.sujet)}" styleClass="voteDownAction voteButton">
 									<f:ajax execute="@form" render="@form" />
 								</h:commandButton>
 							</o:form>
 							</span> 
 						</h:panelGroup>
-						<div class="signature">#{sujet.auteur.signature}</div>
+						<div class="signature">#{reponsesBean.sujet.auteur.signature}</div>
 					</div>
 				</div>
 			</div>
@@ -137,7 +179,7 @@
 								<p><h:outputText value="#{reponse.texte}" /></p>
 								<h:panelGroup layout="block" styleClass="hidden">
 									<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
-									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{reponsesBean.editer(membre, reponse)}" styleClass="btn btn-primary">
+									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{reponsesBean.editerReponse(membre, reponse)}" styleClass="btn btn-primary">
 										<f:ajax execute="@form" render="@form" />
 									</h:commandButton>
 									<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview cancelEdit" />
