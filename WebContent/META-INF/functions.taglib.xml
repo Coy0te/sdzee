@@ -10,4 +10,9 @@
         <function-class>com.sdzee.functions.Functions</function-class>
         <function-signature>java.lang.String convertDateTime(java.sql.Timestamp)</function-signature>
     </function>
+    <function>
+        <function-name>parseMarkdown</function-name>
+        <function-class>com.sdzee.functions.Functions</function-class>
+        <function-signature>java.lang.String parseMarkdown(java.lang.String)</function-signature>
+    </function>
 </facelet-taglib>

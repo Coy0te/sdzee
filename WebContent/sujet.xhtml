@@ -176,7 +176,7 @@
 						</h:link>
 						<div class="message" id="msg#{reponse.id}">
 							<o:form id="editReponseForm" prependId="false" includeViewParams="true" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
-								<p><h:outputText value="#{reponse.texte}" /></p>
+								<p><h:outputText value="#{uf:parseMarkdown(reponse.texte)}" escape="false" /></p>
 								<h:panelGroup layout="block" styleClass="hidden">
 									<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
 									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{reponsesBean.editerReponse(membre, reponse)}" styleClass="btn btn-primary">
@@ -186,7 +186,7 @@
 								</h:panelGroup>
 							</o:form>
 							<h:panelGroup rendered="#{membre == null or (membre.droits lt 3 and membre.pseudo != reponse.auteur.pseudo)}">
-								<p>#{reponse.texte}</p>
+								<h:outputText value="#{uf:parseMarkdown(reponse.texte)}" escape="false"/>
 							</h:panelGroup>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">

@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.pegdown.PegDownProcessor;
 
 /**
  * Classe finale contenant des fonctions EL personnalisées, utilisables depuis les Facelets en y précisant
@@ -66,6 +67,20 @@ public final class Functions {
             rendu += period.getSeconds() > 1 ? " secondes" : " seconde";
         }
         return rendu;
+    }
+
+    /**
+     * Convertit le texte source contenant des éléments markdown en texte affichable à l'utilisateur.
+     * 
+     * @param texte Le texte source contenant les balises markdown passé depuis l'EL dans la Facelet
+     * @return Une chaîne contenant le texte formaté pour l'affichage à l'utilisateur.
+     * 
+     */
+    public static String parseMarkdown( String texte ) {
+        // TODO: ne pas initialiser un processor à chaque appel... Un seul pour toute l'appli ??
+        PegDownProcessor processor = new PegDownProcessor();
+        texte = processor.markdownToHtml( texte );
+        return texte;
     }
 
 }

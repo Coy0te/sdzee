@@ -31,6 +31,24 @@ legend {
     color: #0568CD;
 }
 
+pre{
+	padding: 2px 4px;
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
+}
+code {
+	padding: 2px 4px;
+	color: #d14;
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
+	white-space: nowrap;
+}
+pre > code {
+	white-space: pre-wrap;
+	border: none;
+}
+
+
 .hidden{
 	display: none;
 }
