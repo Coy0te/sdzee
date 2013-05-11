@@ -96,7 +96,7 @@
 								<h:panelGroup layout="block" styleClass="hidden">
 									<h:inputTextarea id="editSujetArea" placeholder="#{i18n.placeholderTextareaSujet}" value="#{reponsesBean.sujet.texte}" />
 									<h:commandButton id="editSujetAction" value="Éditer" type="submit" action="#{reponsesBean.editerSujet(membre, reponsesBean.sujet)}" styleClass="btn btn-primary">
-										<f:ajax execute="@form" render="@form" />
+										<f:ajax execute="@form" render="@form" onevent="initAllCallback" />
 									</h:commandButton>
 									<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview cancelEdit" />
 								</h:panelGroup>
@@ -180,7 +180,7 @@
 								<h:panelGroup layout="block" styleClass="hidden">
 									<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
 									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{reponsesBean.editerReponse(membre, reponse)}" styleClass="btn btn-primary">
-										<f:ajax execute="@form" render="@form" />
+										<f:ajax execute="@form" render="@form" onevent="initAllCallback" />
 									</h:commandButton>
 									<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview cancelEdit" />
 								</h:panelGroup>
