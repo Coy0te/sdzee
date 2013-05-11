@@ -133,14 +133,19 @@
 							#{uf:convertDateTime(reponse.dateCreation)}
 						</h:link>
 						<div class="message" id="msg#{reponse.id}">
-							<p><h:outputText value="#{reponse.texte}" /></p>
-							<o:form id="editReponseForm" prependId="false" includeViewParams="true" styleClass="hidden" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
-								<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
-								<h:commandButton id="editAction" value="Éditer" type="submit" action="#{reponsesBean.editer(membre, reponse)}" styleClass="btn btn-primary">
-									<f:ajax execute="@form" render="@form :forEach" />
-								</h:commandButton>
-								<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview cancelEdit" />
+							<o:form id="editReponseForm" prependId="false" includeViewParams="true" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
+								<p><h:outputText value="#{reponse.texte}" /></p>
+								<h:panelGroup layout="block" styleClass="hidden">
+									<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
+									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{reponsesBean.editer(membre, reponse)}" styleClass="btn btn-primary">
+										<f:ajax execute="@form" render="@form" />
+									</h:commandButton>
+									<h:commandButton value="Annuler" type="button" styleClass="btn showMarkdownOverview cancelEdit" />
+								</h:panelGroup>
 							</o:form>
+							<h:panelGroup rendered="#{membre == null or (membre.droits lt 3 and membre.pseudo != reponse.auteur.pseudo)}">
+								<p>#{reponse.texte}</p>
+							</h:panelGroup>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
 							<span class="noVote" style="visibility: #{reponse.votesPositifs > 0 or reponse.votesNegatifs > 0 ? 'visible' : 'visible'};"> 
