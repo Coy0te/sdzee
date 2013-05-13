@@ -60,6 +60,10 @@ div.message ul{
 .hidden{
 	display: none;
 }
+.markdownPreview{
+	clear: both;
+	padding-top: 15px;
+}
 .right{
 	float:right;
 }

@@ -82,7 +82,6 @@ public class ReponsesBackingBean implements Serializable {
     }
 
     public void editerReponse( Membre membre, Reponse reponse ) {
-        System.out.println( ">>>>>>> REPONSE:" + reponse.getTexte() );
         // TODO: à implémenter
         if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == reponse.getAuteur().getPseudo() ) ) {
             try {
@@ -96,7 +95,6 @@ public class ReponsesBackingBean implements Serializable {
     }
 
     public void editerSujet( Membre membre, Sujet sujet ) {
-        System.out.println( ">>>>>>> SUJET:" + sujet.getTexte() );
         // TODO: à implémenter
         if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == sujet.getAuteur().getPseudo() ) ) {
             try {

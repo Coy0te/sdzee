@@ -10,7 +10,7 @@ function initAll(){
 		var objet = $(this).closest( "div" ).find( "form" );
     	if(objet.length){
     		objet.find( "div.markdownBody" ).hide(); 
-    		objet.find( "div.hidden" ).show(); 
+    		objet.find( "div.hidden" ).show();
     	}
     	return false;
     });//end of $('#mainSection div.message').click()
