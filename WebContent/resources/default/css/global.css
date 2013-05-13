@@ -1100,7 +1100,7 @@ div.forumCategory {
 	height: 50px;
 	width: 100%;
 	margin: 0px 0px 1em;
-	padding: 2px 0;
+	padding: 0;
 	background: rgb(244, 244, 240);
 	border-bottom: 2px solid rgb(220, 219, 207);
 	border-bottom-left-radius: 3px;
@@ -1124,6 +1124,7 @@ div.forumCategory > a:nth-child(1) > img {
 }
 div.forumCategory > a:nth-child(2) {
 	width: 480px;
+	padding-top: 2px;
 }
 div.forumCategory > a:nth-child(2):hover {
 	background:rgba(219,218,206,0.5);
