@@ -9,16 +9,16 @@ function initAll(){
 		e.preventDefault();
 		var objet = $(this).closest( "div" ).find( "form" );
     	if(objet.length){
-    		objet.find( "p" ).hide(); 
-    		objet.find( "div" ).show(); 
+    		objet.find( "div.markdownBody" ).hide(); 
+    		objet.find( "div.hidden" ).show(); 
     	}
     	return false;
     });//end of $('#mainSection div.message').click()
     
 	$('#mainSection div.message form input.cancelEdit').on( 'click', function(e){ // le on() devrait pas gérer le live/ajax re-render ?
 		e.preventDefault();
-		$(this).parent( "div" ).hide(); 
-        $(this).parent( "div" ).siblings("p").show(); 
+		$(this).parent( "div.hidden" ).hide(); 
+        $(this).parent( "div" ).siblings("div.markdownBody").show(); 
     	return false;
     });//end of $('#mainSection div.message').click()
 }//end of initAll()
