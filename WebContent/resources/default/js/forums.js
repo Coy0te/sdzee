@@ -3,6 +3,8 @@ $(document).ready(function() {
 });//end of $(document).ready(fn)
 
 function initAll(){	
+	styleCode();
+	
 	$('#mainSection a.editAction').click( function(e){
 		e.preventDefault();
 		var objet = $(this).closest( "div" ).find( "form" );
@@ -30,4 +32,28 @@ function initAllCallback(e) {
 	if(e.status == "success") {  
 		initAll();
 	}
+}
+
+
+/*
+ * Repris depuis StackOverflow. Trouve toutes les balises <pre><code> 
+ * dans la page et ajoute le style "prettyprint linenums". Si au moins
+ * une balise est trouvé, alors on fait appel à l'API Google Prettify.
+ */
+function styleCode() 
+{
+ if (typeof disableStyleCode != "undefined") 
+ {
+     return;
+ }
+ var a = false;
+ $("pre code").parent().each(function() 
+ {
+     if (!$(this).hasClass("prettyprint")) 
+     {
+         $(this).addClass("prettyprint linenums");
+         a = true;
+     }
+ });
+ if (a) { prettyPrint(); } 
 }

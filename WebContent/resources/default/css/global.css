@@ -31,19 +31,22 @@ legend {
     color: #0568CD;
 }
 
-pre{
-	padding: 2px 4px;
-	background-color: #f7f7f9;
-	border: 1px solid #e1e1e8;
-}
 code {
+	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 	padding: 2px 4px;
 	color: #d14;
 	background-color: #f7f7f9;
 	border: 1px solid #e1e1e8;
 	white-space: nowrap;
 }
-pre > code {
+code span {
+	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+}
+pre.prettyprint code {
+	background: #f7f7f9;
+	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+	font-size: 12px;
+	line-height: 1.5;
 	white-space: pre-wrap;
 	border: none;
 }
