@@ -94,7 +94,8 @@
 							<o:form id="editSujetForm" prependId="false" includeViewParams="true" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponsesBean.sujet.auteur.pseudo)}">
 								<div class="markdownBody"><h:outputText value="#{uf:parseMarkdown(reponsesBean.sujet.texte)}" escape="false"/></div>
 								<h:panelGroup layout="block" styleClass="hidden">
-									<h:inputTextarea id="editSujetArea" placeholder="#{i18n.placeholderTextareaSujet}" value="#{reponsesBean.sujet.texte}"/>									<h:commandButton id="editSujetAction" value="Éditer" type="submit" action="#{reponsesBean.editerSujet(membre, reponsesBean.sujet)}" styleClass="btn btn-primary">
+									<h:inputTextarea id="editSujetArea" placeholder="#{i18n.placeholderTextareaSujet}" value="#{reponsesBean.sujet.texte}"/>
+									<h:commandButton id="editSujetAction" value="Éditer" type="submit" action="#{reponsesBean.editerSujet(membre, reponsesBean.sujet)}" styleClass="btn btn-primary">
 										<f:ajax execute="@form" render="@form" onevent="initAllCallback" />
 									</h:commandButton>
 									<h:commandButton value="Annuler" type="button" styleClass="btn btn-inverse cancelEdit" />
