@@ -5,7 +5,7 @@
 	    <o:viewParam id="forumId" name="forumId" value="#{sujetsBean.queryString}" />
 	</f:metadata>
 	<ui:define name="title">
-		#{i18n.pageForumTitre}
+		#{sujetsBean.getForum(param['forumId']).titre}
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">

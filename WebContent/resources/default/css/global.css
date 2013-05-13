@@ -1125,6 +1125,12 @@ div.forumCategory > a:nth-child(1) > img {
 div.forumCategory > a:nth-child(2) {
 	width: 480px;
 }
+div.forumCategory > a:nth-child(2):hover {
+	background:rgba(219,218,206,0.5);
+}
+div.forumCategory > a:nth-child(3):hover {
+	background:rgba(219,218,206,0.5);
+}
 div.forumCategory > a > span {
 	display: block;
 	font-size: 14px;
