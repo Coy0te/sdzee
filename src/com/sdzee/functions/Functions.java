@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 
 /**
@@ -78,9 +79,10 @@ public final class Functions {
      */
     public static String parseMarkdown( String texte ) {
         // TODO: ne pas initialiser un processor à chaque appel... Un seul pour toute l'appli ??
-        PegDownProcessor processor = new PegDownProcessor();
+        PegDownProcessor processor = new PegDownProcessor( Extensions.HARDWRAPS + Extensions.AUTOLINKS + Extensions.FENCED_CODE_BLOCKS
+                + Extensions.SUPPRESS_ALL_HTML );
         texte = processor.markdownToHtml( texte );
+
         return texte;
     }
-
 }

@@ -47,6 +47,11 @@ pre > code {
 	white-space: pre-wrap;
 	border: none;
 }
+div.message ul{
+	list-style-type:disc;
+	padding-left: 40px;
+	margin: 1em 0;
+}
 
 
 .hidden{
