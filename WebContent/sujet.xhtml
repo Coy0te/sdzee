@@ -8,7 +8,7 @@
 		<f:event type="preRenderView" listener="#{reponsesBean.init}" />
 	</f:metadata>
 	<ui:define name="title">
-		#{i18n.pageSujetTitre}
+		#{reponsesBean.sujet.resolu ? i18n.titreResolu : '' } #{reponsesBean.sujet.titre}
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
