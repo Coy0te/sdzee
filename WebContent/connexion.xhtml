@@ -29,7 +29,7 @@
 		  <h2>#{i18n.h2ConnexionSdZ}</h2>
         	<div class="username">
 	          <h:outputLabel for="pseudo">#{i18n.labelInputPseudoConnexion} <span class="requis">*</span></h:outputLabel>
-	          <h:inputText id="pseudo" value="#{connecterBean.pseudo}" binding="#{composantPseudo}" maxlength="20" />
+	          <h:inputText id="pseudo" value="#{connecterBean.pseudo}" binding="#{composantPseudo}" maxlength="20" autocomplete="on" />
 	          <h:message id="pseudoMessage" for="pseudo" errorClass="erreur" />
           </div>
     	  <div class="password">
@@ -54,9 +54,7 @@
 		  <input type="hidden" name="queryStringOrigine" value="#{param.queryStringOrigine}" />
           <div class="clear"></div>
           <hr/>
-          <h:commandButton styleClass="btn-primary validation_button" value="#{i18n.connexionButton}" action="#{connecterBean.connecter}">
-            <f:ajax execute="@form" render="@form" />
-          </h:commandButton>
+          <h:commandButton styleClass="btn-primary validation_button" value="#{i18n.connexionButton}" action="#{connecterBean.connecter}"/>
           <hr/>
           <div>
 	          <span id="sdz_create_account"></span>
