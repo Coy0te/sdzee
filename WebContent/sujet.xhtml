@@ -194,17 +194,17 @@
 							<o:form includeViewParams="true" id="voteReponseForm">
 								<span class="votePlus">#{reponse.votesPositifs > 0 ? '+'.concat(reponse.votesPositifs) : ''}</span>
 								<h:commandButton value="+" action="#{reponsesBean.voteUpReponse(membre, reponse)}" styleClass="voteUpAction voteButton">
-									<f:ajax execute="@form" render="@form" />
+									<f:ajax execute="@form" render="@form" onevent="initAllCallback"/>
 								</h:commandButton>
-								<div class="tooltip bottom">
+								<div class="tooltip bottom left40">
 									<div class="tooltip-arrow"></div>
 									<div class="tooltip-inner">#{i18n.descriptionVotePouceEnHaut}</div>
 								</div>
 								<span class="voteMoins">#{reponse.votesNegatifs > 0 ? '-'.concat(reponse.votesNegatifs) : ''}</span>
 								<h:commandButton value="-" action="#{reponsesBean.voteDownReponse(membre, reponse)}" styleClass="voteDownAction voteButton">
-									<f:ajax execute="@form" render="@form" />
+									<f:ajax execute="@form" render="@form" onevent="initAllCallback"/>
 								</h:commandButton>
-								<div class="tooltip bottom">
+								<div class="tooltip bottom left2">
 									<div class="tooltip-arrow"></div>
 									<div class="tooltip-inner">#{i18n.descriptionVotePouceEnBas}</div>
 								</div>

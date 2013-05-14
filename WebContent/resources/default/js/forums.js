@@ -28,9 +28,9 @@ function initAll(){
 		//TODO
 	});//end of $('#mainSection a.citeAction').click()
 	
-	$('#mainSection input.voteButton').mouseover( function(){
+	$('#mainSection input.voteButton').on( 'mouseover', function(){
 		$(this).next( "div.tooltip" ).addClass("in");
-	}).mouseout( function(){
+	}).on( 'mouseout', function(){
 		$(this).next( "div.tooltip" ).removeClass("in");
 	});//end of $('#mainSection input.votebutton').mouseover()
 }//end of initAll()
