@@ -182,23 +182,32 @@ public class ReponsesBackingBean implements Serializable {
     // TODO : refaire ça avec du if(objet instanceOf Reponse)... et ainsi se débarrasser des arguments superflus
 
     public void voteUpReponse( Membre membre, Reponse reponse ) {
-        vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_POSITIF, reponse, null );
+        if ( !membre.getPseudo().equals( reponse.getAuteur().getPseudo() ) ) { // on ne vote pas sur ses propres messages
+            vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_POSITIF, reponse, null );
+        }
     }
 
     public void voteDownReponse( Membre membre, Reponse reponse ) {
-        vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_NEGATIF, reponse, null );
+        if ( !membre.getPseudo().equals( reponse.getAuteur().getPseudo() ) ) {
+            vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_NEGATIF, reponse, null );
+        }
     }
 
     public void voteUpSujet( Membre membre, Sujet sujet ) {
-        vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_POSITIF, null, sujet );
+        if ( !membre.getPseudo().equals( sujet.getAuteur().getPseudo() ) ) {
+            vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_POSITIF, null, sujet );
+        }
     }
 
     public void voteDownSujet( Membre membre, Sujet sujet ) {
-        vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_NEGATIF, null, sujet );
+        if ( !membre.getPseudo().equals( sujet.getAuteur().getPseudo() ) ) {
+            vote( membre.getId(), sujet.getId(), TYPE_SUJET, VOTE_NEGATIF, null, sujet );
+        }
     }
 
     public void signaler( Reponse reponse ) throws IOException {
-        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get( SESSION_MEMBRE );
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
+                .get( SESSION_MEMBRE );
         if ( membre != null ) {
             // TODO : créer une table d'alertes ? si oui, le DAO et l'entité qui vont avec.
             // alerteDao.signaler( reponse );
@@ -206,14 +215,16 @@ public class ReponsesBackingBean implements Serializable {
     }
 
     public void masquer( Reponse reponse ) throws IOException {
-        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get( SESSION_MEMBRE );
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
+                .get( SESSION_MEMBRE );
         if ( membre != null && membre.getDroits() >= DROITS_REQUIS_MASQUAGE ) {
             reponseDao.supprimer( reponse );
         }
     }
 
     public void supprimer( Reponse reponse ) throws IOException {
-        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get( SESSION_MEMBRE );
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
+                .get( SESSION_MEMBRE );
         if ( membre != null && membre.getDroits() >= DROITS_REQUIS_SUPPRESSION ) {
             // TODO: implémenter une méthode de masquage, avec un champ supp en BDD ?
             // reponseDao.masquer( reponse );
@@ -221,7 +232,8 @@ public class ReponsesBackingBean implements Serializable {
     }
 
     public void supprimer( Sujet sujet ) throws IOException {
-        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get( SESSION_MEMBRE );
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
+                .get( SESSION_MEMBRE );
         if ( membre != null && membre.getDroits() >= DROITS_REQUIS_SUPPRESSION ) {
             // TODO: vérifier que la méthode de suppression du DAO va bien effectuer la suppression du sujet et de toutes ses réponses, par
             // effet de cascade sur les relations étrangères.
