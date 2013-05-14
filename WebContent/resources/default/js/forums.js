@@ -18,9 +18,21 @@ function initAll(){
 	$('#mainSection div.message form input.cancelEdit').on( 'click', function(e){ // le on() devrait pas gérer le live/ajax re-render ?
 		e.preventDefault();
 		$(this).parent( "div.hidden" ).hide(); 
-        $(this).parent( "div" ).siblings("div.markdownBody").show(); 
+        $(this).parent( "div" ).siblings( "div.markdownBody" ).show(); 
     	return false;
     });//end of $('#mainSection div.message').click()
+	
+	$('#mainSection a.citeAction').click( function(e){
+		e.preventDefault();
+		var objet = $(this).closest( "div.comment" ).find( "..." );
+		//TODO
+	});//end of $('#mainSection a.citeAction').click()
+	
+	$('#mainSection input.voteButton').mouseover( function(){
+		$(this).next( "div.tooltip" ).addClass("in");
+	}).mouseout( function(){
+		$(this).next( "div.tooltip" ).removeClass("in");
+	});//end of $('#mainSection input.votebutton').mouseover()
 }//end of initAll()
 
 /*

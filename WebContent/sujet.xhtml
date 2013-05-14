@@ -196,10 +196,18 @@
 								<h:commandButton value="+" action="#{reponsesBean.voteUpReponse(membre, reponse)}" styleClass="voteUpAction voteButton">
 									<f:ajax execute="@form" render="@form" />
 								</h:commandButton>
+								<div class="tooltip bottom">
+									<div class="tooltip-arrow"></div>
+									<div class="tooltip-inner">#{i18n.descriptionVotePouceEnHaut}</div>
+								</div>
 								<span class="voteMoins">#{reponse.votesNegatifs > 0 ? '-'.concat(reponse.votesNegatifs) : ''}</span>
 								<h:commandButton value="-" action="#{reponsesBean.voteDownReponse(membre, reponse)}" styleClass="voteDownAction voteButton">
 									<f:ajax execute="@form" render="@form" />
 								</h:commandButton>
+								<div class="tooltip bottom">
+									<div class="tooltip-arrow"></div>
+									<div class="tooltip-inner">#{i18n.descriptionVotePouceEnBas}</div>
+								</div>
 							</o:form>
 							</span> 
 						</h:panelGroup>
