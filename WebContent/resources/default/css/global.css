@@ -527,6 +527,12 @@ section#mainSection h1+h2 {
 #mainSection div.comments div.row:nth-child(even) {
 	background-color: rgba(231,231,219,0.5);
 }
+#mainSection div.comments div.row:nth-child(odd) {
+	-moz-box-shadow: 0 0px 0 0 #fff;
+	-webkit-box-shadow: 0 0px 0 0 #fff;
+	-o-box-shadow: 0 0px 0 0 #fff;
+	box-shadow: 0 0px 0 0 #fff;
+}
 #mainSection div.comments div.row div.userInfos {
 	float: left;
 }
