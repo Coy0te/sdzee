@@ -1,6 +1,6 @@
 package com.sdzee.functions;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
@@ -39,7 +39,7 @@ public final class Functions {
      * @return Une chaîne contenant une durée relative si la date est proche du jour courant, ou la date complète sinon.
      * 
      */
-    public static String convertDateTime( Timestamp date ) {
+    public static String convertDateTime( Date date ) {
         DateTime dateTime = new DateTime( date );
         DateTime today = new DateTime();
         DateTime yesterday = today.minusDays( 1 );

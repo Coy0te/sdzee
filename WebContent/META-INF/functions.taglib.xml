@@ -8,7 +8,7 @@
     <function>
         <function-name>convertDateTime</function-name>
         <function-class>com.sdzee.functions.Functions</function-class>
-        <function-signature>java.lang.String convertDateTime(java.sql.Timestamp)</function-signature>
+        <function-signature>java.lang.String convertDateTime(java.util.Date)</function-signature>
     </function>
     <function>
         <function-name>parseMarkdown</function-name>
