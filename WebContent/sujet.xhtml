@@ -26,6 +26,9 @@
 	</ui:fragment>
 	</ui:define>
 	<ui:define name="body">
+		<o:form includeViewParams="true" styleClass="right" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponsesBean.sujet.auteur.pseudo)}">
+			<h:commandButton value="#{i18n.sujetResolu}" action="#{reponsesBean.resoudreSujet(membre, reponsesBean.sujet)}"/>
+		</o:form>
 		<h1>
 			<h:link>
 				<f:param name="sujetId" value="#{param['sujetId']}" />
@@ -257,6 +260,6 @@
 		<h:outputScript library="default" name="js/jquery.js" />
 		<h:outputScript library="default" name="js/forums.js" />
 		<h:outputScript library="default" name="google-code-prettify/prettify.js" />
-	    <h:outputStylesheet library="default" name="google-code-prettify/prettify.css"  />
+		<h:outputStylesheet library="default" name="google-code-prettify/prettify.css"  />
 	</ui:define>
 </ui:composition>

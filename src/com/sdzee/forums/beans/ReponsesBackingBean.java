@@ -105,7 +105,21 @@ public class ReponsesBackingBean implements Serializable {
                 sujet.setLastEditBy( membre );
                 sujetDao.update( sujet );
             } catch ( DAOException e ) {
-                // TODO: logger l'échec de la mise à jour en base de la réponse
+                // TODO: logger l'échec de la mise à jour en base du sujet
+            }
+        } else {
+            // TODO: logger l'intrus qui essaie d'éditer un message sans y être autorisé...
+        }
+    }
+
+    public void resoudreSujet( Membre membre, Sujet sujet ) {
+        // TODO: à implémenter
+        if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == sujet.getAuteur().getPseudo() ) ) {
+            try {
+                sujet.setResolu( true );
+                sujetDao.update( sujet );
+            } catch ( DAOException e ) {
+                // TODO: logger l'échec de la mise à jour en base du sujet
             }
         } else {
             // TODO: logger l'intrus qui essaie d'éditer un message sans y être autorisé...
