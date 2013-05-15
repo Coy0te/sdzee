@@ -1,6 +1,6 @@
 package com.sdzee.forums.entities;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import com.sdzee.membres.entities.Membre;
@@ -19,30 +21,38 @@ import com.sdzee.membres.entities.Membre;
 public class Reponse {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long      id;
+    private Long    id;
 
     @NotNull( message = "{forums.reponse.auteur.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "auteur" )
-    private Membre    auteur;
+    private Membre  auteur;
 
     @NotNull( message = "{forums.reponse.sujet.notnull}" )
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "sujet" )
-    private Sujet     sujet;
+    private Sujet   sujet;
 
     @NotNull( message = "{forums.reponse.texte.notnull}" )
-    private String    texte;
+    private String  texte;
+
+    @Temporal( TemporalType.TIMESTAMP )
+    private Date    lastEditDate;
+
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "lastEditBy" )
+    private Membre  lastEditBy;
 
     @NotNull( message = "{forums.reponse.dateCreation.notnull}" )
-    private Timestamp dateCreation;
+    @Temporal( TemporalType.TIMESTAMP )
+    private Date    dateCreation;
 
-    private Integer   votesPositifs = 0;
+    private Integer votesPositifs = 0;
 
-    private Integer   votesNegatifs = 0;
+    private Integer votesNegatifs = 0;
 
     @NotNull( message = "{forums.reponse.adresseIP.notnull}" )
-    private String    adresseIP;
+    private String  adresseIP;
 
     public Long getId() {
         return id;
@@ -76,11 +86,11 @@ public class Reponse {
         this.texte = texte;
     }
 
-    public Timestamp getDateCreation() {
+    public Date getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation( Timestamp dateCreation ) {
+    public void setDateCreation( Date dateCreation ) {
         this.dateCreation = dateCreation;
     }
 
@@ -122,5 +132,21 @@ public class Reponse {
 
     public void setAdresseIP( String adresseIP ) {
         this.adresseIP = adresseIP;
+    }
+
+    public Date getLastEditDate() {
+        return lastEditDate;
+    }
+
+    public void setLastEditDate( Date lastEditDate ) {
+        this.lastEditDate = lastEditDate;
+    }
+
+    public Membre getLastEditBy() {
+        return lastEditBy;
+    }
+
+    public void setLastEditBy( Membre lastEditBy ) {
+        this.lastEditBy = lastEditBy;
     }
 }
