@@ -15,7 +15,7 @@ function initAll(){
     	return false;
     });//end of $('#mainSection div.message').click()
     
-	$('#mainSection div.message form input.cancelEdit').on( 'click', function(e){ // le on() devrait pas gérer le live/ajax re-render ?
+	$('#mainSection div.message form input.cancelEdit').on( 'click', function(e){
 		e.preventDefault();
 		$(this).parent( "div.hidden" ).hide(); 
         $(this).parent( "div" ).siblings( "div.markdownBody" ).show(); 

@@ -3,6 +3,7 @@ package com.sdzee.forums.beans;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -85,6 +86,8 @@ public class ReponsesBackingBean implements Serializable {
         // TODO: à implémenter
         if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == reponse.getAuteur().getPseudo() ) ) {
             try {
+                reponse.setLastEditDate( new Date( System.currentTimeMillis() ) );
+                reponse.setLastEditBy( membre );
                 reponseDao.update( reponse );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base de la réponse
@@ -98,6 +101,8 @@ public class ReponsesBackingBean implements Serializable {
         // TODO: à implémenter
         if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == sujet.getAuteur().getPseudo() ) ) {
             try {
+                sujet.setLastEditDate( new Date( System.currentTimeMillis() ) );
+                sujet.setLastEditBy( membre );
                 sujetDao.update( sujet );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base de la réponse

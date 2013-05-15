@@ -79,6 +79,12 @@ div.message ul{
 	clear: both;
 	padding-top: 15px;
 }
+.lastEditDate{
+	text-transform: lowercase;
+}
+.lastEdit{
+	opacity: 0.6;
+}
 .right{
 	float:right;
 }

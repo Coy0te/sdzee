@@ -92,7 +92,12 @@
 						</h:link>
 						<div class="message" id="topic">
 							<o:form id="editSujetForm" prependId="false" includeViewParams="true" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponsesBean.sujet.auteur.pseudo)}">
-								<div class="markdownBody"><h:outputText value="#{uf:parseMarkdown(reponsesBean.sujet.texte)}" escape="false"/></div>
+								<div class="markdownBody">
+									<h:outputText value="#{uf:parseMarkdown(reponsesBean.sujet.texte)}" escape="false"/>
+									<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty reponsesBean.sujet.lastEditBy}">
+										- <br/> #{i18n.lastEditBy} #{reponsesBean.sujet.lastEditBy.pseudo} <span class="lastEditDate">#{uf:convertDateTime(reponsesBean.sujet.lastEditDate)}</span>
+									</h:panelGroup>
+								</div>
 								<h:panelGroup layout="block" styleClass="hidden">
 									<h:inputTextarea id="editSujetArea" placeholder="#{i18n.placeholderTextareaSujet}" value="#{reponsesBean.sujet.texte}"/>
 									<h:commandButton id="editSujetAction" value="Éditer" type="submit" action="#{reponsesBean.editerSujet(membre, reponsesBean.sujet)}" styleClass="btn btn-primary">
@@ -103,6 +108,9 @@
 							</o:form>
 							<h:panelGroup layout="block" styleClass="markdownBody" rendered="#{membre == null or (membre.droits lt 3 and membre.pseudo != reponsesBean.sujet.auteur.pseudo)}">
 								<h:outputText value="#{uf:parseMarkdown(reponsesBean.sujet.texte)}" escape="false"/>
+								<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty reponsesBean.sujet.lastEditBy}">
+									- <br/> #{i18n.lastEditBy} #{reponsesBean.sujet.lastEditBy.pseudo} <span class="lastEditDate">#{uf:convertDateTime(reponsesBean.sujet.lastEditDate)}</span>
+								</h:panelGroup>
 							</h:panelGroup>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
@@ -110,12 +118,20 @@
 							<o:form includeViewParams="true" id="voteSujetForm">
 								<span class="votePlus">#{reponsesBean.sujet.votesPositifs > 0 ? '+'.concat(reponsesBean.sujet.votesPositifs) : ''}</span>
 								<h:commandButton value="+" action="#{reponsesBean.voteUpSujet(membre, reponsesBean.sujet)}" styleClass="voteUpAction voteButton">
-									<f:ajax execute="@form" render="@form" />
+									<f:ajax execute="@form" render="@form" onevent="initAllCallback"/>
 								</h:commandButton>
+								<div class="tooltip bottom left40">
+									<div class="tooltip-arrow"></div>
+									<div class="tooltip-inner">#{i18n.descriptionVotePouceEnHaut}</div>
+								</div>
 								<span class="voteMoins">#{reponsesBean.sujet.votesNegatifs > 0 ? '-'.concat(reponsesBean.sujet.votesNegatifs) : ''}</span>
 								<h:commandButton value="-" action="#{reponsesBean.voteDownSujet(membre, reponsesBean.sujet)}" styleClass="voteDownAction voteButton">
-									<f:ajax execute="@form" render="@form" />
+									<f:ajax execute="@form" render="@form" onevent="initAllCallback"/>
 								</h:commandButton>
+								<div class="tooltip bottom left2">
+									<div class="tooltip-arrow"></div>
+									<div class="tooltip-inner">#{i18n.descriptionVotePouceEnBas}</div>
+								</div>
 							</o:form>
 							</span> 
 						</h:panelGroup>
@@ -176,7 +192,12 @@
 						</h:link>
 						<div class="message" id="msg#{reponse.id}">
 							<o:form id="editReponseForm" prependId="false" includeViewParams="true" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponse.auteur.pseudo)}">
-								<div class="markdownBody"><h:outputText value="#{uf:parseMarkdown(reponse.texte)}" escape="false" /></div>
+								<div class="markdownBody">
+									<h:outputText value="#{uf:parseMarkdown(reponse.texte)}" escape="false" />
+									<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty reponse.lastEditBy}">
+										- <br/> #{i18n.lastEditBy} #{reponse.lastEditBy.pseudo} <span class="lastEditDate">#{uf:convertDateTime(reponse.lastEditDate)}</span>
+									</h:panelGroup>
+								</div>
 								<h:panelGroup layout="block" styleClass="hidden">
 									<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponse.texte}" />
 									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{reponsesBean.editerReponse(membre, reponse)}" styleClass="btn btn-primary">
@@ -187,6 +208,9 @@
 							</o:form>
 							<h:panelGroup layout="block" syleClass="markdownBody" rendered="#{membre == null or (membre.droits lt 3 and membre.pseudo != reponse.auteur.pseudo)}">
 								<h:outputText value="#{uf:parseMarkdown(reponse.texte)}" escape="false"/>
+								<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty reponse.lastEditBy}">
+									- <br/> #{i18n.lastEditBy} #{reponse.lastEditBy.pseudo} <span class="lastEditDate">#{uf:convertDateTime(reponse.lastEditDate)}</span>
+								</h:panelGroup>
 							</h:panelGroup>
 						</div>
 						<h:panelGroup styleClass="commentVote" rendered="#{membre != null}">
@@ -222,7 +246,7 @@
 			<o:form includeViewParams="true" rendered="#{membre != null}">
 				<h:inputTextarea id="texte" placeholder="#{i18n.placeholderTextareaReponse}" value="#{reponsesBean.reponse.texte}" />
 				<h:message id="texteMessage" for="texte" errorClass="erreur" />
-				<h:commandButton value="Répondre" type="submit" action="#{reponsesBean.repondre(membre, sujet)}" styleClass="btn btn-primary" />
+				<h:commandButton value="Répondre" type="submit" action="#{reponsesBean.repondre(membre, reponsesBean.sujet)}" styleClass="btn btn-primary" />
 				<h:commandButton value="Aperçu" type="button" styleClass="btn showMarkdownOverview" />
 				<h:commandButton value="Message semi-auto" type="button" styleClass="btn btn-inverse" rendered="#{membre.droits>=3}"/>
 			</o:form>

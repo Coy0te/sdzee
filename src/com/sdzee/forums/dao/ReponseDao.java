@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 
 import com.sdzee.dao.DAOException;
 import com.sdzee.forums.entities.Reponse;
@@ -27,7 +28,10 @@ public class ReponseDao {
     public void creer( Reponse reponse ) throws DAOException {
         try {
             em.persist( reponse );
+        } catch ( ConstraintViolationException e ) {
+            // TODO: logger
         } catch ( Exception e ) {
+            e.printStackTrace();
             throw new DAOException( e );
         }
     }
