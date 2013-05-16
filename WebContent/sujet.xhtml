@@ -120,7 +120,7 @@
 									- <br/> #{i18n.lastEditBy} #{reponsesBean.sujet.lastEditBy.pseudo} <span class="lastEditDate">#{uf:convertDateTime(reponsesBean.sujet.lastEditDate)}</span>
 								</h:panelGroup>
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="bruteMarkdownBody">
+							<h:panelGroup layout="block" styleClass="bruteMarkdownBody" rendered="#{membre != null}">
 								#{reponsesBean.sujet.texte}
 							</h:panelGroup>
 						</div>
@@ -223,7 +223,7 @@
 									- <br/> #{i18n.lastEditBy} #{reponse.lastEditBy.pseudo} <span class="lastEditDate">#{uf:convertDateTime(reponse.lastEditDate)}</span>
 								</h:panelGroup>
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="bruteMarkdownBody">
+							<h:panelGroup layout="block" styleClass="bruteMarkdownBody" rendered="#{membre != null}">
 								#{reponse.texte}
 							</h:panelGroup>
 						</div>
