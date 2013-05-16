@@ -22,9 +22,9 @@ function initAll(){
     	return false;
     });//end of $('#mainSection div.message').click()
 	
-	$('#mainSection a.citeAction').click( function(e){
-		e.preventDefault();
-		var objet = $(this).closest( "div.comment" ).find( "..." );
+	$('#mainSection a.citeAction').click( function(){
+		var texteBrut = $(this).closest( "div.comment" ).find( "div.bruteMarkdownBody" ).html();
+		$('#texte').val( $('#texte').val() + $.trim(texteBrut) );
 		//TODO
 	});//end of $('#mainSection a.citeAction').click()
 	

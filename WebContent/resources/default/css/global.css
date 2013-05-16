@@ -100,7 +100,7 @@ input.resoudreSujet:hover{
 input.sujetResolu{
 	opacity: 1;
 }
-.hidden{
+.hidden, .bruteMarkdownBody{
 	display: none;
 }
 .markdownPreview{
