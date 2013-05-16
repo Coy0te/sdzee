@@ -27,7 +27,7 @@
 	</ui:define>
 	<ui:define name="body">
 		<o:form includeViewParams="true" styleClass="right" rendered="#{membre != null and (membre.droits>=3 or membre.pseudo == reponsesBean.sujet.auteur.pseudo)}">
-			<h:commandButton value="#{i18n.sujetResolu}" action="#{reponsesBean.resoudreSujet(membre, reponsesBean.sujet)}"/>
+			<h:commandButton value="#{reponsesBean.sujet.resolu ? i18n.boutonSujetResolu  : i18n.boutonResoudreSujet}" action="#{reponsesBean.resoudreSujet(membre, reponsesBean.sujet)}" styleClass="#{reponsesBean.sujet.resolu ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
 		</o:form>
 		<h1>
 			<h:link>

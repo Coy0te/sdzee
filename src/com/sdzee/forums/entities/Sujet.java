@@ -114,19 +114,19 @@ public class Sujet {
         this.dateCreation = dateCreation;
     }
 
-    public Boolean getFerme() {
+    public boolean isFerme() {
         return ferme;
     }
 
-    public void setFerme( Boolean ferme ) {
+    public void setFerme( boolean ferme ) {
         this.ferme = ferme;
     }
 
-    public Boolean getSticky() {
+    public boolean isSticky() {
         return sticky;
     }
 
-    public void setSticky( Boolean sticky ) {
+    public void setSticky( boolean sticky ) {
         this.sticky = sticky;
     }
 

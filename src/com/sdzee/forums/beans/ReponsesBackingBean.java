@@ -113,16 +113,15 @@ public class ReponsesBackingBean implements Serializable {
     }
 
     public void resoudreSujet( Membre membre, Sujet sujet ) {
-        // TODO: à implémenter
         if ( membre != null && ( membre.getDroits() >= 3 || membre.getPseudo() == sujet.getAuteur().getPseudo() ) ) {
             try {
-                sujet.setResolu( true );
+                sujet.setResolu( sujet.isResolu() ? false : true );
                 sujetDao.update( sujet );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du sujet
             }
         } else {
-            // TODO: logger l'intrus qui essaie d'éditer un message sans y être autorisé...
+            // TODO: logger l'intrus qui essaie de résoudre un message sans y être autorisé...
         }
     }
 
