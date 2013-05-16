@@ -30,12 +30,12 @@
 			<h:commandButton value="#{reponsesBean.sujet.resolu ? i18n.boutonSujetResolu  : i18n.boutonResoudreSujet}" action="#{reponsesBean.resoudreSujet(membre, reponsesBean.sujet)}" styleClass="#{reponsesBean.sujet.resolu ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
 		</o:form>
 		<h1>
-			<h:link>
+			<h:link id="topicTitle">
 				<f:param name="sujetId" value="#{param['sujetId']}" />
 				#{reponsesBean.sujet.titre}
 			</h:link>
 		</h1>
-		<h2>#{reponsesBean.sujet.sousTitre}</h2>
+		<h2><h:panelGroup id="topicSubTitle">#{reponsesBean.sujet.sousTitre}</h:panelGroup></h2>
 		<ui:fragment rendered="#{reponsesBean.sujet.resolu}">
 		<div class="resolved">
             <div class="iconResolved"></div>
@@ -102,9 +102,14 @@
 									</h:panelGroup>
 								</div>
 								<h:panelGroup layout="block" styleClass="hidden">
+									<h:outputLabel for="editTitre">#{i18n.labelInputTitreSujet} </h:outputLabel>
+									<h:inputText id="editTitre" value="#{reponsesBean.sujet.titre}" maxlength="60" />
+									<h:outputLabel for="editSousTitre">#{i18n.labelInputSousTitreSujet}</h:outputLabel>
+									<h:inputText id="editSousTitre" value="#{reponsesBean.sujet.sousTitre}" maxlength="80" />
+									<h:outputLabel for="editSujetArea">#{i18n.labelInputMessageSujet} </h:outputLabel>
 									<h:inputTextarea id="editSujetArea" placeholder="#{i18n.placeholderTextareaSujet}" value="#{reponsesBean.sujet.texte}"/>
 									<h:commandButton id="editSujetAction" value="Éditer" type="submit" action="#{reponsesBean.editerSujet(membre, reponsesBean.sujet)}" styleClass="btn btn-primary">
-										<f:ajax execute="@form" render="@form" onevent="initAllCallback" />
+										<f:ajax execute="@form" render="@form :topicTitle :topicSubTitle" onevent="initAllCallback" />
 									</h:commandButton>
 									<h:commandButton value="Annuler" type="button" styleClass="btn btn-inverse cancelEdit" />
 								</h:panelGroup>
