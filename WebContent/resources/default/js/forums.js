@@ -23,9 +23,11 @@ function initAll(){
     });//end of $('#mainSection div.message').click()
 	
 	$('#mainSection a.citeAction').click( function(){
-		var texteBrut = $(this).closest( "div.comment" ).find( "div.bruteMarkdownBody" ).html();
-		$('#texte').val( $('#texte').val() + $.trim(texteBrut) );
-		//TODO
+		var texteBrut = $.trim( $(this).closest( "div.comment" ).find( "div.bruteMarkdownBody" ).html() );
+		var auteur = $.trim( $(this).closest( "div.row" ).find( "div.author a" ).html() );
+		texteBrut = '>'+texteBrut.replace(/\n/g,"\n>");
+		$('#texte').val( $('#texte').val() + '\n**' + auteur + ' a écrit :**\n' );
+		$('#texte').val( $('#texte').val() + texteBrut );
 	});//end of $('#mainSection a.citeAction').click()
 	
 	$('#mainSection input.voteButton').on( 'mouseover', function(){
