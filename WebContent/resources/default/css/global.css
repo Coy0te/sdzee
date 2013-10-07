@@ -149,7 +149,7 @@ ul.list li.read div.row:hover div.cell{
 
 /* Layout -------------------------------------------------------------------------------------- */
 .largeurLimite{
-	width: 955px;
+	width: 95%;
 	margin: auto;
 }
 #mainHeader{
