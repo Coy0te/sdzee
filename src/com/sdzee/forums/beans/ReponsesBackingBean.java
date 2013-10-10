@@ -3,6 +3,7 @@ package com.sdzee.forums.beans;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,9 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
+import com.sdzee.forums.dao.BookmarkDao;
+import com.sdzee.forums.dao.NotificationDao;
 import com.sdzee.forums.dao.ReponseDao;
 import com.sdzee.forums.dao.SujetDao;
 import com.sdzee.forums.dao.VoteDao;
+import com.sdzee.forums.entities.Bookmark;
+import com.sdzee.forums.entities.Notification;
 import com.sdzee.forums.entities.Reponse;
 import com.sdzee.forums.entities.Sujet;
 import com.sdzee.forums.entities.Vote;
@@ -48,10 +53,21 @@ public class ReponsesBackingBean implements Serializable {
     private SujetDao            sujetDao;
     @EJB
     private VoteDao             voteDao;
+    @EJB
+    private BookmarkDao         bookmarkDao;
+    @EJB
+    private NotificationDao     notificationDao;
 
     public void init() {
         reponse = new Reponse();
         sujet = sujetDao.trouver( sujetId );
+        // On vérifie si le visiteur est connecté
+        Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
+                .get( SESSION_MEMBRE );
+        if ( membre != null ) {
+            // Si oui, alors on supprime l'éventuelle notification associée au sujet qu'il parcours
+            notificationDao.supprimer( membre.getId(), Long.valueOf( sujetId ) );
+        }
     }
 
     public Sujet getSujet( int sujetId ) {
@@ -74,11 +90,34 @@ public class ReponsesBackingBean implements Serializable {
         reponse.setDateCreation( new Timestamp( System.currentTimeMillis() ) );
         reponse.setAuteur( membre );
         reponse.setSujet( sujet );
+
         try {
             reponseDao.creer( reponse );
+            // Ajout auto d'un bookmark sur le sujet pour l'auteur de la réponse
+            Bookmark bookmark = new Bookmark();
+            bookmark.setIdMembre( membre.getId() );
+            bookmark.setIdSujet( sujet.getId() );
+            bookmarkDao.creer( bookmark );
+
+            // Ajout en série de notifications aux membres qui suivent le sujet
+            List<Bookmark> bookmarks = bookmarkDao.lister( sujet );
+            if ( bookmarks == null ) {
+                bookmarks = new ArrayList<Bookmark>();
+            }
+            Notification notification;
+            for ( Bookmark item : bookmarks ) {
+                if ( item.getIdMembre() != membre.getId() ) { // On ne se notifie pas de sa propre réponse...
+                    notification = new Notification();
+                    notification.setIdMembre( item.getIdMembre() );
+                    notification.setIdSujet( item.getIdSujet() );
+                    notification.setReponse( reponse );
+                    notificationDao.creer( notification ); // Rien ne sera créé s'il existe déjà une notification, voir implémentation DAO.
+                }
+            }
             reponse = null;
         } catch ( DAOException e ) {
-            // TODO: logger
+            // TODO: logger l'échec de la création d'une réponse
+            e.printStackTrace();
         }
     }
 
@@ -93,7 +132,8 @@ public class ReponsesBackingBean implements Serializable {
                 // TODO: logger l'échec de la mise à jour en base de la réponse
             }
         } else {
-            // TODO: logger l'intrus qui essaie d'éditer un message sans y être autorisé...
+            // TODO: logger l'intrus qui essaie d'éditer un message sans y être
+            // autorisé...
         }
     }
 
@@ -108,7 +148,8 @@ public class ReponsesBackingBean implements Serializable {
                 // TODO: logger l'échec de la mise à jour en base du sujet
             }
         } else {
-            // TODO: logger l'intrus qui essaie d'éditer un message sans y être autorisé...
+            // TODO: logger l'intrus qui essaie d'éditer un message sans y être
+            // autorisé...
         }
     }
 
@@ -121,7 +162,8 @@ public class ReponsesBackingBean implements Serializable {
                 // TODO: logger l'échec de la mise à jour en base du sujet
             }
         } else {
-            // TODO: logger l'intrus qui essaie de résoudre un message sans y être autorisé...
+            // TODO: logger l'intrus qui essaie de résoudre un message sans y
+            // être autorisé...
         }
     }
 
@@ -135,7 +177,8 @@ public class ReponsesBackingBean implements Serializable {
             vote.setTypeObjet( typeObjet );
             vote.setValeur( valeur );
             voteDao.creer( vote );
-            // il faut ensuite MAJ le compteur dénormalisé sur la table réponse ou sujet
+            // il faut ensuite MAJ le compteur dénormalisé sur la table réponse
+            // ou sujet
             if ( valeur > 0 ) {
                 if ( TYPE_REPONSE.equals( typeObjet ) ) {
                     reponse.addVotePositif();
@@ -154,7 +197,8 @@ public class ReponsesBackingBean implements Serializable {
                 }
             }
         } else if ( vote.getValeur() == valeur ) {
-            // le membre avait déjà effectué le même vote, donc c'est un re-clic et il faut annuler son précédent vote
+            // le membre avait déjà effectué le même vote, donc c'est un re-clic
+            // et il faut annuler son précédent vote
             voteDao.supprimer( vote );
             if ( TYPE_REPONSE.equals( typeObjet ) ) {
                 if ( valeur > 0 ) {
@@ -172,9 +216,11 @@ public class ReponsesBackingBean implements Serializable {
                 sujetDao.update( sujet );
             }
         } else {
-            // le membre avait déjà voté, mais différemment, donc il faut remplacer son ancien vote
+            // le membre avait déjà voté, mais différemment, donc il faut
+            // remplacer son ancien vote
             vote.setValeur( valeur );
-            voteDao.update( vote ); // TODO : nécessaire ou pas ? Si l'entité vote n'est pas détachée...
+            voteDao.update( vote ); // TODO : nécessaire ou pas ? Si l'entité
+                                    // vote n'est pas détachée...
             if ( TYPE_REPONSE.equals( typeObjet ) ) {
                 if ( valeur > 0 ) {
                     reponse.removeVoteNegatif();
@@ -197,10 +243,18 @@ public class ReponsesBackingBean implements Serializable {
         }
     }
 
-    // TODO : refaire ça avec du if(objet instanceOf Reponse)... et ainsi se débarrasser des arguments superflus
+    // TODO : refaire ça avec du if(objet instanceOf Reponse)... et ainsi se
+    // débarrasser des arguments superflus
 
     public void voteUpReponse( Membre membre, Reponse reponse ) {
-        if ( !membre.getPseudo().equals( reponse.getAuteur().getPseudo() ) ) { // on ne vote pas sur ses propres messages
+        if ( !membre.getPseudo().equals( reponse.getAuteur().getPseudo() ) ) { // on
+                                                                               // ne
+                                                                               // vote
+                                                                               // pas
+                                                                               // sur
+                                                                               // ses
+                                                                               // propres
+                                                                               // messages
             vote( membre.getId(), reponse.getId(), TYPE_REPONSE, VOTE_POSITIF, reponse, null );
         }
     }
@@ -227,7 +281,8 @@ public class ReponsesBackingBean implements Serializable {
         Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
                 .get( SESSION_MEMBRE );
         if ( membre != null ) {
-            // TODO : créer une table d'alertes ? si oui, le DAO et l'entité qui vont avec.
+            // TODO : créer une table d'alertes ? si oui, le DAO et l'entité qui
+            // vont avec.
             // alerteDao.signaler( reponse );
         }
     }
@@ -244,7 +299,8 @@ public class ReponsesBackingBean implements Serializable {
         Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
                 .get( SESSION_MEMBRE );
         if ( membre != null && membre.getDroits() >= DROITS_REQUIS_SUPPRESSION ) {
-            // TODO: implémenter une méthode de masquage, avec un champ supp en BDD ?
+            // TODO: implémenter une méthode de masquage, avec un champ supp en
+            // BDD ?
             // reponseDao.masquer( reponse );
         }
     }
@@ -253,7 +309,8 @@ public class ReponsesBackingBean implements Serializable {
         Membre membre = (Membre) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
                 .get( SESSION_MEMBRE );
         if ( membre != null && membre.getDroits() >= DROITS_REQUIS_SUPPRESSION ) {
-            // TODO: vérifier que la méthode de suppression du DAO va bien effectuer la suppression du sujet et de toutes ses réponses, par
+            // TODO: vérifier que la méthode de suppression du DAO va bien
+            // effectuer la suppression du sujet et de toutes ses réponses, par
             // effet de cascade sur les relations étrangères.
             sujetDao.supprimer( sujet );
         }

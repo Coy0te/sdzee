@@ -1,5 +1,5 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:f="http://java.sun.com/jsf/core" xmlns:o="http://omnifaces.org/ui">
+				xmlns:f="http://java.sun.com/jsf/core" xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions">
 	<div id="mainHeader">
 		<div id="headerTop">
 			<div id="mainMenu" class="largeurLimite">
@@ -32,6 +32,20 @@
 							<o:form includeViewParams="true">
 								<h:commandLink value="Déconnexion" action="#{connecterBean.deconnecter}" />
 							</o:form>
+							
+							<div style="visibility: hidden;">
+								<ul id="notificationsList">
+									<ui:repeat value="#{notificationsBean.notifications}" var="item">
+									<li>
+										<h:link outcome="/sujet">
+											<f:param name="sujetId" value="#{item.idSujet}" />
+											<f:param name="reponseId" value="#{item.reponse.id}" />
+											#{item.reponse.auteur.pseudo} a répondu au sujet "#{item.reponse.sujet.titre}" #{uf:convertDateTime(item.reponse.dateCreation)}
+										</h:link>
+									</li>
+									</ui:repeat>
+								</ul>
+							</div>
 							<ui:include src="inc_menu.xhtml" />
 						</div>
 					</h:panelGroup>

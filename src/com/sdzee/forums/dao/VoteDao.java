@@ -37,7 +37,7 @@ public class VoteDao {
             query.setParameter( PARAM_TYPE_OBJET, typeObjet );
             return (Vote) query.getSingleResult();
         } catch ( NoResultException e ) {
-            // Si aucune vote trouvé, on retourne null.
+            // Si aucun vote trouvé, on retourne null.
             return null;
         } catch ( Exception e ) {
             throw new DAOException( e );
