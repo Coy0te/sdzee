@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.31, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.27, for Win32 (x86)
 --
 -- Host: localhost    Database: bdd_sdzee
 -- ------------------------------------------------------
--- Server version	5.5.31-0ubuntu0.12.04.2
+-- Server version	5.5.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,33 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `forum_bookmark`
+--
+
+DROP TABLE IF EXISTS `forum_bookmark`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `forum_bookmark` (
+  `id_membre` int(11) NOT NULL,
+  `id_sujet` int(11) NOT NULL,
+  UNIQUE KEY `id_membre` (`id_membre`,`id_sujet`),
+  KEY `fk_sujet_bookmark` (`id_sujet`),
+  CONSTRAINT `fk_membre_bookmark` FOREIGN KEY (`id_membre`) REFERENCES `membre` (`id`),
+  CONSTRAINT `fk_sujet_bookmark` FOREIGN KEY (`id_sujet`) REFERENCES `forum_sujet` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `forum_bookmark`
+--
+
+LOCK TABLES `forum_bookmark` WRITE;
+/*!40000 ALTER TABLE `forum_bookmark` DISABLE KEYS */;
+INSERT INTO `forum_bookmark` VALUES (1,6),(2,6),(1,20),(2,20);
+/*!40000 ALTER TABLE `forum_bookmark` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `forum_categorie`
@@ -78,6 +105,35 @@ INSERT INTO `forum_forum` VALUES (1,'HTML / CSS','Vos questions sur la réalisat
 UNLOCK TABLES;
 
 --
+-- Table structure for table `forum_notification`
+--
+
+DROP TABLE IF EXISTS `forum_notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `forum_notification` (
+  `id_membre` int(11) NOT NULL,
+  `id_sujet` int(11) NOT NULL,
+  `reponse` int(11) NOT NULL,
+  UNIQUE KEY `id_membre` (`id_membre`,`id_sujet`),
+  KEY `fk_sujet_notif` (`id_sujet`),
+  KEY `fk_reponse_notif` (`reponse`),
+  CONSTRAINT `fk_membre_notif` FOREIGN KEY (`id_membre`) REFERENCES `membre` (`id`),
+  CONSTRAINT `fk_reponse_notif` FOREIGN KEY (`reponse`) REFERENCES `forum_reponse` (`id`),
+  CONSTRAINT `fk_sujet_notif` FOREIGN KEY (`id_sujet`) REFERENCES `forum_sujet` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `forum_notification`
+--
+
+LOCK TABLES `forum_notification` WRITE;
+/*!40000 ALTER TABLE `forum_notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `forum_notification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `forum_reponse`
 --
 
@@ -102,7 +158,7 @@ CREATE TABLE `forum_reponse` (
   CONSTRAINT `fk_auteur_reponse` FOREIGN KEY (`auteur`) REFERENCES `membre` (`id`),
   CONSTRAINT `fk_lastEditBy_reponse` FOREIGN KEY (`lastEditBy`) REFERENCES `membre` (`id`),
   CONSTRAINT `fk_sujet_reponse` FOREIGN KEY (`sujet`) REFERENCES `forum_sujet` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +167,7 @@ CREATE TABLE `forum_reponse` (
 
 LOCK TABLES `forum_reponse` WRITE;
 /*!40000 ALTER TABLE `forum_reponse` DISABLE KEYS */;
-INSERT INTO `forum_reponse` VALUES (1,1,1,'C\'est toi qui sent la moule ! bli.','2013-05-15 14:58:11',1,1,1,'2013-03-22 10:47:15','192.168.12.34'),(2,2,1,'Test d\'un message content dés accents èn pagaïlle.',NULL,NULL,9,16,'2013-04-15 09:43:01','127.0.0.1'),(3,2,1,'Markdown titre 1\n================\n\nMardkdown titre2\n----------------\n\nblabla.\n\n- bla\n- bli\n- blu\n\n1. ble\n2. blo\n3. bly\n\nAvec un peu de `<code> inline`, et du code en bloc :\n\n    <f:metadata>\n        <o:viewParam id=\"sujetId\" name=\"sujetId\" value=\"#{reponsesBean.sujetId}\">\n            <f:convertNumber integerOnly=\"#{true}\" />\n        </o:viewParam>\n        <f:event type=\"preRenderView\" listener=\"#{reponsesBean.init}\" />\n    </f:metadata>\n\nEt du code fenced-style :\n\n```\n/* Et là c\'est juste du comm multi-blocde base */\n@EJB\nprivate VoteDao             voteDao;\n/**\n * Alors là, c\'est du com Javadoc...\n **/\npublic void init() {\n    reponse = new Reponse();\n    sujet = sujetDao.trouver( sujetId );\n}\n\n// On s\'en fout, c\'est juste pour tester.\npublic Sujet getSujet( int sujetId ) {\n    return sujetDao.trouver( sujetId );\n}\n```\n\nEt un saut de ligne simple (hardwraps) avec des __marqueurs__ au mi*li*eu des *mots*.\nPour vérifier que tout fonctionne bien comme le github-flavored-markdown.',NULL,NULL,1,4,'2013-04-16 10:53:10','127.0.0.1'),(4,1,1,'test de la date du message.',NULL,NULL,1,1,'2013-04-16 16:41:54','127.0.0.1'),(5,2,11,'PErsonne ?. Damnéd.',NULL,NULL,0,0,'2013-04-18 15:53:54','127.0.0.1'),(6,2,1,'?????????',NULL,NULL,0,1,'2013-04-19 16:02:49','127.0.0.1'),(7,2,19,'Ajout d\'une réponse destinée à être modifiée à foison ensuite, pour tester l\'édition et la modération d\'une réponse.',NULL,NULL,0,0,'2013-05-06 11:38:35','127.0.0.1'),(8,2,1,'Le chinois ça a pas l\'air d\'avoir super bien marché...\r\n=> ???????????????? ???????????',NULL,NULL,0,1,'2013-05-06 11:50:12','127.0.0.1'),(9,1,1,'On rrrreeeeeeefait le match... en chinois ! 塑料袋看风景斯大林疯狂。',NULL,NULL,1,0,'2013-05-06 15:11:11','127.0.0.1'),(10,2,1,'Le 中文 fonctionne 很好, c\'est ok 没问题！',NULL,NULL,1,0,'2013-05-06 15:26:11','127.0.0.1'),(11,2,1,'Test de citation\r\n\r\n**Coyote a écrit :**\r\n>Le 中文 fonctionne 很好, c\'est ok 没问题！\r\n\r\nCa marche.',NULL,NULL,0,0,'2013-06-06 09:28:54','127.0.0.1'),(12,2,1,'**GuilOooo a écrit:**\n> **Arius a écrit:**\n>> GuilOooo, on ajoute ça à la FAQ ?\n> Toutaffé ! Je suis un peu crevé là tout de suite, mais on va faire ça. Il faudra aussi préparer un message de bienvenue pour les ZH sur leur nouveau forum.\n> **Thunderseb a écrit:**\n>> Ca ne mange pas de pain d\'intervertir les deux pour cette première slave de ZH. Si on peut éviter de faire une polémique, autant ne pas s\'en priver... ça changera :p\n> Je suis d\'accord, surtout que les nominations suivantes devraient arriver relativement vite (si tout se passe bien, j\'imagine que le rythme de croisière sera environ une nomination par semaine ?).\n','2013-06-06 09:37:25',2,0,0,'2013-06-06 09:35:39','127.0.0.1');
+INSERT INTO `forum_reponse` VALUES (1,1,1,'C\'est toi qui sent la moule ! bli.','2013-05-15 14:58:11',1,1,1,'2013-03-22 10:47:15','192.168.12.34'),(2,2,1,'Test d\'un message content dés accents èn pagaïlle.',NULL,NULL,9,16,'2013-04-15 09:43:01','127.0.0.1'),(3,2,1,'Markdown titre 1\n================\n\nMardkdown titre2\n----------------\n\nblabla.\n\n- bla\n- bli\n- blu\n\n1. ble\n2. blo\n3. bly\n\nAvec un peu de `<code> inline`, et du code en bloc :\n\n    <f:metadata>\n        <o:viewParam id=\"sujetId\" name=\"sujetId\" value=\"#{reponsesBean.sujetId}\">\n            <f:convertNumber integerOnly=\"#{true}\" />\n        </o:viewParam>\n        <f:event type=\"preRenderView\" listener=\"#{reponsesBean.init}\" />\n    </f:metadata>\n\nEt du code fenced-style :\n\n```\n/* Et là c\'est juste du comm multi-blocde base */\n@EJB\nprivate VoteDao             voteDao;\n/**\n * Alors là, c\'est du com Javadoc...\n **/\npublic void init() {\n    reponse = new Reponse();\n    sujet = sujetDao.trouver( sujetId );\n}\n\n// On s\'en fout, c\'est juste pour tester.\npublic Sujet getSujet( int sujetId ) {\n    return sujetDao.trouver( sujetId );\n}\n```\n\nEt un saut de ligne simple (hardwraps) avec des __marqueurs__ au mi*li*eu des *mots*.\nPour vérifier que tout fonctionne bien comme le github-flavored-markdown.',NULL,NULL,1,4,'2013-04-16 10:53:10','127.0.0.1'),(4,1,1,'test de la date du message.',NULL,NULL,1,1,'2013-04-16 16:41:54','127.0.0.1'),(5,2,11,'PErsonne ?. Damnéd.',NULL,NULL,0,0,'2013-04-18 15:53:54','127.0.0.1'),(6,2,1,'?????????',NULL,NULL,0,1,'2013-04-19 16:02:49','127.0.0.1'),(7,2,19,'Ajout d\'une réponse destinée à être modifiée à foison ensuite, pour tester l\'édition et la modération d\'une réponse.',NULL,NULL,0,0,'2013-05-06 11:38:35','127.0.0.1'),(8,2,1,'Le chinois ça a pas l\'air d\'avoir super bien marché...\r\n=> ???????????????? ???????????',NULL,NULL,0,1,'2013-05-06 11:50:12','127.0.0.1'),(9,1,1,'On rrrreeeeeeefait le match... en chinois ! 塑料袋看风景斯大林疯狂。',NULL,NULL,1,0,'2013-05-06 15:11:11','127.0.0.1'),(10,2,1,'Le 中文 fonctionne 很好, c\'est ok 没问题！',NULL,NULL,1,0,'2013-05-06 15:26:11','127.0.0.1'),(11,2,1,'Test de citation\r\n\r\n**Coyote a écrit :**\r\n>Le 中文 fonctionne 很好, c\'est ok 没问题！\r\n\r\nCa marche.',NULL,NULL,0,0,'2013-06-06 09:28:54','127.0.0.1'),(12,2,1,'**GuilOooo a écrit:**\n> **Arius a écrit:**\n>> GuilOooo, on ajoute ça à la FAQ ?\n> Toutaffé ! Je suis un peu crevé là tout de suite, mais on va faire ça. Il faudra aussi préparer un message de bienvenue pour les ZH sur leur nouveau forum.\n> **Thunderseb a écrit:**\n>> Ca ne mange pas de pain d\'intervertir les deux pour cette première slave de ZH. Si on peut éviter de faire une polémique, autant ne pas s\'en priver... ça changera :p\n> Je suis d\'accord, surtout que les nominations suivantes devraient arriver relativement vite (si tout se passe bien, j\'imagine que le rythme de croisière sera environ une nomination par semaine ?).\n','2013-06-06 09:37:25',2,0,0,'2013-06-06 09:35:39','127.0.0.1'),(13,2,20,'\n**Coyote a écrit :**\n># titre\n>\n>Texte **en gras** et *en italique* et &lt;del&gt;barré&lt;/del&gt;.\n>\n>````\n>if(test == \"caca\") \n>  prout();\n>else\n>  sleep();\n>````','2013-10-08 09:12:44',2,0,0,'2013-10-08 09:12:25','127.0.0.1'),(14,2,20,'\n**Coyote a écrit :**\n># titre\n>\n>Texte **en gras** et *en italique* et &lt;del&gt;barré&lt;/del&gt;.\n>\n>````\n>if(test == \"caca\") \n>  prout();\n>else\n>  sleep();\n>````','2013-10-08 09:14:21',2,0,0,'2013-10-08 09:14:08','127.0.0.1'),(15,2,20,'test bookmark',NULL,NULL,0,0,'2013-10-10 15:32:07','127.0.0.1'),(16,2,20,'test bookmark',NULL,NULL,0,0,'2013-10-10 15:34:08','127.0.0.1'),(17,2,20,'caca notification !',NULL,NULL,0,0,'2013-10-10 15:39:17','127.0.0.1'),(18,2,20,'Arrête ton char...',NULL,NULL,0,0,'2013-10-10 15:43:37','127.0.0.1'),(19,2,20,'Arrête ton char[], benhur.',NULL,NULL,0,0,'2013-10-10 15:48:39','127.0.0.1'),(20,2,20,'Arrête ton char*, benhur.',NULL,NULL,0,0,'2013-10-10 15:50:58','127.0.0.1'),(21,2,20,'Bordel de Q.',NULL,NULL,0,0,'2013-10-10 15:54:16','127.0.0.1'),(22,2,20,'Gangnam style....',NULL,NULL,0,0,'2013-10-10 15:59:49','127.0.0.1'),(23,2,20,'PPPffff....',NULL,NULL,0,0,'2013-10-10 16:02:23','127.0.0.1'),(24,2,20,'Omfg!',NULL,NULL,0,0,'2013-10-10 16:05:43','127.0.0.1'),(25,2,20,'C\'est pas trop tôt...',NULL,NULL,0,0,'2013-10-10 16:07:49','127.0.0.1'),(26,2,20,'OH pute borgne!!',NULL,NULL,0,0,'2013-10-10 16:09:41','127.0.0.1'),(27,2,20,'Eh beh con, c\'est pas trop tôt....',NULL,NULL,0,0,'2013-10-10 16:10:54','127.0.0.1'),(28,1,20,'Et là, c\'est le drame...',NULL,NULL,0,0,'2013-10-10 16:11:30','127.0.0.1'),(29,1,20,'Second message pour le tenter...',NULL,NULL,0,0,'2013-10-10 16:12:01','127.0.0.1'),(30,1,20,'Attention les yeux !',NULL,NULL,0,0,'2013-10-10 16:16:28','127.0.0.1'),(31,2,20,'Prouti pouet.',NULL,NULL,0,0,'2013-10-10 16:55:36','127.0.0.1'),(32,2,6,'Le sujet est juste censé être fermé quoi... BRAVO !',NULL,NULL,0,0,'2013-10-10 16:56:00','127.0.0.1'),(33,1,6,'Ah ben c\'est beau tiens, même Med avec ses droits en carton il peut poster....',NULL,NULL,0,0,'2013-10-10 16:57:00','127.0.0.1'),(34,1,20,'Tu rêves ma grosse.',NULL,NULL,0,0,'2013-10-10 17:39:10','127.0.0.1');
 /*!40000 ALTER TABLE `forum_reponse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +203,7 @@ CREATE TABLE `forum_sujet` (
   CONSTRAINT `fk_auteur_sujet` FOREIGN KEY (`auteur`) REFERENCES `membre` (`id`),
   CONSTRAINT `fk_forum_sujet` FOREIGN KEY (`forum`) REFERENCES `forum_forum` (`id`),
   CONSTRAINT `fk_lastEditBy_sujet` FOREIGN KEY (`lastEditBy`) REFERENCES `membre` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +212,7 @@ CREATE TABLE `forum_sujet` (
 
 LOCK TABLES `forum_sujet` WRITE;
 /*!40000 ALTER TABLE `forum_sujet` DISABLE KEYS */;
-INSERT INTO `forum_sujet` VALUES (1,'Un sujet au pif','','Alors que dans la moule d\'argentine la teneur en mouléïte n\'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.',1,2,'2013-03-21 16:13:44',0,1,0,0,NULL,'2013-05-15 14:57:57',1,0,2,'192.168.1.2'),(2,'Alignement d\'un bloc horizontalement et verticalement','blabla CSS','dfsd f sdf sdfmjsd gp?diogj sd\r\nf$gl ds$fpgojk sdpgl dqf$gpk \r\nsdfôgj d\r\nspgjk sd$pflgjk zàçij p$)àa i =)\r\nkàpf\r\n$ sdlg\r\n sd=$k',1,1,'2013-04-17 10:22:06',1,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(3,'Balise canvas et jQuery','Mic mac (do)','Rédigez votre message ici',2,1,'2013-04-17 10:40:42',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(4,'test numéro 3','vérif de l\'action','test',2,1,'2013-04-17 10:42:22',0,0,1,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(5,'Blablaz','sodfsdpfij sdfpi d','dfo sij sdfuohsd opusdh opfisdf',1,1,'2013-04-17 10:43:46',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(6,'Ca devient casse-couilles là...','Cette histoire de redirection après submit','Ca va bien un moment...',2,1,'2013-04-17 10:45:57',1,1,1,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(7,'sdfsd ','sdf sdf ','sdf sdf ',1,1,'2013-04-17 10:46:44',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(8,'Dernier essai de création + redirection après succès...','ou pas','???',2,1,'2013-04-17 10:49:46',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(9,'Boucle forEach sur un resultat SQL',NULL,'blabkjkfsdo jkâzopdjkqs^piojsiopfj sdiofjqp soidfj qsd\r\nfg$sdfgk fpgoj \r\nqsdfp?k \r\nsdf$pk spgiojsdfo jkd$gopd$sfg p\r\nopjazàeiopj sdjaioàzjqdà_çdjpoé\"jd) çéu \"çà&é)éuéi\"ç) éè_\"çà)',1,3,'2013-04-17 10:56:51',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(10,'Création pour test growl',NULL,'Avec succès du message cette fois.',2,3,'2013-04-17 11:16:50',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(11,'Boucle forEach sur un resultat SQL','cxcv','xcvxcv ',2,3,'2013-04-17 11:17:36',0,1,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(12,'Avec un sous-titre','histoire de vérifier qu\'on l\'affiche bien derrière','sdfsdf sdf sdf ',2,1,'2013-04-17 11:18:32',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(13,'tt',NULL,'t',2,2,'2013-04-19 19:21:17',0,0,0,0,NULL,NULL,NULL,0,2,'0:0:0:0:0:0:0:1%0'),(14,'WTF',NULL,'caca',1,2,'2013-04-19 19:24:21',0,0,0,0,NULL,NULL,NULL,0,1,'0:0:0:0:0:0:0:1%0'),(15,'Un sujet de plus pour tester la pagination...',NULL,'blabla',1,1,'2013-04-21 19:15:19',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(16,'test',NULL,'test',1,1,'2013-04-21 19:15:30',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(17,'Surement pas',NULL,'Ça me ferait mal aux ******.',1,1,'2013-04-21 19:15:52',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(18,'Encore un',NULL,'on ne l\'arrête plus!',1,1,'2013-04-21 19:16:10',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(19,'Vous en reprendrez bien un petit dernier pour la route ?',NULL,'Oui merci, juste un doigt.',1,1,'2013-04-21 19:16:37',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0');
+INSERT INTO `forum_sujet` VALUES (1,'Un sujet au pif','','Alors que dans la moule d\'argentine la teneur en mouléïte n\'est que de 6.7mg/L, dans une mole de moules du Bigoudène nous pouvons retrouver 647mg/L, ce qui signifie indubitablement la supériorité des moules fraîches sur les moules latines.',1,2,'2013-03-21 16:13:44',0,1,0,0,NULL,'2013-05-15 14:57:57',1,0,2,'192.168.1.2'),(2,'Alignement d\'un bloc horizontalement et verticalement','blabla CSS','dfsd f sdf sdfmjsd gp?diogj sd\r\nf$gl ds$fpgojk sdpgl dqf$gpk \r\nsdfôgj d\r\nspgjk sd$pflgjk zàçij p$)àa i =)\r\nkàpf\r\n$ sdlg\r\n sd=$k',1,1,'2013-04-17 10:22:06',1,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(3,'Balise canvas et jQuery','Mic mac (do)','Rédigez votre message ici',2,1,'2013-04-17 10:40:42',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(4,'test numéro 3','vérif de l\'action','test',2,1,'2013-04-17 10:42:22',0,0,1,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(5,'Blablaz','sodfsdpfij sdfpi d','dfo sij sdfuohsd opusdh opfisdf',1,1,'2013-04-17 10:43:46',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(6,'Ca devient casse-couilles là...','Cette histoire de redirection après submit','Ca va bien un moment...',2,1,'2013-04-17 10:45:57',1,1,1,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(7,'sdfsd ','sdf sdf ','sdf sdf ',1,1,'2013-04-17 10:46:44',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(8,'Dernier essai de création + redirection après succès...','ou pas','???',2,1,'2013-04-17 10:49:46',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(9,'Boucle forEach sur un resultat SQL',NULL,'blabkjkfsdo jkâzopdjkqs^piojsiopfj sdiofjqp soidfj qsd\r\nfg$sdfgk fpgoj \r\nqsdfp?k \r\nsdf$pk spgiojsdfo jkd$gopd$sfg p\r\nopjazàeiopj sdjaioàzjqdà_çdjpoé\"jd) çéu \"çà&é)éuéi\"ç) éè_\"çà)',1,3,'2013-04-17 10:56:51',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(10,'Création pour test growl',NULL,'Avec succès du message cette fois.',2,3,'2013-04-17 11:16:50',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(11,'Boucle forEach sur un resultat SQL','cxcv','xcvxcv ',2,3,'2013-04-17 11:17:36',0,1,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(12,'Avec un sous-titre','histoire de vérifier qu\'on l\'affiche bien derrière','sdfsdf sdf sdf ',2,1,'2013-04-17 11:18:32',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1'),(13,'tt',NULL,'t',2,2,'2013-04-19 19:21:17',0,0,0,0,NULL,NULL,NULL,0,2,'0:0:0:0:0:0:0:1%0'),(14,'WTF',NULL,'caca',1,2,'2013-04-19 19:24:21',0,0,0,0,NULL,NULL,NULL,0,1,'0:0:0:0:0:0:0:1%0'),(15,'Un sujet de plus pour tester la pagination...',NULL,'blabla',1,1,'2013-04-21 19:15:19',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(16,'test',NULL,'test',1,1,'2013-04-21 19:15:30',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(17,'Surement pas',NULL,'Ça me ferait mal aux ******.',1,1,'2013-04-21 19:15:52',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(18,'Encore un',NULL,'on ne l\'arrête plus!',1,1,'2013-04-21 19:16:10',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(19,'Vous en reprendrez bien un petit dernier pour la route ?',NULL,'Oui merci, juste un doigt.',1,1,'2013-04-21 19:16:37',0,0,0,0,NULL,NULL,NULL,0,0,'0:0:0:0:0:0:0:1%0'),(20,'Test du Github Flavored Markdown','Sans les mains','# titre\n\nTexte **en gras** et *en italique* et <del>barré</del>.\n\n````\nif(test == \"caca\") \n  prout();\nelse\n  sleep();\n````',2,1,'2013-10-08 09:11:51',0,0,0,0,NULL,NULL,NULL,0,0,'127.0.0.1');
 /*!40000 ALTER TABLE `forum_sujet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,4 +288,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-06-13  9:21:03
+-- Dump completed on 2013-10-10 17:46:10
