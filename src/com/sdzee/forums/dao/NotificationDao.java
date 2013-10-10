@@ -88,7 +88,8 @@ public class NotificationDao {
         try {
             em.remove( em.merge( notification ) );
         } catch ( Exception e ) {
-            throw new DAOException( e ); // TODO : vérifier ce qui se passe ici quand on essaie de supprimer une notification qui n'existe pas en base
+            throw new DAOException( e ); // TODO : vérifier ce qui se passe ici quand on essaie de supprimer une notification qui n'existe
+                                         // pas en base
         }
     }
 }

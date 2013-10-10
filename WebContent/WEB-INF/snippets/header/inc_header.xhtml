@@ -1,5 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:f="http://java.sun.com/jsf/core" xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions">
+				xmlns:f="http://java.sun.com/jsf/core" xmlns:o="http://omnifaces.org/ui" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:uf="http://sdzee.com/functions/functions">
 	<div id="mainHeader">
 		<div id="headerTop">
 			<div id="mainMenu" class="largeurLimite">
@@ -33,7 +34,8 @@
 								<h:commandLink value="Déconnexion" action="#{connecterBean.deconnecter}" />
 							</o:form>
 							
-							<div style="visibility: hidden;">
+							<div id="notificationsCount">
+								<h:outputText value="(#{fn:length(notificationsBean.notifications)})"/>
 								<ul id="notificationsList">
 									<ui:repeat value="#{notificationsBean.notifications}" var="item">
 									<li>
@@ -46,6 +48,7 @@
 									</ui:repeat>
 								</ul>
 							</div>
+							
 							<ui:include src="inc_menu.xhtml" />
 						</div>
 					</h:panelGroup>
