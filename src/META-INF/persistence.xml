@@ -11,5 +11,10 @@
 		<class>com.sdzee.forums.entities.Sujet</class>
 		<class>com.sdzee.forums.entities.Reponse</class>
 		<class>com.sdzee.forums.entities.Vote</class>
+		<class>com.sdzee.forums.entities.Notification</class>
+		<class>com.sdzee.forums.entities.Bookmark</class>
+		<properties>
+			<property name="eclipselink.logging.level" value="FINE"/>
+		</properties>
 	</persistence-unit>   
 </persistence>
