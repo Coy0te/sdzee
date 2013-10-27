@@ -2,7 +2,7 @@
 				xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_base.xhtml">
 	<ui:define name="title">
-		#{i18n.pageTutorielsTitre}
+		#{tutoBean.getTuto(param['tutoId']).titre}
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
@@ -15,7 +15,7 @@
 		<h1>
 			<h:link>
 				<f:param name="tutoId" value="#{param['tutoId']}" />
-				#{tutosBean.getTuto(param['tutoId']).titre}
+				#{tutoBean.getTuto(param['tutoId']).titre}
 			</h:link>
 		</h1>	</ui:define>
 	<ui:define name="footer">

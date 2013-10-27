@@ -5,6 +5,15 @@ $(document).ready(function() {
 function initAll(){	
 	styleCode();
 	
+	 $("#dialog").dialog({
+		    modal: true,
+		    resizable: false,
+		    draggable: false,
+		    width: 500,
+		    height: 200,
+		    autoOpen: false
+	 });//end of $('#dialog').dialog()
+	
 	$('#mainSection a.editAction').click( function(e){
 		e.preventDefault();
 		var objet = $(this).closest( "div" ).find( "form" );
@@ -13,7 +22,25 @@ function initAll(){
     		objet.find( "div.hidden" ).show();
     	}
     	return false;
-    });//end of $('#mainSection div.message').click()
+    });//end of $('#mainSection a.editAction').click()
+	
+	$('#mainSection a.alertAction').on( 'click', function(e){
+		e.preventDefault();
+		//TODO: pourquoi closest trouve pas le truc ?
+		var idObjet = $(this).closest( "div.message" ).attr( "id" ).match(/\((-?\d+)\)/)[1];
+
+	    $("#dialog").dialog('option', 'buttons', {
+	      "Confirmer": function () {
+	        //TODO : ajax call pour sujet d'id = idObjet.
+	    	alert("Alerte sur l'objet d'id : " + idObjet);
+	      },
+	      "Annuler": function () {
+	        $(this).dialog("close");
+	      }
+	    });
+
+	    $("#dialog").dialog("open");
+    });//end of $('#mainSection a.alertAction').click()
     
 	$('#mainSection div.message form input.cancelEdit').on( 'click', function(e){
 		e.preventDefault();
@@ -47,7 +74,6 @@ function initAllCallback(e) {
 		initAll();
 	}
 }
-
 
 /*
  * Repris depuis StackOverflow. Trouve toutes les balises <pre><code> 

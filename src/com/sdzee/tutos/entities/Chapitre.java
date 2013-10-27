@@ -1,5 +1,7 @@
 package com.sdzee.tutos.entities;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,30 +10,49 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table( name = "cours_chapitre" )
+@Table( name = "tuto_btmtchap" )
 public class Chapitre {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long    id;
 
-    @NotNull( message = "{tutos.chapitre.titre.notnull}" )
+    @NotNull( message = "{tuto.chapitre.titre.notnull}" )
     private String  titre;
+
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "partie" )
+    private Partie  partie;
+
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "licence" )
+    private Licence licence;
+
+    private boolean fini;
+
+    @NotNull( message = "{tuto.chapitre.position.notnull}" )
+    private Integer position;
+
+    private Integer difficulte;
 
     private String  introduction;
 
     private String  conclusion;
 
-    @NotNull( message = "{tutos.chapitre.partie.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
-    @JoinColumn( name = "partie" )
-    private Partie  partie;
+    @NotNull( message = "{tuto.chapitre.dateCreation.notnull}" )
+    @Temporal( TemporalType.TIMESTAMP )
+    private Date    dateCreation;
 
-    private Integer position;
+    @NotNull( message = "{tuto.chapitre.dateDerniereModification.notnull}" )
+    @Temporal( TemporalType.TIMESTAMP )
+    private Date    dateDerniereModification;
 
-    public String   logo;
+    @NotNull( message = "{tuto.chapitre.adresseIP.notnull}" )
+    private String  adresseIP;
 
     public Long getId() {
         return id;
@@ -57,6 +78,22 @@ public class Chapitre {
         this.partie = partie;
     }
 
+    public Licence getLicence() {
+        return licence;
+    }
+
+    public void setLicence( Licence licence ) {
+        this.licence = licence;
+    }
+
+    public boolean isFini() {
+        return fini;
+    }
+
+    public void setFini( boolean fini ) {
+        this.fini = fini;
+    }
+
     public Integer getPosition() {
         return position;
     }
@@ -65,12 +102,12 @@ public class Chapitre {
         this.position = position;
     }
 
-    public String getLogo() {
-        return logo;
+    public Integer getDifficulte() {
+        return difficulte;
     }
 
-    public void setLogo( String logo ) {
-        this.logo = logo;
+    public void setDifficulte( Integer difficulte ) {
+        this.difficulte = difficulte;
     }
 
     public String getIntroduction() {
@@ -87,6 +124,30 @@ public class Chapitre {
 
     public void setConclusion( String conclusion ) {
         this.conclusion = conclusion;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation( Date dateCreation ) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Date getDateDerniereModification() {
+        return dateDerniereModification;
+    }
+
+    public void setDateDerniereModification( Date dateDerniereModification ) {
+        this.dateDerniereModification = dateDerniereModification;
+    }
+
+    public String getAdresseIP() {
+        return adresseIP;
+    }
+
+    public void setAdresseIP( String adresseIP ) {
+        this.adresseIP = adresseIP;
     }
 
 }

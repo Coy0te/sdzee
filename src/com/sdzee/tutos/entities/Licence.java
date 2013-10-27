@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table( name = "cours_licence" )
+@Table( name = "licence" )
 public class Licence {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -18,6 +18,8 @@ public class Licence {
     private String titre;
 
     private String description;
+
+    private String lien;
 
     public Long getId() {
         return id;
@@ -41,6 +43,14 @@ public class Licence {
 
     public void setDescription( String description ) {
         this.description = description;
+    }
+
+    public String getLien() {
+        return lien;
+    }
+
+    public void setLien( String lien ) {
+        this.lien = lien;
     }
 
 }

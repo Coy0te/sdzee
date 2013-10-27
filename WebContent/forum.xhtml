@@ -1,5 +1,5 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
+				xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_base.xhtml">
 	<f:metadata>
 	    <o:viewParam id="forumId" name="forumId" value="#{sujetsBean.queryString}" />
@@ -62,13 +62,13 @@
 				<h2>#{i18n.creerSujet}</h2>
 				<h:outputLabel for="titre">#{i18n.labelInputTitreSujet} <span class="requis">*</span></h:outputLabel>
 				<h:inputText id="titre" value="#{sujetsBean.sujet.titre}" maxlength="60" />
-				<p:message id="titreMessage" for="titre" errorClass="erreur" />
+				<h:message id="titreMessage" for="titre" errorClass="erreur" />
 				<h:outputLabel for="sousTitre">#{i18n.labelInputSousTitreSujet}</h:outputLabel>
 				<h:inputText id="sousTitre" value="#{sujetsBean.sujet.sousTitre}" maxlength="80" />
-				<p:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
+				<h:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
 				<h:outputLabel for="texte">#{i18n.labelInputMessageSujet} <span class="requis">*</span></h:outputLabel>
 				<h:inputTextarea id="texte" placeholder="#{i18n.placeholderTextareaSujet}" value="#{sujetsBean.sujet.texte}" />
-				<p:message id="texteMessage" for="texte" errorClass="erreur" />
+				<h:message id="texteMessage" for="texte" errorClass="erreur" />
 				<div class="rowButton">
 					<h:commandButton value="#{i18n.creerSujetButton}" type="submit" action="#{sujetsBean.creer(membre, sujetsBean.getForum(param['forumId']))}" styleClass="btn btn-primary right-flt">
 						<f:ajax execute="@form :forumId" render="@form" />
