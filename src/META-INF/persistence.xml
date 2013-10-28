@@ -13,6 +13,12 @@
 		<class>com.sdzee.forums.entities.Vote</class>
 		<class>com.sdzee.forums.entities.Notification</class>
 		<class>com.sdzee.forums.entities.Bookmark</class>
+		<class>com.sdzee.tutos.entities.Licence</class>
+		<class>com.sdzee.tutos.entities.BTMTChap</class>
+		<class>com.sdzee.tutos.entities.Partie</class>
+		<class>com.sdzee.tutos.entities.SousPartie</class>
+		<class>com.sdzee.tutos.entities.QCMQuestion</class>
+		<class>com.sdzee.tutos.entities.QCMReponse</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/>
 		</properties>

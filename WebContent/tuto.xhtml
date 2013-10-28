@@ -1,8 +1,14 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
 				xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_base.xhtml">
+	<f:metadata>
+		<o:viewParam id="tutoId" name="tutoId" value="#{tutoBean.tutoId}">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<f:event type="preRenderView" listener="#{tutoBean.init}" />
+	</f:metadata>
 	<ui:define name="title">
-		#{tutoBean.getTuto(param['tutoId']).titre}
+		#{tutoBean.tuto.titre}
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
@@ -14,10 +20,47 @@
 	<ui:define name="body">
 		<h1>
 			<h:link>
-				<f:param name="tutoId" value="#{param['tutoId']}" />
-				#{tutoBean.getTuto(param['tutoId']).titre}
+				<f:param name="tutoId" value="#{tutoBean.tutoId}" />
+				#{tutoBean.tuto.titre}
 			</h:link>
-		</h1>	</ui:define>
+		</h1>
+		<p>Licence : #{tutoBean.tuto.licence.titre}</p>
+		<p>Difficulté : #{tutoBean.tuto.difficulte}</p>
+		
+		<p>#{tutoBean.tuto.introduction}</p>
+		
+		<div class="sommaire_parties">
+			<p>Ce cours est composé des parties suivantes :</p>
+			<ul>
+			<!-- TODO : cas d'un BT uniquement, à adapter pour les MT -->
+			<ui:repeat value="#{tutoBean.tuto.parties}" var="partie">
+				<li>#{partie.titre}</li>
+			</ui:repeat>
+			</ul>
+		</div>
+		
+		<ul class="sommaire_complet">
+		<!-- TODO : cas d'un BT uniquement, à adapter pour les MT -->
+		<ui:repeat value="#{tutoBean.tuto.parties}" var="partie" varStatus="vsp">
+			<li>Partie #{vsp.index + 1} : #{partie.titre}
+				<p>#{partie.introduction}</p>
+				<ul>
+				<ui:repeat value="#{partie.chapitres}" var="chapitre" varStatus="vsc">
+					<li>Chapitre #{vsc.index + 1}. #{chapitre.titre}
+						<ul>
+						<ui:repeat value="#{chapitre.sousParties}" var="sousPartie">
+							<li>#{sousPartie.titre}</li>
+						</ui:repeat>
+						</ul>
+					</li>
+				</ui:repeat>
+				</ul>
+				<p>#{partie.conclusion}</p>
+			</li>
+		</ui:repeat>
+		</ul>
+		<p>#{tutoBean.tuto.conclusion}</p>
+	</ui:define>
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
 	</ui:define>

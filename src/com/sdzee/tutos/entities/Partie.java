@@ -1,7 +1,9 @@
 package com.sdzee.tutos.entities;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,35 +22,38 @@ import javax.validation.constraints.NotNull;
 public class Partie {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long    id;
+    private Long           id;
 
     @NotNull( message = "{tuto.partie.titre.notnull}" )
-    private String  titre;
+    private String         titre;
 
     @NotNull( message = "{tuto.partie.bigtuto.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "bigtuto" )
-    private BigTuto bigTuto;                 // TODO : à virer, c'est dans le bigtuto qu'on veut cette info uniquement.
+    private BTMTChap       bigTuto;                 // côté "customer" du mapping d'une partie qui appartient à un big-tuto
+
+    @OneToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "partie" )
+    private List<BTMTChap> chapitres;               // côté "owner" du mapping d'une partie qui contient des chapitres
 
     @NotNull( message = "{tuto.partie.position.notnull}" )
-    private Integer position;
+    private Integer        position;
 
-    private Integer difficulte;
+    private Integer        difficulte;
 
-    private String  introduction;
+    private String         introduction;
 
-    private String  conclusion;
+    private String         conclusion;
 
     @NotNull( message = "{tuto.partie.dateCreation.notnull}" )
     @Temporal( TemporalType.TIMESTAMP )
-    private Date    dateCreation;
+    private Date           dateCreation;
 
     @NotNull( message = "{tuto.partie.dateDerniereModification.notnull}" )
     @Temporal( TemporalType.TIMESTAMP )
-    private Date    dateDerniereModification;
+    private Date           dateDerniereModification;
 
     @NotNull( message = "{tuto.partie.adresseIP.notnull}" )
-    private String  adresseIP;
+    private String         adresseIP;
 
     public Long getId() {
         return id;
@@ -65,11 +71,11 @@ public class Partie {
         this.titre = titre;
     }
 
-    public BigTuto getBigTuto() {
+    public BTMTChap getBigTuto() {
         return bigTuto;
     }
 
-    public void setBigTuto( BigTuto bigTuto ) {
+    public void setBigTuto( BTMTChap bigTuto ) {
         this.bigTuto = bigTuto;
     }
 
@@ -129,4 +135,11 @@ public class Partie {
         this.adresseIP = adresseIP;
     }
 
+    public List<BTMTChap> getChapitres() {
+        return chapitres;
+    }
+
+    public void setChapitres( List<BTMTChap> chapitres ) {
+        this.chapitres = chapitres;
+    }
 }

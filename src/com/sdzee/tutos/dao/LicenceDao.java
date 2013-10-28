@@ -45,6 +45,15 @@ public class LicenceDao {
         }
     }
 
+    /* Mise à jour d'une licence */
+    public void update( Licence licence ) throws DAOException {
+        try {
+            em.merge( licence );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
     /* Suppression d'une licence */
     public void supprimer( Licence licence ) throws DAOException {
         try {

@@ -28,7 +28,7 @@ public class QCMReponse {
     private boolean     correct;
 
     @NotNull( message = "{tuto.reponse.question.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "question" )
     private QCMQuestion question;
 

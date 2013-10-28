@@ -26,10 +26,10 @@ public class SousPartie {
 
     private String   texte;
 
-    @NotNull( message = "{tuto.souspartie.chapitre.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
+    @NotNull( message = "{tuto.souspartie.mtchap.notnull}" )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "mtchap" )
-    private Chapitre chapitre;                // peut aussi être un objet de type mini-tuto
+    private BTMTChap mtchap;                  // côté "customer" du mapping d'une sous-partie qui appartient à un chapitre ou un MT
 
     @NotNull( message = "{tuto.souspartie.position.notnull}" )
     private Integer  position;
@@ -69,12 +69,12 @@ public class SousPartie {
         this.texte = texte;
     }
 
-    public Chapitre getChapitre() {
-        return chapitre;
+    public BTMTChap getMtchap() {
+        return mtchap;
     }
 
-    public void setChapitre( Chapitre chapitre ) {
-        this.chapitre = chapitre;
+    public void setMtchap( BTMTChap mtchap ) {
+        this.mtchap = mtchap;
     }
 
     public Integer getPosition() {

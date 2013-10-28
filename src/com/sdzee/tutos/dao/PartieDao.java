@@ -8,13 +8,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.sdzee.dao.DAOException;
-import com.sdzee.tutos.entities.Cours;
+import com.sdzee.tutos.entities.BTMTChap;
 import com.sdzee.tutos.entities.Partie;
 
 @Stateless
 public class PartieDao {
-    private static final String JPQL_LISTE_PARTIES_PAR_COURS = "SELECT p FROM Partie p WHERE p.forum=:forum ORDER BY p.id";
-    private static final String PARAM_COURS                  = "cours";
+    private static final String JPQL_LISTE_PARTIES_PAR_BIGTUTO = "SELECT p FROM Partie p WHERE p.bigtuto=:bigtuto ORDER BY p.position";
+    private static final String PARAM_BIGTUTO                  = "bigtuto";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
@@ -37,12 +37,21 @@ public class PartieDao {
         }
     }
 
-    /* Récupération de la liste des parties pour un cours donné */
-    public List<Partie> lister( Cours cours ) throws DAOException {
+    /* Récupération de la liste des parties pour un big-tuto donné triées selon leur position */
+    public List<Partie> lister( BTMTChap bigTuto ) throws DAOException {
         try {
-            TypedQuery<Partie> query = em.createQuery( JPQL_LISTE_PARTIES_PAR_COURS, Partie.class );
-            query.setParameter( PARAM_COURS, cours );
+            TypedQuery<Partie> query = em.createQuery( JPQL_LISTE_PARTIES_PAR_BIGTUTO, Partie.class );
+            query.setParameter( PARAM_BIGTUTO, bigTuto );
             return query.getResultList();
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /* Mise à jour d'une partie */
+    public void update( Partie partie ) throws DAOException {
+        try {
+            em.merge( partie );
         } catch ( Exception e ) {
             throw new DAOException( e );
         }

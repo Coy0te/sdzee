@@ -38,6 +38,7 @@ public class SujetDao {
         try {
             return em.find( Sujet.class, id );
         } catch ( Exception e ) {
+            e.printStackTrace();
             throw new DAOException( e );
         }
     }
@@ -70,7 +71,8 @@ public class SujetDao {
     public List<Sujet> lister( Forum forum, int numeroPage, int nbSujetsParPage ) throws DAOException {
         try {
             TypedQuery<Sujet> query = em.createQuery( JPQL_LISTE_SUJETS_PAR_FORUM, Sujet.class );
-            query.setParameter( PARAM_FORUM, forum ).setFirstResult( ( numeroPage - 1 ) * nbSujetsParPage ).setMaxResults( nbSujetsParPage );
+            query.setParameter( PARAM_FORUM, forum ).setFirstResult( ( numeroPage - 1 ) * nbSujetsParPage )
+                    .setMaxResults( nbSujetsParPage );
             return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );
