@@ -12,6 +12,7 @@
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+	 		<ui:param name="breadCrumb" value="#{tutoBean.getBreadCrumb(param['tutoId'])}"/>
 			<ui:param name="titrePage" value="#{i18n.titrePageTutoriels}"/>
 			<ui:param name="descriptionPage" value="#{i18n.descriptionPageTutoriels}"/>
 			<ui:param name="logoPage" value="tutorial"/>
@@ -26,42 +27,92 @@
 		</h1>
 		<p>Licence : #{tutoBean.tuto.licence.titre}</p>
 		<p>Difficulté : #{tutoBean.tuto.difficulte}</p>
+		<p>Mise à jour : #{of:formatDate(tutoBean.tuto.dateDerniereModification, 'dd/MM/yyyy')}</p>
 		
-		<p>#{tutoBean.tuto.introduction}</p>
+		<p><h:outputText value="#{uf:parseMarkdown(tutoBean.tuto.introduction)}" escape="false"/></p>
+		<div class="separateur_tuto"><a class="retour_haut_tuto" href="#mainSection">Retour en haut</a></div>
 		
-		<div class="sommaire_parties">
+	<ui:fragment rendered="#{!empty tutoBean.tuto.parties}">
+		<div id="sommaire" class="sommaire_parties">
 			<p>Ce cours est composé des parties suivantes :</p>
-			<ul>
-			<!-- TODO : cas d'un BT uniquement, à adapter pour les MT -->
-			<ui:repeat value="#{tutoBean.tuto.parties}" var="partie">
-				<li>#{partie.titre}</li>
+			<ul class="sommaire">
+			<ui:repeat value="#{tutoBean.tuto.parties}" var="partie" varStatus="vsp">
+				<li><a href="#p#{vsp.index + 1}">#{partie.titre}</a></li>
 			</ui:repeat>
 			</ul>
 		</div>
-		
-		<ul class="sommaire_complet">
+		<div class="separateur_tuto"><a class="retour_haut_tuto" href="#mainSection">Retour en haut</a></div>
+		<ul class="sommaire">
 		<!-- TODO : cas d'un BT uniquement, à adapter pour les MT -->
 		<ui:repeat value="#{tutoBean.tuto.parties}" var="partie" varStatus="vsp">
-			<li>Partie #{vsp.index + 1} : #{partie.titre}
-				<p>#{partie.introduction}</p>
+			<li><h3 id="p#{vsp.index + 1}">Partie #{vsp.index + 1} : #{partie.titre}</h3>
+				<p><h:outputText value="#{uf:parseMarkdown(partie.introduction)}" escape="false"/></p>
 				<ul>
 				<ui:repeat value="#{partie.chapitres}" var="chapitre" varStatus="vsc">
-					<li>Chapitre #{vsc.index + 1}. #{chapitre.titre}
-						<ul>
-						<ui:repeat value="#{chapitre.sousParties}" var="sousPartie">
-							<li>#{sousPartie.titre}</li>
-						</ui:repeat>
-						</ul>
-					</li>
+				
+				<li class="sommaire_chapitre">
+                   <div class="icone_chap">
+						<strong style="color:#717171;font-size: 0.9em;">Chapitre #{vsc.index + 1}</strong>
+				        <h:link outcome="/tuto">
+				        	<f:param name="tutoId" value="#{chapitre.id}" />
+                       		<h:graphicImage styleClass="icone_chapitre" library="default" name="css/images/defaut_chap.png" alt="Icône du chapitre" />
+				        </h:link>
+                   </div>
+                   <div class="droite_chapitre">
+	                   	<hr />
+				        <h:link styleClass="big_lien" outcome="/tuto">
+				        	<f:param name="tutoId" value="#{chapitre.id}" />
+				        	#{chapitre.titre}
+				        </h:link>
+	                   <ul style="min-height:30px" class="liste_btuto_chap">
+					   <ui:repeat value="#{chapitre.sousParties}" var="sousPartie" varStatus="vssp">
+					   		<li>
+						   		<h:link outcome="/tuto" fragment="sp#{vssp.index + 1}">
+								    <f:param name="tutoId" value="#{chapitre.id}" />
+								    #{sousPartie.titre}
+								</h:link>
+				        	</li>
+					   </ui:repeat>             
+	                   </ul>
+                   </div>
+              	</li>
 				</ui:repeat>
 				</ul>
-				<p>#{partie.conclusion}</p>
+				<p><h:outputText value="#{uf:parseMarkdown(partie.conclusion)}" escape="false"/></p>
+				<div class="separateur_tuto"><a class="retour_haut_tuto" href="#mainSection">Retour en haut</a></div>
 			</li>
 		</ui:repeat>
 		</ul>
-		<p>#{tutoBean.tuto.conclusion}</p>
+	</ui:fragment>
+	
+	<ui:fragment rendered="#{!empty tutoBean.tuto.sousParties}">
+		<div id="sommaire" class="sommaire_chap">
+			<p>Sommaire du #{tutoBean.tuto.partie == null ? "tutoriel" : "chapitre"} :</p>
+			<div class="icone_chap">
+				<h:graphicImage styleClass="icone_chapitre" library="default" name="css/images/defaut_chap.png" alt="Icône du chapitre" />
+			</div>
+			<div class="droite_chapitre">
+				<ul class="liste_btuto_chap sommaire">
+				<ui:repeat value="#{tutoBean.tuto.sousParties}" var="sousPartie" varStatus="vsp">
+					<li><a href="#sp#{vsp.index + 1}">#{sousPartie.titre}</a></li>
+				</ui:repeat>
+				</ul>
+			</div>
+		</div>
+		<div class="separateur_tuto"><a class="retour_haut_tuto" href="#mainSection">Retour en haut</a></div>
+		<div class="corps_tuto">
+		<ui:repeat value="#{tutoBean.tuto.sousParties}" var="sousPartie" varStatus="vsp">
+			<h2 id="sp#{vsp.index + 1}">#{sousPartie.titre}</h2>
+			<div><h:outputText value="#{uf:parseMarkdown(sousPartie.texte)}" escape="false"/></div>
+			<div class="separateur_tuto"><a class="retour_haut_tuto" href="#mainSection">Retour en haut</a></div>
+		</ui:repeat>
+		</div>
+	</ui:fragment>
+		
+		<p><h:outputText value="#{uf:parseMarkdown(tutoBean.tuto.conclusion)}" escape="false"/></p>
 	</ui:define>
 	<ui:define name="footer">
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
 	</ui:define>
 </ui:composition>

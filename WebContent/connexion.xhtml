@@ -48,7 +48,7 @@
 		    <h:outputLabel for="connexionAuto">#{i18n.labelConnexionAuto}</h:outputLabel>
 		  </div>
 		  <div class="password-forgotten">
-			<h:outputLink href="/reinitialisation/request">#{i18n.connexionMdpOublie}</h:outputLink>
+			<h:outputLink href="#{request.contextPath}/reinitialisation/request">#{i18n.connexionMdpOublie}</h:outputLink>
 		  </div>
 		  <input type="hidden" name="urlOrigine" value="#{param.urlOrigine}" />
 		  <input type="hidden" name="queryStringOrigine" value="#{param.queryStringOrigine}" />

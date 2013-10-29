@@ -1,5 +1,7 @@
 package com.sdzee.forums.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,19 +11,19 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "forum_bookmark", uniqueConstraints = {@UniqueConstraint(columnNames = {
-    "id_membre",
-    "id_objet"})})
-@IdClass(BookmarkId.class)
+@Table( name = "forum_bookmark", uniqueConstraints = { @UniqueConstraint( columnNames = {
+        "id_membre",
+        "id_sujet" } ) } )
+@IdClass( BookmarkId.class )
 public class Bookmark {
 
-    @NotNull(message = "{forums.bookmark.idMembre.notnull}")
-    @Column(name = "id_membre")
+    @NotNull( message = "{forums.bookmark.idMembre.notnull}" )
+    @Column( name = "id_membre" )
     @Id
     private Long idMembre;
 
-    @NotNull(message = "{forums.bookmark.idSujet.notnull}")
-    @Column(name = "id_sujet")
+    @NotNull( message = "{forums.bookmark.idSujet.notnull}" )
+    @Column( name = "id_sujet" )
     @Id
     private Long idSujet;
 
@@ -30,7 +32,7 @@ public class Bookmark {
         return idMembre;
     }
 
-    public void setIdMembre(Long idMembre) {
+    public void setIdMembre( Long idMembre ) {
 
         this.idMembre = idMembre;
     }
@@ -40,7 +42,7 @@ public class Bookmark {
         return idSujet;
     }
 
-    public void setIdSujet(Long idSujet) {
+    public void setIdSujet( Long idSujet ) {
 
         this.idSujet = idSujet;
     }
@@ -48,7 +50,7 @@ public class Bookmark {
 }
 
 /* Classe de définition de la clé primaire composite */
-class BookmarkId {
+class BookmarkId implements Serializable {
 
     Long idMembre;
 

@@ -23,7 +23,7 @@ public class Forum {
     @NotNull( message = "{forums.forum.description.notnull}" )
     private String    description;
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "categorie" )
     @NotNull( message = "{forums.forum.categorie.notnull}" )
     private CategorieForum categorie;

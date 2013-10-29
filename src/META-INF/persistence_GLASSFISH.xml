@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  	<persistence-unit name="bdd_sdzee_PU" transaction-type="JTA">
+  		<jta-data-source>jdbc/bonecp_resource</jta-data-source>
+		<class>com.sdzee.membres.entities.Membre</class>
+		<class>com.sdzee.forums.entities.Categorie</class>
+		<class>com.sdzee.forums.entities.Forum</class>
+		<class>com.sdzee.forums.entities.Sujet</class>
+		<class>com.sdzee.forums.entities.Reponse</class>
+		<class>com.sdzee.forums.entities.Vote</class>
+		<class>com.sdzee.forums.entities.Notification</class>
+		<class>com.sdzee.forums.entities.Bookmark</class>
+		<class>com.sdzee.tutos.entities.Licence</class>
+		<class>com.sdzee.tutos.entities.BTMTChap</class>
+		<class>com.sdzee.tutos.entities.Partie</class>
+		<class>com.sdzee.tutos.entities.SousPartie</class>
+		<class>com.sdzee.tutos.entities.QCMQuestion</class>
+		<class>com.sdzee.tutos.entities.QCMReponse</class>
+		<properties>
+			<property name="eclipselink.logging.level" value="FINE"/>
+		</properties>
+	</persistence-unit>   
+</persistence>

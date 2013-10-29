@@ -1,5 +1,7 @@
 package com.sdzee.forums.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -64,7 +66,7 @@ public class Vote {
 }
 
 /* Classe de définition de la clé primaire composite */
-class VoteId {
+class VoteId implements Serializable {
     Long   idMembre;
     Long   idObjet;
     String typeObjet;

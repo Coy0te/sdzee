@@ -35,7 +35,8 @@ public final class Functions {
     /**
      * Convertit la date : en durée relative à la date courante (temps écoulé) si la date est proche, en format complet sinon.
      * 
-     * @param date La date courante passée depuis l'EL dans la Facelet
+     * @param date
+     *            La date courante passée depuis l'EL dans la Facelet
      * @return Une chaîne contenant une durée relative si la date est proche du jour courant, ou la date complète sinon.
      * 
      */
@@ -73,14 +74,16 @@ public final class Functions {
     /**
      * Convertit le texte source contenant des éléments markdown en texte affichable à l'utilisateur.
      * 
-     * @param texte Le texte source contenant les balises markdown passé depuis l'EL dans la Facelet
+     * @param texte
+     *            Le texte source contenant les balises markdown passé depuis l'EL dans la Facelet
      * @return Une chaîne contenant le texte formaté pour l'affichage à l'utilisateur.
      * 
      */
     public static String parseMarkdown( String texte ) {
         // TODO: ne pas initialiser un processor à chaque appel... Un seul pour toute l'appli ? Ou autre ?
-        PegDownProcessor processor = new PegDownProcessor( Extensions.HARDWRAPS + Extensions.AUTOLINKS + Extensions.FENCED_CODE_BLOCKS
-                + Extensions.SUPPRESS_ALL_HTML );
+        PegDownProcessor processor = new PegDownProcessor( Extensions.HARDWRAPS + Extensions.AUTOLINKS
+                + Extensions.FENCED_CODE_BLOCKS
+                + Extensions.SUPPRESS_ALL_HTML + Extensions.ABBREVIATIONS );
         texte = processor.markdownToHtml( texte );
 
         return texte;

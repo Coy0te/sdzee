@@ -14,7 +14,7 @@ import com.sdzee.tutos.entities.Partie;
 @Stateless
 public class BTMTChapDao {
     private static final String JPQL_LISTE_CHAPITRES_PAR_PARTIES = "SELECT c FROM BTMTChap c WHERE c.partie=:partie ORDER BY c.position";
-    private static final String JPQL_LISTE_BTMT                  = "SELECT btmt FROM BTMTChap btmt WHERE btmt.partie=null ORDER BY btmt.id";
+    private static final String JPQL_LISTE_BTMT                  = "SELECT btmt FROM BTMTChap btmt WHERE btmt.partie IS NULL ORDER BY btmt.id";
     private static final String PARAM_PARTIE                     = "partie";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )

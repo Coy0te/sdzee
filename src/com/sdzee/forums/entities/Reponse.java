@@ -24,12 +24,12 @@ public class Reponse {
     private Long    id;
 
     @NotNull( message = "{forums.reponse.auteur.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "auteur" )
     private Membre  auteur;
 
     @NotNull( message = "{forums.reponse.sujet.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "sujet" )
     private Sujet   sujet;
 
@@ -39,7 +39,7 @@ public class Reponse {
     @Temporal( TemporalType.TIMESTAMP )
     private Date    lastEditDate;
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "lastEditBy" )
     private Membre  lastEditBy;
 

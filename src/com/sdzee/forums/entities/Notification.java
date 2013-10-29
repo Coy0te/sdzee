@@ -1,5 +1,7 @@
 package com.sdzee.forums.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,7 +30,7 @@ public class Notification {
     @Id
     private Long    idSujet;
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "reponse" )
     private Reponse reponse;
 
@@ -65,7 +67,7 @@ public class Notification {
 }
 
 /* Classe de définition de la clé primaire composite */
-class NotificationId {
+class NotificationId implements Serializable {
 
     Long idMembre;
 

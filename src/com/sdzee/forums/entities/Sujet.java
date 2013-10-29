@@ -36,12 +36,12 @@ public class Sujet {
     private String  texte;
 
     @NotNull( message = "{forums.sujet.auteur.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "auteur" )
     private Membre  auteur;
 
     @NotNull( message = "{forums.sujet.forum.notnull}" )
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "forum" )
     private Forum   forum;
 
@@ -63,7 +63,7 @@ public class Sujet {
     @Temporal( TemporalType.TIMESTAMP )
     private Date    lastEditDate;
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "lastEditBy" )
     private Membre  lastEditBy;
 

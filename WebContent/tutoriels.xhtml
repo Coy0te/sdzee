@@ -6,18 +6,25 @@
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{tutosBean.getBreadCrumb()}"/>
 			<ui:param name="titrePage" value="#{i18n.titrePageTutoriels}"/>
 			<ui:param name="descriptionPage" value="#{i18n.descriptionPageTutoriels}"/>
 			<ui:param name="logoPage" value="tutorial"/>
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">
-		<h1>
-			<h:link>
-				<f:param name="tutoId" value="#{param['tutoId']}" />
-				#{tutosBean.getTuto(param['tutoId']).titre}
-			</h:link>
-		</h1>	</ui:define>
+		<h1>Liste des tutoriels</h1>
+		<ul>
+		<ui:repeat value="#{tutosBean.tutos}" var="tuto">
+			<li>
+				<h:link outcome="/tuto">
+					<f:param name="tutoId" value="#{tuto.id}" />
+					#{tuto.titre}
+				</h:link>
+			</li>
+		</ui:repeat>
+		</ul>
+	</ui:define>
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
 	</ui:define>

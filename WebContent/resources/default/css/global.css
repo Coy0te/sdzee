@@ -1507,3 +1507,87 @@ div#error404 p {
 	color: #03638b;
 	cursor: pointer;
 }
+
+ul.sommaire{
+   list-style-type: none; 
+   margin: 20px 0;
+}
+ul.sommaire a{
+	color: #03638B;
+}
+ul.sommaire a:hover{
+	color: #C87B02;
+}
+ul.sommaire h3 {
+    color: #E8A22B;
+    font-size: 1.5em;
+    font-weight: normal;
+    margin: 0;
+}
+ul.sommaire ul { 
+   list-style-type: none; 
+   margin: 0px 0px 10px 15px; 
+}
+li.sommaire_chapitre {
+    margin-top: 30px;
+}
+.icone_chap {
+    background-color: #FFFFFF;
+    float: left;
+    font-size: 12px;
+    position: relative;
+    top: -8px;
+    width: 71px;
+}
+.icone_chap img {
+    border: 1px solid #E3E7EC;
+    border-radius: 2px 2px 2px 2px;
+    margin-top: 5px;
+    width: 50px;
+    vertical-align: middle;
+}
+.droite_chapitre {
+    margin-left: 80px;
+    width: 370px;
+}
+.droite_chapitre hr {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #E3E7EC -moz-use-text-color -moz-use-text-color;
+    border-image: none;
+    border-right: medium none;
+    border-style: solid none none;
+    border-width: 1px medium medium;
+    margin: 0 0 8px;
+}
+a.big_lien {
+    font-weight: bold;
+    font-size: 14px;
+}
+.separateur_tuto {
+    border-top: 2px solid #D2D1D0;
+    float: left;
+    height: 0;
+    margin: 30px 0;
+    width: 100%;
+}
+.corps_tuto ul {
+	list-style: disc outside url(#{resource['default/css/images/liste_puce.png']}); 
+	margin: 10px 0px 10px 20px; 
+}
+a.retour_haut_tuto {
+    background: url(#{resource['default/css/images/fleche_haut.png']}) no-repeat scroll right 0 white;
+    float: right;
+    margin-right: 15px;
+    padding: 0 20px 0 5px;
+    position: relative;
+    top: -0.8em;
+    color: #03638B;
+}
+ul.liste_btuto_chap {
+    list-style: none outside none;
+    margin-top: 3px;
+    padding: 0;
+}

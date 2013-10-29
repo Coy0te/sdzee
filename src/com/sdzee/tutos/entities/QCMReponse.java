@@ -2,6 +2,7 @@ package com.sdzee.tutos.entities;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class QCMReponse {
     @NotNull( message = "{tuto.reponse.texte.notnull}" )
     private String      texte;
 
-    @NotNull( message = "{tuto.reponse.correct.notnull}" )
+    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
     private boolean     correct;
 
     @NotNull( message = "{tuto.reponse.question.notnull}" )

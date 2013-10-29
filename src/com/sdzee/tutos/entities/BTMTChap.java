@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,10 +41,11 @@ public class BTMTChap {
     @OneToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "mtchap" )
     private List<QCMQuestion> questions;               // côté "owner" du mapping d'un chapitre ou MT qui contient des questions
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "licence" )
     private Licence           licence;
 
+    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
     private boolean           fini;
 
     @NotNull( message = "{tuto.chapitre.position.notnull}" )
