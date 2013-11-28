@@ -13,64 +13,69 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+
+/**
+ * Notification est l'entité JPA décrivant la table des notifications. La validation des champs s'appuie sur la JSR-303.
+ * 
+ * @author Médéric Munier
+ * @version %I%, %G%
+ */
 @Entity
-@Table( name = "forum_notification", uniqueConstraints = { @UniqueConstraint( columnNames = {
-        "id_membre",
-        "id_sujet" } ) } )
+@Table( name = "forum_topic_notification", uniqueConstraints = { @UniqueConstraint( columnNames = {
+        "member",
+        "topic" } ) } )
 @IdClass( NotificationId.class )
-public class Notification {
+public class Notification implements Serializable {
 
-    @NotNull( message = "{forums.notification.idMembre.notnull}" )
-    @Column( name = "id_membre" )
+    @NotNull( message = "{forums.notification.memberId.notnull}" )
+    @Column( name = "member" )
     @Id
-    private Long    idMembre;
+    private Long memberId;
 
-    @NotNull( message = "{forums.notification.idSujet.notnull}" )
-    @Column( name = "id_sujet" )
+    @NotNull( message = "{forums.notification.topicId.notnull}" )
+    @Column( name = "topic" )
     @Id
-    private Long    idSujet;
+    private Long topicId;
 
     @ManyToOne( fetch = FetchType.EAGER )
-    @JoinColumn( name = "reponse" )
-    private Reponse reponse;
+    @JoinColumn( name = "post" )
+    @JoinFetch
+    private Post post;
 
-    public Long getIdMembre() {
-
-        return idMembre;
+    public Long getMemberId() {
+        return memberId;
     }
 
-    public void setIdMembre( Long idMembre ) {
-
-        this.idMembre = idMembre;
+    public void setMemberId( Long memberId ) {
+        this.memberId = memberId;
     }
 
-    public Long getIdSujet() {
-
-        return idSujet;
+    public Long getTopicId() {
+        return topicId;
     }
 
-    public void setIdSujet( Long idSujet ) {
-
-        this.idSujet = idSujet;
+    public void setTopicId( Long topicId ) {
+        this.topicId = topicId;
     }
 
-    public Reponse getReponse() {
-
-        return reponse;
+    public Post getPost() {
+        return post;
     }
 
-    public void setReponse( Reponse reponse ) {
-
-        this.reponse = reponse;
+    public void setPost( Post post ) {
+        this.post = post;
     }
 
 }
 
-/* Classe de définition de la clé primaire composite */
+/**
+ * NotificationId est la classe de définition de la clé primaire composite de la table des notifications.
+ * 
+ * @author Médéric Munier
+ * @version %I%, %G%
+ */
 class NotificationId implements Serializable {
-
-    Long idMembre;
-
-    Long idSujet;
-
+    Long memberId;
+    Long topicId;
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:uf="http://sdzee.com/functions/functions"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <title>Wu suo wei...</title>
+        <h:outputStylesheet library="default" name="css/form.css"  />
+    </h:head>
+    <h:body>
+		<ui:composition>  
+		<li class="read">
+            <div class="row">
+               <div class="cell">
+		     	   <h:link outcome="/privateTopic">
+		        		<f:param name="topicId" value="#{privateTopic.id}" />
+                          <h3>#{privateTopic.title}</h3>
+                          <span>#{i18n.sujetPar} <strong>#{privateTopic.firstPrivatePost.author.nickName} </strong> #{uf:convertDateTime(privateTopic.firstPrivatePost.creationDate)}</span>
+                   </h:link>
+               </div>
+               <div class="cell">
+			      <p>#{privateTopic.nbPrivatePosts} #{privateTopic.nbPrivatePosts == 1 ? i18n.sujetMessage : i18n.sujetMessages }</p>
+			   </div>
+			   <div class="cell">lu/non lu</div>
+               <div class="cell">
+		         <h:link outcome="/privateTopic">
+		        	<f:param name="topicId" value="#{privateTopic.id}" />
+		        	<f:param name="postId" value="#{privateTopic.lastPrivatePost != null ? privateTopic.lastPrivatePost.id : privateTopic.firstPrivatePost.id}" />
+	          		#{i18n.sujetDernierMessagePar}
+	          		<strong>#{privateTopic.lastPrivatePost != null ? privateTopic.lastPrivatePost.author.nickName : privateTopic.firstPrivatePost.author.nickName}</strong>
+	        		<br/>
+	        		#{privateTopic.lastPrivatePost != null ? uf:convertDateTime(privateTopic.lastPrivatePost.creationDate) : uf:convertDateTime(privateTopic.firstPrivatePost.creationDate)}
+        		 </h:link>
+   			  </div>
+           </div>
+        </li>		
+		</ui:composition>
+    </h:body>
+</html>

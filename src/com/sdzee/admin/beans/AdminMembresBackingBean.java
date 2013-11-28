@@ -11,10 +11,10 @@ import javax.faces.context.FacesContext;
 
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
-import com.sdzee.membres.dao.MembreDao;
-import com.sdzee.membres.entities.Membre;
+import com.sdzee.membres.dao.MemberDao;
+import com.sdzee.membres.entities.Member;
 
-@ManagedBean( name = "adminMembresBean" )
+@ManagedBean( name = "adminMembersBean" )
 @ViewScoped
 public class AdminMembresBackingBean implements Serializable {
     private static final long   serialVersionUID         = 1L;
@@ -23,28 +23,28 @@ public class AdminMembresBackingBean implements Serializable {
     private static final String TITRE_PAGE_ADMIN_MEMBRES = "Membres";
 
     @EJB
-    private MembreDao           membreDao;
+    private MemberDao           memberDao;
 
-    private List<Membre>        membres;
-    private List<Membre>        filteredMembres;
+    private List<Member>        members;
+    private List<Member>        filteredMembers;
 
     @PostConstruct
     public void init() {
-        membres = membreDao.lister();
+        members = memberDao.list();
     }
 
-    public List<Membre> getMembres() {
-        return membres;
+    public List<Member> getMembers() {
+        return members;
     }
 
-    public List<Membre> getFilteredMembres() {
-        return filteredMembres;
+    public List<Member> getFilteredMembers() {
+        return filteredMembers;
     }
 
     public List<BreadCrumbItem> getBreadCrumb() {
-        String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
-        BreadCrumbHelper.addItem( breadCrumb, TITRE_PAGE_ADMIN, chemin + URL_PAGE_ADMIN );
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( path );
+        BreadCrumbHelper.addItem( breadCrumb, TITRE_PAGE_ADMIN, path + URL_PAGE_ADMIN );
         BreadCrumbHelper.addItem( breadCrumb, TITRE_PAGE_ADMIN_MEMBRES, null );
         return breadCrumb;
     }

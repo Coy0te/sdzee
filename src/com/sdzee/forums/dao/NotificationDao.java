@@ -11,24 +11,37 @@ import javax.persistence.TypedQuery;
 
 import com.sdzee.dao.DAOException;
 import com.sdzee.forums.entities.Notification;
-import com.sdzee.membres.entities.Membre;
+import com.sdzee.forums.entities.Topic;
+import com.sdzee.membres.entities.Member;
 
+/**
+ * NotificationDao est la classe DAO contenant les opérations CRUD réalisables sur la table des notifications. Il s'agit d'un EJB Stateless
+ * dont la structure s'appuie sur JPA et JPQL.
+ * 
+ * @author Médéric Munier
+ * @version %I%, %G%
+ */
 @Stateless
 public class NotificationDao {
-    private static final String JPQL_SELECT_UNIQUE_NOTIFICATION     = "SELECT n FROM Notification n WHERE n.idMembre=:idMembre AND n.idSujet=:idSujet";
-    private static final String JPQL_DELETE_NOTIFICATION            = "DELETE FROM Notification n WHERE n.idMembre=:idMembre AND n.idSujet=:idSujet";
-    private static final String JPQL_LISTE_NOTIFICATIONS_PAR_MEMBRE = "SELECT n FROM Notification n WHERE n.idMembre=:idMembre";
-    private static final String PARAM_ID_MEMBRE                     = "idMembre";
-    private static final String PARAM_ID_SUJET                      = "idSujet";
+    private static final String JPQL_SELECT_UNIQUE_NOTIFICATION    = "SELECT n FROM Notification n WHERE n.memberId=:memberId AND n.topicId=:topicId";
+    private static final String JPQL_DELETE_NOTIFICATION           = "DELETE FROM Notification n WHERE n.memberId=:memberId AND n.topicId=:topicId";
+    private static final String JPQL_NOTIFICATIONS_LIST_PER_MEMBER = "SELECT n FROM Notification n WHERE n.memberId=:memberId";
+    private static final String PARAM_MEMBER_ID                    = "memberId";
+    private static final String PARAM_TOPIC_ID                     = "topicId";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
 
-    /* Enregistrement d'une nouvelle notification */
-    public void creer( Notification notification ) throws DAOException {
+    /**
+     * Cette méthode permet d'enregistrer une nouvelle {@link Notification} en base.
+     * 
+     * @param notification la nouvelle notification à insérer en base.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public void create( Notification notification ) throws DAOException {
         try {
             // Insertion uniquement si une notification n'existe pas déjà.
-            if ( trouver( notification.getIdMembre(), notification.getIdSujet() ) == null ) {
+            if ( find( notification.getMemberId(), notification.getTopicId() ) == null ) {
                 em.persist( notification );
             }
         } catch ( Exception e ) {
@@ -36,33 +49,50 @@ public class NotificationDao {
         }
     }
 
-    /* Récupération de la liste des notifications pour un membre donné */
-    public List<Notification> lister( Membre membre ) throws DAOException {
+    /**
+     * Cette méthode permet de lister toutes les {@link Notification} d'un {@link Member} donné.
+     * 
+     * @param member le membre pour lequel effectuer la recherche.
+     * @return la liste des notifications triées par id par ordre croissant, ou <code>null</code> si aucune notification n'est trouvée.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public List<Notification> list( Member member ) throws DAOException {
         try {
-            TypedQuery<Notification> query = em.createQuery( JPQL_LISTE_NOTIFICATIONS_PAR_MEMBRE, Notification.class );
-            query.setParameter( PARAM_ID_MEMBRE, membre.getId() );
+            TypedQuery<Notification> query = em.createQuery( JPQL_NOTIFICATIONS_LIST_PER_MEMBER, Notification.class );
+            query.setParameter( PARAM_MEMBER_ID, member.getId() );
             return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );
         }
     }
 
-    /* Récupération de la notification pour un membre et un sujet donnés */
-    public Notification trouver( Long idMembre, Long idSujet ) throws DAOException {
+    /**
+     * Cette méthode permet de chercher une {@link Notification} via l'id du {@link Member} à notifier et l'id du {@link Topic} observé.
+     * 
+     * @param memberId l'id du membre à notifier.
+     * @param topicId l'id du sujet observé.
+     * @return la notification correspondant, ou <code>null</code> si aucune notification n'est trouvée.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public Notification find( Long memberId, Long topicId ) throws DAOException {
         try {
             Query query = em.createQuery( JPQL_SELECT_UNIQUE_NOTIFICATION );
-            query.setParameter( PARAM_ID_MEMBRE, idMembre );
-            query.setParameter( PARAM_ID_SUJET, idSujet );
+            query.setParameter( PARAM_MEMBER_ID, memberId );
+            query.setParameter( PARAM_TOPIC_ID, topicId );
             return (Notification) query.getSingleResult();
         } catch ( NoResultException e ) {
-            // Si aucune notification trouvé, on retourne null.
             return null;
         } catch ( Exception e ) {
             throw new DAOException( e );
         }
     }
 
-    /* Mise à jour d'une notification */
+    /**
+     * Cette méthode permet de mettre à jour une {@link Notification} en base.
+     * 
+     * @param notification la notification à mettre à jour en base.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
     public void update( Notification notification ) throws DAOException {
         try {
             em.merge( notification );
@@ -71,20 +101,31 @@ public class NotificationDao {
         }
     }
 
-    /* Suppression d'une notification pour un membre et un sujet donnés */
-    public void supprimer( Long idMembre, Long idSujet ) throws DAOException {
+    /**
+     * Cette méthode permet de supprimer une {@link Notification} en se basant sur l'id du {@link Member} et l'id du {@link Topic} donnés.
+     * 
+     * @param memberId l'id du membre pour lequel effectuer la suppression.
+     * @param topicId l'id du sujet pour lequel effectuer la suppression.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public void delete( Long memberId, Long topicId ) throws DAOException {
         try {
             Query query = em.createQuery( JPQL_DELETE_NOTIFICATION );
-            query.setParameter( PARAM_ID_MEMBRE, idMembre );
-            query.setParameter( PARAM_ID_SUJET, idSujet );
+            query.setParameter( PARAM_MEMBER_ID, memberId );
+            query.setParameter( PARAM_TOPIC_ID, topicId );
             query.executeUpdate();
         } catch ( Exception e ) {
             throw new DAOException( e );
         }
     }
 
-    /* Suppression d'une notification */
-    public void supprimer( Notification notification ) throws DAOException {
+    /**
+     * Cette méthode permet de supprimer une {@link Notification} de la base.
+     * 
+     * @param notification la notification à supprimer de la base.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public void delete( Notification notification ) throws DAOException {
         try {
             em.remove( em.merge( notification ) );
         } catch ( Exception e ) {

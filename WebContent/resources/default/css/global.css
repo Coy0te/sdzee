@@ -72,7 +72,7 @@ div.message ul{
 .tooltip.left .tooltip-arrow{top:50%;right:0;margin-top:-5px;border-width:5px 0 5px 5px;border-left-color:#335d6e}
 .tooltip.bottom .tooltip-arrow{top:0;left:50%;margin-left:-5px;border-width:0 5px 5px;border-bottom-color:#335d6e}
 
-input.resoudreSujet{
+input.resoudreSujet, input.mettreEnPostItSujet, input.fermerSujet, .deplacerSujet{
 	-moz-box-shadow: 1px 1px 0 rgba(255,255,255,0.53) inset;
 	-webkit-box-shadow: 1px 1px 0 rgba(255,255,255,0.53) inset;
 	-o-box-shadow: 1px 1px 0 rgba(255,255,255,0.53) inset;
@@ -94,13 +94,13 @@ input.resoudreSujet{
 	border: 1px solid #696969;
 	opacity: 0.5;
 }
-input.resoudreSujet:hover{
+input.resoudreSujet:hover, input.mettreEnPostItSujet:hover, input.fermerSujet:hover, .deplacerSujet:hover{
 	opacity: 1;
 }
-input.sujetResolu{
+input.sujetResolu, input.sujetPostIt, input.sujetFerme{
 	opacity: 1;
 }
-.hidden, .bruteMarkdownBody{
+.hidden, .bruteMarkdownBody, .hidden2{
 	display: none;
 }
 .markdownPreview{
@@ -1226,9 +1226,8 @@ div.forumCategory > a > .forumLastMessage {
 }
 
 /* Admin --------------------------------------------------------------------------------------- */
-#adminContent {
-	float: right;
-	width: 705px;
+#adminContent table, #adminContent td, #adminContent th{
+	padding: 10px;
 }
 #adminMenu {
 	width: 250px;
@@ -1590,4 +1589,12 @@ ul.liste_btuto_chap {
     list-style: none outside none;
     margin-top: 3px;
     padding: 0;
+}
+.moderateAction, .moderateAction input{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+#creerCategorieForm{
+	width: 500px;
 }

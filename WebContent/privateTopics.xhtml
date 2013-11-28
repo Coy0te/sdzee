@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
+				template="/WEB-INF/templates/template_base.xhtml">
+	<f:metadata>
+		<o:viewParam id="page" name="page" value="#{privateTopicsBean.page}" required="false">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<f:event type="preRenderView" listener="#{privateTopicsBean.init}" />
+	</f:metadata>
+	<ui:define name="title">
+		Mes messages privés
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{privateTopicsBean.getBreadCrumb()}"/>
+			<ui:param name="pageTitle" value="Mes messages privés"/>
+			<ui:param name="pageDescription" value="Viewer discretion is advised..."/>
+			<ui:param name="logoPage" value="forumSdz"/>
+		</ui:include>
+	</ui:define>
+	<ui:define name="body">
+		<h1>
+			<h:link>
+				Mes messages privés
+			</h:link>
+		</h1>
+		<!-- TODO: N'afficher que le début et la fin de la pagination, et pas l'intégralité des pages... -->
+		<ui:fragment rendered="#{privateTopicsBean.pagesNumber > 1}">
+		<div class="pagination">
+		<ui:param name="pageParam" value="#{empty param['page'] ? 1 : param['page']}"/>
+		<ui:repeat value="#{of:createArray(privateTopicsBean.pagesNumber)}" varStatus="loop">
+			<h:panelGroup styleClass="current" rendered="#{loop.index + 1 == pageParam}">#{loop.index + 1}</h:panelGroup>
+			<h:link styleClass="paginate page" rendered="#{loop.index + 1 != pageParam}">
+				<f:param name="forumId" value="#{param['forumId']}" />
+				<f:param name="page" value="#{loop.index + 1}" />
+				#{loop.index + 1}
+			</h:link> 
+		</ui:repeat>
+		</div>
+		</ui:fragment>
+		
+    	<ul class="list">
+		<ui:repeat value="#{privateTopicsBean.paginatedPrivateTopics}" var="privateTopic">
+			<ui:include src="/WEB-INF/snippets/body/inc_private_topic.xhtml">
+				<ui:param name="privateTopic" value="#{privateTopic}"/>
+			</ui:include>
+		</ui:repeat>
+		</ul>
+		<h:link styleClass="btn btn-primary right-flt createThread" rendered="#{member != null}">
+			Créer un MP
+		</h:link>
+		<div id="newThread">
+			<o:form includeViewParams="true" styleClass="formHidden" rendered="#{member != null}">
+				<h2>Créer un MP</h2>
+				<h:outputLabel for="titre">#{i18n.labelInputTitreSujet} <span class="requis">*</span></h:outputLabel>
+				<h:inputText id="titre" value="#{privateTopicsBean.privateTopic.title}" maxlength="60" />
+				<h:message id="titreMessage" for="titre" errorClass="erreur" />
+				<h:outputLabel for="sousTitre">#{i18n.labelInputSousTitreSujet}</h:outputLabel>
+				<h:inputText id="sousTitre" value="#{privateTopicsBean.privateTopic.subTitle}" maxlength="80" />
+				<h:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
+				<h:outputLabel for="participants">Pseudos des participants (séparés par une virgule)</h:outputLabel>
+				<h:inputText id="participants" value="#{privateTopicsBean.participantsNames}" maxlength="80">
+					<f:ajax event="blur" render="participantsMessage" />
+					<f:validator binding="#{verificationParticipantsValidator}" />
+				</h:inputText>
+				<h:message id="participantsMessage" for="participants" errorClass="erreur" />
+				<h:outputLabel for="texte">#{i18n.labelInputMessageSujet} <span class="requis">*</span></h:outputLabel>
+				<h:inputTextarea id="texte" placeholder="#{i18n.placeholderTextareaSujet}" value="#{privateTopicsBean.privatePost.text}" />
+				<h:message id="texteMessage" for="texte" errorClass="erreur" />
+				<div class="rowButton">
+					<h:commandButton value="#{i18n.creerSujetButton}" type="submit" action="#{privateTopicsBean.create(member)}" styleClass="btn btn-primary right-flt">
+						<f:ajax execute="@form" render="@form" />
+					</h:commandButton>
+					<h:commandButton value="#{i18n.apercuSujetButton}" type="button" styleClass="btn showMarkdownOverview" />
+				</div>
+			</o:form>
+		</div>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

@@ -15,4 +15,9 @@
         <function-class>com.sdzee.functions.Functions</function-class>
         <function-signature>java.lang.String parseMarkdown(java.lang.String)</function-signature>
     </function>
+    <function>
+        <function-name>gravatar</function-name>
+        <function-class>com.sdzee.functions.Functions</function-class>
+        <function-signature>java.lang.String gravatar(com.sdzee.membres.entities.Member,int)</function-signature>
+    </function>
 </facelet-taglib>

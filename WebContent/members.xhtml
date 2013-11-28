@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:uf="http://sdzee.com/functions/functions" template="/WEB-INF/templates/template_base.xhtml">
+	<ui:define name="title">
+		#{i18n.pageMembresTitre}
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{membersBean.getBreadCrumb()}"/>
+			<ui:param name="pageTitle" value="#{i18n.pageTitleMembres}"/>
+			<ui:param name="pageDescription" value="#{i18n.pageDescriptionMembres}"/>
+		</ui:include>
+	</ui:define>
+	<ui:define name="body">
+		<h1>Liste des membres du site</h1>
+		<ul>
+		<ui:repeat value="#{membersBean.members}" var="currentMember">
+			<li>
+				<h:graphicImage value="#{uf:gravatar(currentMember,16)}" alt="avatar" />
+				<h:link outcome="/profile">
+					<f:param name="memberId" value="#{currentMember.id}" />
+					#{currentMember.nickName}
+				</h:link>
+			</li>
+		</ui:repeat>
+		</ul>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

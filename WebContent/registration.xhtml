@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				template="/WEB-INF/templates/template_base.xhtml">
+	<ui:define name="title">
+		#{i18n.pageInscriptionTitre}
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{registerBean.getBreadCrumb()}"/>
+			<ui:param name="pageTitle" value="#{i18n.pageTitleInscription}"/>
+			<ui:param name="pageDescription" value="#{i18n.pageDescriptionInscription}"/>
+		</ui:include>
+	</ui:define>
+	<ui:define name="body">
+	  <h1>
+	  	<h:link>#{i18n.h1Inscription}</h:link>
+	  </h1>
+      <h:form id="formulaire">
+	     	<h:outputLabel for="email">#{i18n.labelInputEmailInscription} <span class="requis">*</span></h:outputLabel>
+	        <h:inputText id="email" value="#{registerBean.member.email}" size="20" maxlength="60">
+	            <f:ajax event="blur" render="emailMessage" />
+	            <f:validator binding="#{existenceEmailValidator}" />
+	        </h:inputText>
+	        <h:message id="emailMessage" for="email" errorClass="erreur" />
+	        <br />
+	
+	        <h:outputLabel for="motdepasse">#{i18n.labelInputMdpInscription} <span class="requis">*</span></h:outputLabel>
+	        <h:inputSecret id="motdepasse" value="#{registerBean.member.password}" binding="#{composantMotDePasse}" size="20" maxlength="20">
+	       	    <f:ajax event="blur" execute="motdepasse confirmation" render="motDePasseMessage confirmationMessage" />
+	        </h:inputSecret>
+	        <h:message id="motDePasseMessage" for="motdepasse" errorClass="erreur" />
+	        <br />
+	
+	        <h:outputLabel for="confirmation">#{i18n.labelInputConfirmationInscription} <span class="requis">*</span></h:outputLabel>
+	        <h:inputSecret id="confirmation" value="#{registerBean.member.password}" size="20" maxlength="20">
+   				<f:validator validatorId="confirmationMotDePasseValidator" />
+  			    <f:attribute name="composantMotDePasse" value="#{composantMotDePasse}" />
+	            <f:ajax event="blur" execute="motdepasse confirmation" render="motDePasseMessage confirmationMessage" />
+	        </h:inputSecret>
+	        <h:message id="confirmationMessage" for="confirmation" errorClass="erreur" />
+	        <br />
+	
+	        <h:outputLabel for="pseudo">#{i18n.labelInputPseudoInscription} <span class="requis">*</span></h:outputLabel>
+	        <h:inputText id="pseudo" value="#{registerBean.member.nickName}" size="20" maxlength="20">
+	            <f:ajax event="blur" render="pseudoMessage" />
+	            <f:validator binding="#{existencePseudoValidator}" />
+	        </h:inputText>
+	        <h:message id="pseudoMessage" for="pseudo" errorClass="erreur" />
+	        <br />
+	        
+	        <h:messages globalOnly="true" infoClass="info" />
+	
+	        <h:commandButton value="Inscription" action="#{registerBean.register}" styleClass="sansLabel">
+	            <f:ajax execute="@form" render="@form" />
+	        </h:commandButton>
+	        <br />
+        </h:form> 
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

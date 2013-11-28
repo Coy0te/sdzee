@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:uf="http://sdzee.com/functions/functions"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <title>#{i18n.pageForumTitre}</title>
+        <h:outputStylesheet library="default" name="css/form.css"  />
+    </h:head>
+    <h:body>
+		<ui:composition>  
+		<li class="read#{topic.locked ? ' lock' : ''}">
+            <div class="row">
+               <div class="cell">
+                   <h:panelGroup styleClass="postit" rendered="#{topic.sticky}"></h:panelGroup>
+                   <h:panelGroup styleClass="lockSecure" rendered="#{topic.locked}"></h:panelGroup>
+                   <h:panelGroup styleClass="resolved" rendered="#{topic.solved and !topic.sticky}"></h:panelGroup>
+		     	   <h:link outcome="/topic">
+		        		<f:param name="topicId" value="#{topic.id}" />
+                          <h3>#{topic.title}</h3>
+                          <span>#{i18n.sujetPar} <strong>#{topic.firstPost.author.nickName} </strong> #{uf:convertDateTime(topic.firstPost.creationDate)}</span>
+                   </h:link>
+               </div>
+               <div class="cell">
+			      <p>#{topic.nbPosts} #{topic.nbPosts == 1 ? i18n.sujetMessage : i18n.sujetMessages }</p>
+			   </div>
+			   <div class="cell">lu/non lu</div>
+               <div class="cell">
+		         <h:link outcome="/topic">
+		        	<f:param name="topicId" value="#{topic.id}" />
+		        	<f:param name="postId" value="#{topic.lastPost != null ? topic.lastPost.id : topic.firstPost.id}" />
+	          		#{i18n.sujetDernierMessagePar}
+	          		<strong>#{topic.lastPost != null ? topic.lastPost.author.nickName : topic.firstPost.author.nickName}</strong>
+	        		<br/>
+	        		#{topic.lastPost != null ? uf:convertDateTime(topic.lastPost.creationDate) : uf:convertDateTime(topic.firstPost.creationDate)}
+        		 </h:link>
+   			  </div>
+           </div>
+        </li>		
+		</ui:composition>
+    </h:body>
+</html>

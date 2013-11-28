@@ -5,8 +5,8 @@
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
-			<ui:param name="titrePage" value="#{i18n.titrePage404}"/>
-			<ui:param name="descriptionPage" value="#{i18n.descriptionPage404}"/>
+			<ui:param name="pageTitle" value="#{i18n.pageTitle404}"/>
+			<ui:param name="pageDescription" value="#{i18n.pageDescription404}"/>
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">
@@ -18,7 +18,7 @@
 			<h:form styleClass="searchForm">
 				<h:outputLabel for="recherche404">#{i18n.labelInputRecherche404}</h:outputLabel>
 				<h:inputText id="recherche404" placeholder="#{i18n.placeholderInputRecherche404}" name="q"/>
-				<h:commandButton action="recherche"/>
+				<h:commandButton action="search"/>
 			</h:form>
 			<p onclick="history.back()"><span id="css-arrow-big"></span>#{i18n.pagePrecedente404}</p>
 		</div>

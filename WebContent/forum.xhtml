@@ -2,16 +2,22 @@
 				xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_base.xhtml">
 	<f:metadata>
-	    <o:viewParam id="forumId" name="forumId" value="#{sujetsBean.queryString}" />
+		<o:viewParam id="forumId" name="forumId" value="#{topicsBean.forumId}" required="true">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<o:viewParam id="page" name="page" value="#{topicsBean.page}" required="false">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<f:event type="preRenderView" listener="#{topicsBean.init}" />
 	</f:metadata>
 	<ui:define name="title">
-		#{sujetsBean.getForum(param['forumId']).titre}
+		#{topicsBean.forum.title}
 	</ui:define>
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
-			<ui:param name="breadCrumb" value="#{sujetsBean.getBreadCrumb(param['forumId'])}"/>
-			<ui:param name="titrePage" value="#{i18n.titrePageForum}"/>
-			<ui:param name="descriptionPage" value="#{i18n.descriptionPageForum}"/>
+			<ui:param name="breadCrumb" value="#{topicsBean.getBreadCrumb()}"/>
+			<ui:param name="pageTitle" value="#{i18n.pageTitleForum}"/>
+			<ui:param name="pageDescription" value="#{i18n.pageDescriptionForum}"/>
 			<ui:param name="logoPage" value="forumSdz"/>
 		</ui:include>
 	</ui:define>
@@ -19,22 +25,21 @@
 		<h1>
 			<h:link>
 				<f:param name="forumId" value="#{param['forumId']}" />
-				#{sujetsBean.getForum(param['forumId']).titre}
+				#{topicsBean.forum.title}
 			</h:link>
 		</h1>
 		<ul id="stickies" class="list">
-		<ui:repeat value="#{sujetsBean.getSujetsStickies(param['forumId'])}" var="sujet">
-			<ui:include src="/WEB-INF/snippets/body/inc_sujet.xhtml">
-				<ui:param name="sujet" value="#{sujet}"/>
-				<ui:param name="sujetsBean" value="#{sujetsBean}"/>
+		<ui:repeat value="#{topicsBean.stickyTopics}" var="topic">
+			<ui:include src="/WEB-INF/snippets/body/inc_topic.xhtml">
+				<ui:param name="topic" value="#{topic}"/>
 			</ui:include>
 		</ui:repeat>
 		</ul>
 		<!-- TODO: N'afficher que le début et la fin de la pagination, et pas l'intégralité des pages... -->
-		<ui:fragment rendered="#{sujetsBean.getNombreDePages(param['forumId']) > 1}">
+		<ui:fragment rendered="#{topicsBean.pagesNumber > 1}">
 		<div class="pagination">
 		<ui:param name="pageParam" value="#{empty param['page'] ? 1 : param['page']}"/>
-		<ui:repeat value="#{of:createArray(sujetsBean.getNombreDePages(param['forumId']))}" varStatus="loop">
+		<ui:repeat value="#{of:createArray(topicsBean.pagesNumber)}" varStatus="loop">
 			<h:panelGroup styleClass="current" rendered="#{loop.index + 1 == pageParam}">#{loop.index + 1}</h:panelGroup>
 			<h:link styleClass="paginate page" rendered="#{loop.index + 1 != pageParam}">
 				<f:param name="forumId" value="#{param['forumId']}" />
@@ -46,31 +51,30 @@
 		</ui:fragment>
 		
     	<ul class="list">
-		<ui:repeat value="#{sujetsBean.getSujets(param['forumId'], param['page'])}" var="sujet">
-			<ui:include src="/WEB-INF/snippets/body/inc_sujet.xhtml">
-				<ui:param name="sujet" value="#{sujet}"/>
-				<ui:param name="sujetsBean" value="#{sujetsBean}"/>
+		<ui:repeat value="#{topicsBean.paginatedTopics}" var="topic">
+			<ui:include src="/WEB-INF/snippets/body/inc_topic.xhtml">
+				<ui:param name="topic" value="#{topic}"/>
 			</ui:include>
 		</ui:repeat>
 		</ul>
-		<h:link styleClass="btn btn-primary right-flt createThread" rendered="#{membre != null}">
+		<h:link styleClass="btn btn-primary right-flt createThread" rendered="#{member != null}">
 			<f:param name="forumId" value="#{param['forumId']}" />
 			#{i18n.creerSujet}
 		</h:link>
 		<div id="newThread">
-			<o:form includeViewParams="true" styleClass="formHidden" rendered="#{membre != null}">
+			<o:form includeViewParams="true" styleClass="formHidden" rendered="#{member != null}">
 				<h2>#{i18n.creerSujet}</h2>
 				<h:outputLabel for="titre">#{i18n.labelInputTitreSujet} <span class="requis">*</span></h:outputLabel>
-				<h:inputText id="titre" value="#{sujetsBean.sujet.titre}" maxlength="60" />
+				<h:inputText id="titre" value="#{topicsBean.topic.title}" maxlength="60" />
 				<h:message id="titreMessage" for="titre" errorClass="erreur" />
 				<h:outputLabel for="sousTitre">#{i18n.labelInputSousTitreSujet}</h:outputLabel>
-				<h:inputText id="sousTitre" value="#{sujetsBean.sujet.sousTitre}" maxlength="80" />
+				<h:inputText id="sousTitre" value="#{topicsBean.topic.subTitle}" maxlength="80" />
 				<h:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
 				<h:outputLabel for="texte">#{i18n.labelInputMessageSujet} <span class="requis">*</span></h:outputLabel>
-				<h:inputTextarea id="texte" placeholder="#{i18n.placeholderTextareaSujet}" value="#{sujetsBean.sujet.texte}" />
+				<h:inputTextarea id="texte" placeholder="#{i18n.placeholderTextareaSujet}" value="#{topicsBean.post.text}" />
 				<h:message id="texteMessage" for="texte" errorClass="erreur" />
 				<div class="rowButton">
-					<h:commandButton value="#{i18n.creerSujetButton}" type="submit" action="#{sujetsBean.creer(membre, sujetsBean.getForum(param['forumId']))}" styleClass="btn btn-primary right-flt">
+					<h:commandButton value="#{i18n.creerSujetButton}" type="submit" action="#{topicsBean.create(member)}" styleClass="btn btn-primary right-flt">
 						<f:ajax execute="@form :forumId" render="@form" />
 					</h:commandButton>
 					<h:commandButton value="#{i18n.apercuSujetButton}" type="button" styleClass="btn showMarkdownOverview" />

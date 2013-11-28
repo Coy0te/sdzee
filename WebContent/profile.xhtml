@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions"
+				template="/WEB-INF/templates/template_base.xhtml">
+	<f:metadata>
+		<o:viewParam id="memberId" name="memberId" value="#{profileBean.memberId}">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<f:event type="preRenderView" listener="#{profileBean.init}" />
+	</f:metadata>
+	<ui:define name="title">
+		#{i18n.pageProfilTitre}
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{profileBean.getBreadCrumb(param['memberId'])}"/>
+			<ui:param name="pageTitle" value="#{i18n.pageTitleProfil}"/>
+			<ui:param name="pageDescription" value="#{i18n.pageDescriptionProfil}"/>
+			<ui:param name="logoPage" value="noway"/>
+		</ui:include>
+	</ui:define>
+	<ui:define name="body">
+		<h1>Infos de profil</h1>
+		<ul>
+			<li>Avatar : <h:graphicImage value="#{uf:gravatar(profileBean.member,80)}" alt="avatar" /></li>
+			<li>Pseudo : #{profileBean.member.nickName}</li>
+			<li>Prénom : #{profileBean.member.firstName}</li>
+			<li>Nom : #{profileBean.member.lastName}</li>
+			<li>Email : #{profileBean.member.email}</li>
+			<li>Inscription : #{uf:convertDateTime(profileBean.member.registrationDate)}</li>
+			<li>Dernière connexion : #{uf:convertDateTime(profileBean.member.lastConnectionDate)}</li>
+			<li>Signature : #{profileBean.member.signature}</li>
+			<li>Biographie : <h:outputText value="#{uf:parseMarkdown(profileBean.member.biography)}" escape="false"/></li>
+			<li>Site web : #{profileBean.member.website}</li>
+		</ul>
+		<hr/>
+		<h:link outcome="/profileEdition" rendered="#{member != null and (member.rights>=3 or member.nickName == profileBean.member.nickName)}">
+			<f:param name="memberId" value="#{profileBean.memberId}" />
+			Editer le profil
+		</h:link>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

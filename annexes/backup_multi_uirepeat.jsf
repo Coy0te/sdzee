@@ -1,0 +1,34 @@
+<table>
+	<tr>
+		<th>Titre</th>
+		<th>Action</th>
+	</tr>	
+<ui:repeat value="#{adminForumsBean.categories}" var="categorie">
+	<tr>
+		<td colspan="2" style="text-align: center; color: #fff; background-color: #03638b; font-weight: bold">#{categorie.titre}</td>
+	</tr>
+<ui:repeat value="#{categorie.forums}" var="forum">
+	<tr>
+		<td>
+			<o:form id="editCategorieForm" prependId="false" includeViewParams="true" rendered="#{membre != null and membre.droits>=4}">
+				<span class="titreCategorie">#{forum.titre}</span>
+				<h:panelGroup layout="block" styleClass="hidden">
+					<h:inputText id="editTitre" value="#{forum.titre}" maxlength="60" />
+					<h:commandButton id="editForumAction" value="Éditer" type="submit" action="#{adminForumsBean.editerForum(membre, forum)}" styleClass="btn btn-primary" />
+					<h:commandButton value="Annuler" type="button" styleClass="btn btn-inverse cancelEdit" />
+				</h:panelGroup>
+			</o:form>
+		</td>
+		<td>
+			<o:form includeViewParams="true" id="deplacerForumForm">
+				<h:commandLink value="Monter" action="#{adminForumsBean.monterForum(membre, forum)}"/> | 
+				<h:commandLink value="Descendre" action="#{adminForumsBean.descendreForum(membre, forum)}"/> | 
+				<h:commandLink value="Supprimer" action="#{adminForumsBean.supprimerForum(membre, forum)}" /> | 
+				<h:commandLink value="Déplacer" action="#{adminForumsBean.deplacerForum(membre, forum)}" /> | 
+				<a href="#" class="editAction"><span class="actionIcon iconEdit"></span>Éditer</a>
+			</o:form>
+		</td>
+	</tr>
+</ui:repeat>
+</ui:repeat>
+</table>

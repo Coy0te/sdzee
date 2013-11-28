@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:o="http://omnifaces.org/ui" xmlns:uf="http://sdzee.com/functions/functions"
+				template="/WEB-INF/templates/template_base.xhtml">
+	<f:metadata>
+		<o:viewParam id="memberId" name="memberId" value="#{profileEditionBean.memberId}">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<f:event type="preRenderView" listener="#{profileEditionBean.init}" />
+	</f:metadata>
+	<ui:define name="title">
+		#{i18n.pageProfilTitre}
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{profileEditionBean.getBreadCrumb(param['memberId'])}"/>
+			<ui:param name="pageTitle" value="#{i18n.pageTitleProfil}"/>
+			<ui:param name="pageDescription" value="#{i18n.pageDescriptionProfil}"/>
+			<ui:param name="logoPage" value="noway"/>
+		</ui:include>
+	</ui:define>
+	<ui:define name="body">
+		<o:form includeViewParams="true">
+			<h1>Modifier le profil</h1>
+			<h:outputLabel for="avatar">URL de votre avatar (laissez vide pour utiliser Gravatar) :</h:outputLabel>
+			<h:inputText id="avatar" value="#{profileEditionBean.member.avatar}" maxlength="60" />
+			<h:message id="avatarMessage" for="avatar" errorClass="erreur" />
+			<h:outputLabel for="nom">Votre nom :</h:outputLabel>
+			<h:inputText id="nom" value="#{profileEditionBean.member.lastName}" maxlength="60" />
+			<h:message id="nomMessage" for="nom" errorClass="erreur" />
+			<h:outputLabel for="prenom">Votre prénom :</h:outputLabel>
+			<h:inputText id="prenom" value="#{profileEditionBean.member.firstName}" maxlength="60" />
+			<h:message id="prenomMessage" for="prenom" errorClass="erreur" />
+			<h:outputLabel for="signature">Votre signature :</h:outputLabel>
+			<h:inputText id="signature" value="#{profileEditionBean.member.signature}" maxlength="200" />
+			<h:message id="signatureMessage" for="signature" errorClass="erreur" />
+			<h:outputLabel for="biographie">Votre biographie :</h:outputLabel>
+			<h:inputTextarea id="biographie" placeholder="#{i18n.placeholderTextareaSujet}" value="#{profileEditionBean.member.biography}" />
+			<h:message id="biographieMessage" for="biographie" errorClass="erreur" />
+			<h:outputLabel for="website">Votre site web :</h:outputLabel>
+			<h:inputText id="website" value="#{profileEditionBean.member.website}" maxlength="200" />
+			<h:message id="websiteMessage" for="website" errorClass="erreur" />
+
+			<h:commandButton value="Enregistrer" type="submit" action="#{profileEditionBean.editProfile(member)}" styleClass="btn" />
+		</o:form>
+		
+		<hr style="clear: both;" />
+		
+		<o:form includeViewParams="true">
+			<h1>Modifier les paramètres</h1>
+			<h:outputLabel for="pseudo">Votre pseudo :</h:outputLabel>
+			<h:inputText id="pseudo" value="#{profileEditionBean.member.nickName}" maxlength="60" />
+			<h:message id="pseudoMessage" for="pseudo" errorClass="erreur" />
+			<h:outputLabel for="email">Votre email :</h:outputLabel>
+			<h:inputText id="email" value="#{profileEditionBean.member.email}" maxlength="60" />
+			<h:message id="emailMessage" for="email" errorClass="erreur" />
+			<h:outputLabel for="oldPassword">Votre mot de passe actuel :</h:outputLabel>
+			<h:inputSecret id="oldPassword" value="#{profileEditionBean.member.password}" maxlength="60" />
+			<h:message id="oldPasswordMessage" for="oldPassword" errorClass="erreur" />
+			<h:outputLabel for="newPassword">Votre nouveau mot de passe :</h:outputLabel>
+			<h:inputSecret id="newPassword" value="#{profileEditionBean.member.password}" maxlength="60" />
+			<h:message id="newPasswordMessage" for="newPassword" errorClass="erreur" />
+			<h:outputLabel for="newPasswordConfirmation">Votre nouveau mot de passe (confirmation) :</h:outputLabel>
+			<h:inputSecret id="newPasswordConfirmation" value="#{profileEditionBean.member.password}" maxlength="60" />
+			<h:message id="newPasswordConfirmationMessage" for="newPasswordConfirmation" errorClass="erreur" />
+			<h:outputLabel for="showEmail">Afficher publiquement votre adresse email dans votre profil :</h:outputLabel>
+			<h:selectBooleanCheckbox id="showEmail" value="#{profileEditionBean.member.showEmail}" />
+			<h:message id="showEmailMessage" for="showEmail" errorClass="erreur" />
+			<h:outputLabel for="showSignatures">Afficher les signatures des membres dans les forums :</h:outputLabel>
+			<h:selectBooleanCheckbox id="showSignatures" value="#{profileEditionBean.member.showSignatures}" />
+			<h:message id="showSignaturesMessage" for="showSignatures" errorClass="erreur" />
+
+			<h:commandButton value="Enregistrer" type="submit" action="#{profileEditionBean.editParameters(member)}" styleClass="btn" />
+		</o:form>
+
+		<hr style="clear: both;" />
+
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

@@ -1,7 +1,7 @@
 package com.sdzee.breadcrumb.beans;
 
 public class BreadCrumbItem {
-    private String titre;
+    private String title;
     private String url;
 
     public String getUrl() {
@@ -12,11 +12,11 @@ public class BreadCrumbItem {
         this.url = url;
     }
 
-    public String getTitre() {
-        return titre;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitre( String titre ) {
-        this.titre = titre;
+    public void setTitle( String title ) {
+        this.title = title;
     }
 }

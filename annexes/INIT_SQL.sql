@@ -82,7 +82,7 @@ CREATE TABLE  bdd_sdzee.tuto_reponse (
   id INT( 11 ) NOT NULL AUTO_INCREMENT ,  
   question INT( 11 ) NOT NULL ,  
   texte TEXT NOT NULL , 
-  correct TINYINT(1) DEFAULT 0 ,
+  correct TINYINT(1) NOT NULL ,
   dateCreation DATETIME NOT NULL ,  
   dateDerniereModification DATETIME NOT NULL ,  
   adresseIP VARCHAR( 50 ) NOT NULL ,

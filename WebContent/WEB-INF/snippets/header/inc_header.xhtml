@@ -6,43 +6,47 @@
 			<div id="mainMenu" class="largeurLimite">
 				<div id="menuUp">
 					<div class="UpMob">
-						<h:link id="logo" outcome="/accueil" />
+						<h:link id="logo" outcome="/index" />
 					</div>
 					<span class="sep"></span>
 					
-						<h:link styleClass="login" outcome="/connexion" rendered="#{membre == null}">
+						<h:link styleClass="login" outcome="/connection" rendered="#{member == null}">
 							<f:param name="urlOrigine" value="#{request.requestURI}" />
 							<f:param name="queryStringOrigine" value="#{request.queryString}" />
 							<div class="zozorLogin"></div>
 							<div id="login">Rejoignez-nous</div>
 						</h:link>
-					<h:panelGroup rendered="#{membre != null}">
+					<h:panelGroup rendered="#{member != null}">
 						<div id="memberInfos">
 							<div class="userInfos">
 								<span class="separatorBig"></span>
 								<div class="headerUser">
-									<h:link id="profileHeader" outcome="/membres" styleClass="dropdown-toggle secondaryLink">
-										<f:param name="idMembre" value="#{membre.id}"/>
+									<h:link id="profileHeader" outcome="/profile" styleClass="dropdown-toggle secondaryLink">
+										<f:param name="memberId" value="#{member.id}"/>
 										<div class="ProfileLink"></div>
 										<h:graphicImage styleClass="memberAvatar" library="default" name="images/membres/avatar_defaut.png" alt="avatar" />
 									</h:link>
 								</div>
 							</div>
 	
-							<h:outputText value="#{membre.pseudo}"/>
+							<h:outputText value="#{member.nickName}"/>
 							<o:form includeViewParams="true">
-								<h:commandLink value="Déconnexion" action="#{connecterBean.deconnecter}" />
+								<h:commandLink value="Déconnexion" action="#{logonBean.logout}" />
 							</o:form>
 							
+							<h:link outcome="/privateTopics" styleClass="dropdown-toggle secondaryLink">
+								Mes MP (#{fn:length(privateNotificationsBean.privateNotifications)})
+							</h:link>
+							
 							<div id="notificationsCount">
-								<h:outputText value="(#{fn:length(notificationsBean.notifications)})"/>
+								<h:outputText value="Mes notifs (#{fn:length(notificationsBean.notifications)})"/>
 								<ul id="notificationsList">
 									<ui:repeat value="#{notificationsBean.notifications}" var="item">
 									<li>
-										<h:link outcome="/sujet">
-											<f:param name="sujetId" value="#{item.idSujet}" />
-											<f:param name="reponseId" value="#{item.reponse.id}" />
-											#{item.reponse.auteur.pseudo} a répondu au sujet "#{item.reponse.sujet.titre}" #{uf:convertDateTime(item.reponse.dateCreation)}
+										<h:link outcome="/topic">
+											<f:param name="topicId" value="#{item.topicId}" />
+											<f:param name="responseId" value="#{item.post.id}" />
+											#{item.post.author.nickName} a répondu au sujet "#{item.post.topic.title}" #{uf:convertDateTime(item.post.creationDate)}
 										</h:link>
 									</li>
 									</ui:repeat>
@@ -57,21 +61,17 @@
 					<div class="contentDown">
 						<ul class="menu">
 							<li class="sep"></li>
-							<li><h:link value="Tutoriels" outcome="/tutoriels" /></li>
+							<li><h:link value="Tutoriels" outcome="/tutorials" /></li>
 							<li class="sep"></li>
-							<li><h:link value="Forums" outcome="/categories" /></li>
+							<li><h:link value="Forums" outcome="/forums" /></li>
 							<li class="sep"></li>
-							<li><h:link value="Librairie" outcome="/boutique" /></li>
-							<li class="sep"></li>
-							<li><h:link value="Études" outcome="/etudes" /></li>
-							<li class="sep"></li>
-							<li><h:link value="Admin" outcome="/admin/admin" rendered="#{membre != null and membre.droits == 4}" /></li>
+							<li><h:link value="Admin" outcome="/admin/admin" rendered="#{member != null and member.rights == 4}" /></li>
 							<li class="sep"></li>
 						</ul>
 						<div id="navmenuRight">
 							<h:form styleClass="searchForm">
 								<h:inputText placeholder="Recherche" name="q"/>
-								<h:commandButton action="recherche"/>
+								<h:commandButton action="search"/>
 							</h:form>
 						</div>
 					</div>
@@ -86,9 +86,9 @@
 			<div class="largeurLimite">
 				<h:link><div class="titlePicture #{logoPage}"></div></h:link>
 				<h1>
-					<h:link>#{titrePage}</h:link>
+					<h:link>#{pageTitle}</h:link>
 				</h1>
-				<p>#{descriptionPage}</p>
+				<p>#{pageDescription}</p>
 			</div>
 		</div>
 		<div class="headGradient">
@@ -100,8 +100,8 @@
 				<ul id="breadcrumbtrail">
 					<ui:repeat value="#{breadCrumb}" var="item" varStatus="statut">
 					<li class="#{statut.index==0?'home':''}">
-						<h:outputLink value="#{item.url}" rendered="#{item.url != null}">#{item.titre}</h:outputLink>
-						<h:outputText value="#{item.titre}" rendered="#{item.url == null}"/>
+						<h:outputLink value="#{item.url}" rendered="#{item.url != null}">#{item.title}</h:outputLink>
+						<h:outputText value="#{item.title}" rendered="#{item.url == null}"/>
 					</li>
 					</ui:repeat>
 				</ul>

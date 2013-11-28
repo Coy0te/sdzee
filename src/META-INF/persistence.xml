@@ -21,6 +21,7 @@
 		<class>com.sdzee.tutos.entities.QCMReponse</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/>
+			<property name="eclipselink.cache.shared.default" value="false"/>
 		</properties>
 	</persistence-unit>   
 </persistence>

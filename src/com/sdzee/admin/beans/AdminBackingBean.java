@@ -12,41 +12,35 @@ import javax.faces.context.FacesContext;
 
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
-import com.sdzee.forums.dao.CategorieForumsDao;
+import com.sdzee.forums.dao.ForumCategoryDao;
 import com.sdzee.forums.dao.ForumDao;
-import com.sdzee.forums.entities.CategorieForum;
 import com.sdzee.forums.entities.Forum;
+import com.sdzee.forums.entities.ForumCategory;
 
 @ManagedBean( name = "adminBean" )
 @ViewScoped
 public class AdminBackingBean implements Serializable {
-    private static final long    serialVersionUID = 1L;
-    private static final String  TITRE_PAGE_ADMIN = "Administration";
+    private static final long   serialVersionUID = 1L;
+    private static final String TITRE_PAGE_ADMIN = "Administration";
 
     @EJB
-    private ForumDao             forumDao;
+    private ForumDao            forumDao;
     @EJB
-    private CategorieForumsDao   categorieDao;
+    private ForumCategoryDao    categoryDao;
 
-    private List<CategorieForum> categories;
-    private List<Forum>          forums;
+    private List<ForumCategory> categories;
 
     @PostConstruct
     public void init() {
-        categories = categorieDao.lister();
-        forums = forumDao.lister();
+        categories = categoryDao.list();
     }
 
-    public List<CategorieForum> getCategories() {
+    public List<ForumCategory> getCategories() {
         return categories;
     }
 
-    public List<Forum> getForums() {
-        return forums;
-    }
-
-    public List<Forum> getForums( CategorieForum categorie ) {
-        return forumDao.lister( categorie );
+    public List<Forum> getForums( ForumCategory categorie ) {
+        return forumDao.list( categorie );
     }
 
     public void creer() {
@@ -67,8 +61,8 @@ public class AdminBackingBean implements Serializable {
     }
 
     public List<BreadCrumbItem> getBreadCrumb() {
-        String chemin = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( chemin );
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( path );
         BreadCrumbHelper.addItem( breadCrumb, TITRE_PAGE_ADMIN, null );
         return breadCrumb;
     }

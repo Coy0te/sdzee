@@ -1,32 +1,32 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:p="http://primefaces.org/ui" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 				template="/WEB-INF/templates/template_admin.xhtml">
 	<ui:define name="admin_breadcrumb">
-		<ui:param name="breadCrumb" value="#{adminMembresBean.getBreadCrumb()}"/>
-		<ui:param name="titrePage" value="Gestion des membres"/>
-		<ui:param name="descriptionPage" value="Des coups de fouet tu donneras !"/>
+		<ui:param name="breadCrumb" value="#{adminMembersBean.getBreadCrumb()}"/>
+		<ui:param name="pageTitle" value="Gestion des membres"/>
+		<ui:param name="pageDescription" value="Des coups de fouet tu donneras !"/>
 	</ui:define>
 	<ui:define name="admin_content">
 	<p:tabView id="tabView" dynamic="true" cache="true">
 		<p:tab title="Liste des membres">
-			<p:dataTable var="membre" value="#{adminMembresBean.membres}" paginator="true" rows="20" filteredValue="#{adminMembresBean.filteredMembres}">
+			<p:dataTable var="member" value="#{adminMembersBean.members}" paginator="true" rows="20" filteredValue="#{adminMembersBean.filteredMembers}">
 				<f:facet name="header">
 					Liste des membres
 				</f:facet>
-				<p:column filterBy="#{membre.pseudo}" filterMatchMode="startsWith" headerText="Pseudo" footerText="Pseudo">
+				<p:column filterBy="#{member.nickName}" filterMatchMode="startsWith" headerText="Pseudo" footerText="Pseudo">
 					#{membre.pseudo}
 				</p:column>
-				<p:column filterBy="#{membre.email}" filterMatchMode="contains" headerText="Adresse email" footerText="Adresse email">
+				<p:column filterBy="#{member.email}" filterMatchMode="contains" headerText="Adresse email" footerText="Adresse email">
 					#{membre.email}
 				</p:column>
-				<p:column filterBy="#{membre.dateInscription}" filterMatchMode="contains" headerText="Date d'inscription" footerText="Date d'inscription">
+				<p:column filterBy="#{member.registrationDate}" filterMatchMode="contains" headerText="Date d'inscription" footerText="Date d'inscription">
 					#{membre.dateInscription}
 				</p:column>
-				<p:column filterBy="#{membre.droits}" filterMatchMode="contains" headerText="Droits" footerText="Droits">
+				<p:column filterBy="#{member.rights}" filterMatchMode="contains" headerText="Droits" footerText="Droits">
 					#{membre.droits}
 				</p:column>
 				<f:facet name="footer">
-					Au total, il y a #{fn:length(adminMembresBean.membres)} membres.
+					Au total, il y a #{fn:length(adminMembersBean.members)} membres.
 				</f:facet>
 			</p:dataTable>
 		</p:tab>

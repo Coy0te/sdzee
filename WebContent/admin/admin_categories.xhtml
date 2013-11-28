@@ -1,23 +1,48 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:p="http://primefaces.org/ui" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions"
 				template="/WEB-INF/templates/template_admin.xhtml">
 	<ui:define name="admin_breadcrumb">
-		<ui:param name="titrePage" value="Gestion des catégories"/>
-		<ui:param name="descriptionPage" value="Range ta chambre !"/>
+		<ui:param name="pageTitle" value="Gestion des catégories"/>
+		<ui:param name="pageDescription" value="Range ta chambre !"/>
 	</ui:define>
 	<ui:define name="admin_content">
 		<h2>Liste des catégories</h2>
-		<h:form id="formOrdeCategories">
-			<p:orderList id="listeCategories" value="#{forumsBean.categories}" var="categorie" effect="clip" 
-			itemValue="#{categorie.id}" controlsLocation="left">
-		        <f:facet name="caption">Catégories</f:facet>
-		         <p:column>
-		            #{categorie.titre}
-		        </p:column>
-		    </p:orderList>
-		    <p:commandButton id="boutonMAJ" value="Mettre à jour" ajax="true" process="@this listeCategories"
-		    				 actionListener="#{forumsBean.reorganiserCategories}"/>
-		    <p:blockUI block="formOrdeCategories" trigger="boutonMAJ" /> 
-	    </h:form>
+		<h:panelGroup layout="block" id="listeCategoriesForums">
+			<table>
+				<tr>
+					<th>Titre</th>
+					<th>Action</th>
+				</tr>
+			<ui:repeat value="#{adminForumsBean.categories}" var="category">
+				<tr>
+					<td>
+						<o:form id="editCategorieForm" prependId="false" includeViewParams="true" rendered="#{member != null and member.rights>=4}">
+							<span class="titreCategorie">#{category.title}</span>
+							<h:panelGroup layout="block" styleClass="hidden">
+								<h:inputText id="editTitre" value="#{category.title}" maxlength="60" />
+								<h:commandButton id="editCategorieAction" value="Éditer" type="submit" action="#{adminForumsBean.editCategory(member, category)}" styleClass="btn btn-primary">
+									<f:ajax execute="@form" render="@form" onevent="initAllCallback" />
+								</h:commandButton>
+								<h:commandButton value="Annuler" type="button" styleClass="btn btn-inverse cancelEdit" />
+							</h:panelGroup>
+						</o:form>
+					</td>
+					<td>
+						<o:form includeViewParams="true" id="deplacerCategorieForm">
+							<h:commandLink value="Monter" action="#{adminForumsBean.moveUpCategory(member, category)}"/> | 
+							<h:commandLink value="Descendre" action="#{adminForumsBean.moveDownCategory(member, category)}"/> | 
+							<h:commandLink value="Supprimer" action="#{adminForumsBean.deleteCategory(member, category)}" /> | 
+							<a href="#" class="editAction"><span class="actionIcon iconEdit"></span>Éditer</a>
+						</o:form>
+					</td>
+				</tr>
+			</ui:repeat>
+			</table>
+		</h:panelGroup>
+		<o:form id="creerCategorieForm" prependId="false" includeViewParams="true" rendered="#{member != null and member.rights>=4}">
+			<h:outputLabel for="creerTitre">Créer une nouvelle catégorie : </h:outputLabel>
+			<h:inputText id="creerTitre" value="#{adminForumsBean.category.title}" maxlength="60" />
+			<h:commandButton id="creerCategorieAction" value="Créer" type="submit" action="#{adminForumsBean.createCategory(member)}" styleClass="btn" />
+		</o:form>
 	</ui:define>
 </ui:composition>

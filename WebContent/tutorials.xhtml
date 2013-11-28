@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
+				template="/WEB-INF/templates/template_base.xhtml">
+	<ui:define name="title">
+		#{i18n.pageTutorielsTitre}
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{tutosBean.getBreadCrumb()}"/>
+			<ui:param name="pageTitle" value="#{i18n.pageTitleTutoriels}"/>
+			<ui:param name="pageDescription" value="#{i18n.pageDescriptionTutoriels}"/>
+			<ui:param name="logoPage" value="tutorial"/>
+		</ui:include>
+	</ui:define>
+	<ui:define name="body">
+		<h1>Liste des tutoriels</h1>
+		<ul>
+		<ui:repeat value="#{tutosBean.tutos}" var="tuto">
+			<li>
+				<h:link outcome="/tuto">
+					<f:param name="tutoId" value="#{tuto.id}" />
+					#{tuto.titre}
+				</h:link>
+			</li>
+		</ui:repeat>
+		</ul>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+	</ui:define>
+</ui:composition>

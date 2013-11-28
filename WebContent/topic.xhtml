@@ -1,0 +1,209 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:uf="http://sdzee.com/functions/functions"
+				template="/WEB-INF/templates/template_base.xhtml">
+	<f:metadata>
+		<o:viewParam id="topicId" name="topicId" value="#{postsBean.topicId}" required="true">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<o:viewParam id="page" name="page" value="#{postsBean.page}" required="false">
+		    <f:convertNumber integerOnly="#{true}" />
+		</o:viewParam>
+		<f:event type="preRenderView" listener="#{postsBean.init}" />
+	</f:metadata>
+	<ui:define name="title">
+		#{postsBean.topic.sticky ? i18n.titrePostIt : postsBean.topic.locked ? i18n.titreFerme : postsBean.topic.solved ? i18n.titreResolu : '' } #{postsBean.topic.title}
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/snippets/header/inc_header.xhtml">
+			<ui:param name="breadCrumb" value="#{postsBean.getBreadCrumb()}"/>
+			<ui:param name="pageTitle" value="#{i18n.pageTitleSujet}"/>
+			<ui:param name="pageDescription" value="#{i18n.pageDescriptionSujet}"/>
+			<ui:param name="logoPage" value="forumSdz"/>
+		</ui:include>
+	</ui:define>
+	<ui:define name="messageBanner">
+	<ui:fragment rendered="#{postsBean.topic.locked}">
+		<div class="banner">
+			<p class="lock"><span></span>#{i18n.sujetLocked}</p>
+		</div>
+	</ui:fragment>
+	</ui:define>
+	<ui:define name="body">
+		<o:form includeViewParams="true" styleClass="right">
+			<h:panelGroup rendered="#{member != null and (member.rights >= 3 or member.nickName == postsBean.topic.firstPost.author.nickName)}">
+				<h:commandButton value="#{postsBean.topic.solved ? i18n.boutonSujetResolu  : i18n.boutonResoudreSujet}" action="#{postsBean.solveTopic(member)}" styleClass="#{postsBean.topic.solved ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
+			</h:panelGroup>
+			<h:panelGroup rendered="#{member != null and member.rights >= 3}">
+				<h:commandButton value="#{postsBean.topic.sticky ? i18n.boutonSujetPostIt  : i18n.boutonMettreEnPostItSujet}" action="#{postsBean.pinTopic(member)}" styleClass="#{postsBean.topic.sticky ? 'mettreEnPostItSujet sujetPostIt' : 'mettreEnPostItSujet'}" />
+				<h:commandButton value="#{postsBean.topic.locked ? i18n.boutonSujetFerme  : i18n.boutonFermerSujet}" action="#{postsBean.lockTopic(member)}" styleClass="#{postsBean.topic.locked ? 'fermerSujet sujetFerme' : 'fermerSujet'}" />
+				<h:selectOneMenu styleClass="deplacerSujet" value="#{postsBean.forumDeplacement}" converter="omnifaces.SelectItemsConverter">
+					<f:selectItem itemLabel="Déplacer le sujet..." noSelectionOption="true" />
+		            <f:selectItems value="#{forumsBean.forums}" var="item" itemLabel="#{item.title}" />
+		        </h:selectOneMenu>
+				<h:commandButton value="#{i18n.boutonDeplacerSujet}" action="#{postsBean.moveTopic(member)}" styleClass="deplacerSujet" />
+			</h:panelGroup>
+		</o:form>
+		<h1>
+			<h:link id="topicTitle">
+				<f:param name="topicId" value="#{param['topicId']}" />
+				#{postsBean.topic.title}
+			</h:link>
+		</h1>
+		<h2><h:panelGroup id="topicSubTitle">#{postsBean.topic.subTitle}</h:panelGroup></h2>
+		<ui:fragment rendered="#{postsBean.topic.solved}">
+		<div class="resolved">
+            <div class="iconResolved"></div>
+            <div>#{i18n.sujetResolu}</div>
+        </div>
+		</ui:fragment>
+		<div class="comments">
+			<ui:repeat value="#{postsBean.paginatedPosts}" var="post" id="forEach" varStatus="loop">
+			<div class="row">
+				<div class="userInfos">
+					<div class="avatar">
+						<div class="author">
+							<h:link outcome="/profile">
+								<f:param name="memberId" value="#{post.author.id}"/>
+								#{post.author.nickName}
+							</h:link>
+						</div>
+						<h:link outcome="/profile">
+							<f:param name="memberId" value="#{post.author.id}"/>
+							<h:graphicImage value="#{uf:gravatar(post.author,80)}" alt="avatar" />
+						</h:link>
+						<p class="adresseIP">#{member.rights>=3 ? post.ipAddress : ''}</p>
+					</div>
+				</div>
+				<div class="comment">
+				<ui:fragment rendered="#{member != null}">
+					<ul class="actions">
+						<li>
+							<a class="alertAction" data-toggle="modal" href="#alertActionModal" data-simpleit-alert="/message/alerte/signaler/message/84247162">
+							<span class="actionIcon iconAlert"></span><span class="actionDesc">#{i18n.sujetMessageSignaler}</span>
+							</a>
+						</li>
+						<li>
+							<a href="#texte" class="citeAction">
+							<span class="actionIcon iconCite"></span>#{i18n.sujetMessageCiter}
+							</a>
+						</li>
+						<ui:fragment rendered="#{member.rights>=3 or post.author.nickName==member.nickName}">
+						<li>
+							<a href="#" class="editAction">
+							<span class="actionIcon iconEdit"></span>#{i18n.sujetMessageModifier}
+							</a>
+						</li>
+						</ui:fragment>
+						<ui:fragment rendered="#{member.rights>=3}">
+						<li>
+							<a class="moderateAction " data-toggle="modal" href="#moderateActionModal" data-simpleit-delete="/message/supprimer/84247162" data-simpleit-moderate="/message/moderer/84247162" data-simpleit-alert="false">
+							<span class="actionIcon iconModerate"></span><span class="actionDesc">#{i18n.sujetMessageModerer}</span>
+							</a>
+						</li>
+						</ui:fragment>
+					</ul>
+				</ui:fragment>
+					<div class="content">
+						<h:link class="date">
+							<f:param name="topicId" value="#{param['topicId']}" />
+							#{uf:convertDateTime(post.creationDate)}
+						</h:link>
+						<div class="message" id="msg#{post.id}">
+							<o:form id="editReponseForm" prependId="false" includeViewParams="true" rendered="#{member != null and (member.rights >= 3 or member.nickName == post.author.nickName)}">
+								<div class="markdownBody">
+									<h:outputText value="#{uf:parseMarkdown(post.text)}" escape="false" />
+									<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty post.lastEditBy}">
+										- <br/> #{i18n.lastEditBy} #{post.lastEditBy.nickName} <span class="lastEditDate">#{uf:convertDateTime(post.lastEditDate)}</span>
+									</h:panelGroup>
+								</div>
+								<h:panelGroup layout="block" styleClass="hidden">
+									<h:panelGroup layout="block" style="#{loop.index == 0 ? '' : 'display: none;'}">
+										<h:outputLabel for="titre">#{i18n.labelInputTitreSujet}</h:outputLabel>
+										<h:inputText id="titre" value="#{postsBean.topic.title}" maxlength="60" />
+										<h:message id="titreMessage" for="titre" errorClass="erreur" />
+										<h:outputLabel for="sousTitre">#{i18n.labelInputSousTitreSujet}</h:outputLabel>
+										<h:inputText id="sousTitre" value="#{postsBean.topic.subTitle}" maxlength="80" />
+										<h:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
+									</h:panelGroup>
+									<h:outputLabel for="editSujetArea">#{i18n.labelInputMessageSujet} </h:outputLabel>
+									<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{post.text}" />
+									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{postsBean.editPost(member, post)}" styleClass="btn btn-primary">
+										<f:ajax execute="@form" render="@form :topicTitle :topicSubTitle" onevent="initAllCallback" />
+									</h:commandButton>
+									<h:commandButton value="Annuler" type="button" styleClass="btn btn-inverse cancelEdit" />
+								</h:panelGroup>
+							</o:form>
+							<h:panelGroup layout="block" syleClass="markdownBody" rendered="#{member == null or (member.rights lt 3 and member.nickName != post.author.nickName)}">
+								<h:outputText value="#{uf:parseMarkdown(post.text)}" escape="false"/>
+								<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty post.lastEditBy}">
+									- <br/> #{i18n.lastEditBy} #{post.lastEditBy.nickName} <span class="lastEditDate">#{uf:convertDateTime(post.lastEditDate)}</span>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="bruteMarkdownBody" rendered="#{member != null}">
+								#{post.text}
+							</h:panelGroup>
+						</div>
+						<h:panelGroup styleClass="commentVote" rendered="#{member != null}">
+							<span class="noVote" style="visibility: #{post.upVotes > 0 or post.downVotes > 0 ? 'visible' : 'visible'};"> 
+							<o:form includeViewParams="true" id="voteReponseForm">
+								<span class="votePlus">#{post.upVotes > 0 ? '+'.concat(post.upVotes) : ''}</span>
+								<h:commandButton value="+" action="#{postsBean.upVotePost(member, post)}" styleClass="voteUpAction voteButton">
+									<f:ajax execute="@form" render="@form" onevent="initAllCallback"/>
+								</h:commandButton>
+								<div class="tooltip bottom left40">
+									<div class="tooltip-arrow"></div>
+									<div class="tooltip-inner">#{i18n.descriptionVotePouceEnHaut}</div>
+								</div>
+								<span class="voteMoins">#{post.downVotes > 0 ? '-'.concat(post.downVotes) : ''}</span>
+								<h:commandButton value="-" action="#{postsBean.downVotePost(member, post)}" styleClass="voteDownAction voteButton">
+									<f:ajax execute="@form" render="@form" onevent="initAllCallback"/>
+								</h:commandButton>
+								<div class="tooltip bottom left2">
+									<div class="tooltip-arrow"></div>
+									<div class="tooltip-inner">#{i18n.descriptionVotePouceEnBas}</div>
+								</div>
+							</o:form>
+							</span> 
+						</h:panelGroup>
+						<div class="signature">#{post.author.signature}</div>
+					</div>
+				</div>
+			</div>
+			</ui:repeat>
+			<!-- TODO: N'afficher que le début et la fin de la pagination, et pas l'intégralité des pages... -->
+			<ui:fragment rendered="#{postsBean.pagesNumber > 1}">
+			<div class="pagination">
+			<ui:param name="pageParam" value="#{empty param['page'] ? 1 : param['page']}"/>
+			<ui:repeat value="#{of:createArray(postsBean.pagesNumber)}" varStatus="loop">
+				<h:panelGroup styleClass="current" rendered="#{loop.index + 1 == pageParam}">#{loop.index + 1}</h:panelGroup>
+				<h:link styleClass="paginate page" rendered="#{loop.index + 1 != pageParam}">
+					<f:param name="topicId" value="#{param['topicId']}" />
+					<f:param name="page" value="#{loop.index + 1}" />
+					#{loop.index + 1}
+				</h:link> 
+			</ui:repeat>
+			</div>
+			</ui:fragment>
+		</div>
+		<div id="newComment" class="message">
+			<h2>#{i18n.sujetDescriptionRepondre} #{topic.title}</h2>
+			<h3><h:messages globalOnly="true" infoClass="info" /></h3>
+			<o:form includeViewParams="true" rendered="#{member != null and (!postsBean.topic.locked or member.rights >= 3)}" id="creationReponseForm" prependId="false">
+				<h:inputTextarea id="texte" placeholder="#{i18n.placeholderTextareaReponse}" value="#{postsBean.post.text}" />
+				<h:message id="texteMessage" for="texte" errorClass="erreur" />
+				<h:commandButton value="Répondre" type="submit" action="#{postsBean.create(member)}" styleClass="btn btn-primary" />
+				<h:commandButton value="Aperçu" type="button" styleClass="btn showMarkdownOverview" />
+				<h:commandButton value="Message semi-auto" type="button" styleClass="btn btn-inverse" rendered="#{member.rights>=3}"/>
+			</o:form>
+		</div>
+		<div id="dialog" title="Envoyer une alerte">
+		  Êtes-vous sûr de vouloir envoyer une alerte concernant ce message ?
+		</div>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/snippets/footer/inc_footer.xhtml" />
+		<h:outputScript library="default" name="js/forums.js" />
+		<h:outputScript library="default" name="google-code-prettify/prettify.js" />
+		<h:outputStylesheet library="default" name="google-code-prettify/prettify.css"  />
+	</ui:define>
+</ui:composition>

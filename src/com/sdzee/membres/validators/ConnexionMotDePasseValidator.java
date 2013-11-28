@@ -13,19 +13,19 @@ import javax.faces.validator.ValidatorException;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.omnifaces.util.Messages;
 
-import com.sdzee.membres.dao.MembreDao;
-import com.sdzee.membres.entities.Membre;
+import com.sdzee.membres.dao.MemberDao;
+import com.sdzee.membres.entities.Member;
 
 @ManagedBean
 @RequestScoped
 public class ConnexionMotDePasseValidator implements Validator {
 
-    private static final String ALGO_CHIFFREMENT     = "SHA-256";
-    private static final String CHAMP_PSEUDO         = "composantPseudo";
-    private static final String MAUVAIS_MOT_DE_PASSE = "Le mot de passe est incorrect !";
-    private static final String MAUVAIS_PSEUDO       = "Le pseudo saisi n'existe pas !";
+    private static final String ENCRYPTION_ALGORYTHM = "SHA-256";
+    private static final String FIELD_NICKNAME       = "composantPseudo";
+    private static final String WRONG_PASSWORD       = "Le mot de passe est incorrect !";
+    private static final String WRONG_NICKNAME       = "Le pseudo saisi n'existe pas !";
     @EJB
-    private MembreDao           membreDao;
+    private MemberDao           memberDao;
 
     @Override
     public void validate( FacesContext context, UIComponent component, Object value ) throws ValidatorException {
@@ -33,22 +33,22 @@ public class ConnexionMotDePasseValidator implements Validator {
          * Récupération de l'attribut pseudo parmi la liste des attributs du composant motDePasse, puis récupération de sa valeur (pseudo
          * saisi)
          */
-        UIInput composantPseudo = (UIInput) component.getAttributes().get( CHAMP_PSEUDO );
-        String pseudo = (String) composantPseudo.getValue();
+        UIInput nickNameComponent = (UIInput) component.getAttributes().get( FIELD_NICKNAME );
+        String nickName = (String) nickNameComponent.getValue();
         /* Récupération de la valeur du champ mot de passe */
-        String motDePasseEnClair = (String) value;
+        String clearPassword = (String) value;
         /* Préparation de la vérification du mot de passe */
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
-        passwordEncryptor.setAlgorithm( ALGO_CHIFFREMENT );
+        passwordEncryptor.setAlgorithm( ENCRYPTION_ALGORYTHM );
         passwordEncryptor.setPlainDigest( false );
         /* Récupération du membre correspondant au pseudo saisi */
-        Membre membreInscrit = membreDao.trouver( "pseudo", pseudo );
-        if ( membreInscrit == null ) {
-            Messages.addError( "formulaire:pseudo", MAUVAIS_PSEUDO );
+        Member registeredMember = memberDao.find( "nickName", nickName );
+        if ( registeredMember == null ) {
+            Messages.addError( "formulaire:pseudo", WRONG_NICKNAME );
             throw new ValidatorException( new FacesMessage() ); // message vide car erreur sur le champ pseudo, et pas sur le mdp
-        } else if ( !passwordEncryptor.checkPassword( motDePasseEnClair, membreInscrit.getMotDePasse() ) ) {
+        } else if ( !passwordEncryptor.checkPassword( clearPassword, registeredMember.getPassword() ) ) {
             throw new ValidatorException(
-                    new FacesMessage( FacesMessage.SEVERITY_ERROR, MAUVAIS_MOT_DE_PASSE, null ) );
+                    new FacesMessage( FacesMessage.SEVERITY_ERROR, WRONG_PASSWORD, null ) );
         }
     }
 }

@@ -10,64 +10,75 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Vote est l'entité JPA décrivant la table des votes. La validation des champs s'appuie sur la JSR-303.
+ * 
+ * @author Médéric Munier
+ * @version %I%, %G%
+ */
 @Entity
 @Table( name = "forum_vote",
-        uniqueConstraints = { @UniqueConstraint( columnNames = { "id_membre", "id_objet", "type_objet" } ) } )
+        uniqueConstraints = { @UniqueConstraint( columnNames = { "objectType", "member", "object" } ) } )
 @IdClass( VoteId.class )
-public class Vote {
-    @NotNull( message = "{forums.vote.idMembre.notnull}" )
-    @Column( name = "id_membre" )
+public class Vote implements Serializable {
+    @NotNull( message = "{forums.vote.memberId.notnull}" )
+    @Column( name = "member" )
     @Id
-    private Long   idMembre;
+    private Long   memberId;
 
-    @NotNull( message = "{forums.vote.idObjet.notnull}" )
-    @Column( name = "id_objet" )
+    @NotNull( message = "{forums.vote.objectId.notnull}" )
+    @Column( name = "object" )
     @Id
-    private Long   idObjet;
+    private Long   objectId;
 
-    @NotNull( message = "{forums.vote.tpyeObjet.notnull}" )
-    @Column( name = "type_objet" )
+    @NotNull( message = "{forums.vote.objectType.notnull}" )
+    @Column( name = "objectType" )
     @Id
-    private String typeObjet;
+    private String objectType;
 
-    private int    valeur;
+    private int    value;
 
-    public Long getIdMembre() {
-        return idMembre;
+    public Long getMemberId() {
+        return memberId;
     }
 
-    public void setIdMembre( Long idMembre ) {
-        this.idMembre = idMembre;
+    public void setMemberId( Long memberId ) {
+        this.memberId = memberId;
     }
 
-    public Long getIdObjet() {
-        return idObjet;
+    public Long getObjectId() {
+        return objectId;
     }
 
-    public void setIdObjet( Long idObjet ) {
-        this.idObjet = idObjet;
+    public void setObjectId( Long objectId ) {
+        this.objectId = objectId;
     }
 
-    public String getTypeObjet() {
-        return typeObjet;
+    public String getObjectType() {
+        return objectType;
     }
 
-    public void setTypeObjet( String typeObjet ) {
-        this.typeObjet = typeObjet;
+    public void setObjectType( String objectType ) {
+        this.objectType = objectType;
     }
 
-    public int getValeur() {
-        return valeur;
+    public int getValue() {
+        return value;
     }
 
-    public void setValeur( int valeur ) {
-        this.valeur = valeur;
+    public void setValue( int value ) {
+        this.value = value;
     }
 }
 
-/* Classe de définition de la clé primaire composite */
+/**
+ * VoteId est la classe de définition de la clé primaire composite de la table des votes.
+ * 
+ * @author Médéric Munier
+ * @version %I%, %G%
+ */
 class VoteId implements Serializable {
-    Long   idMembre;
-    Long   idObjet;
-    String typeObjet;
+    Long   memberId;
+    Long   objectId;
+    String objectType;
 }
