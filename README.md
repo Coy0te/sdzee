@@ -1,14 +1,18 @@
 sdzee
 =====
 
-Projet Java EE / JPA / JSF.
+Projet Java EE / JPA / JSF. 
+Testé avec Glassfish et MySQL.
 
-Actuellement dispo :
+**Actuellement dispo** :
 - le forum
 - les MPs
+- les notifs (forum et MP)
 - le profil membre
 
-À venir :
-- des outils de modération plus poussés
-- les tutos
-- les articles/news
+**À venir** :
+- ban membre / ban IP / LS
+- alertes dans les forums
+- les tutos en lecture seule
+- la rédaction et la validation des tutos
+- la home
