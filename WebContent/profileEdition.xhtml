@@ -20,7 +20,7 @@
 	</ui:define>
 	<ui:define name="body">
 		<o:form includeViewParams="true">
-			<h1>Modifier le profil</h1>
+			<h2>Modifier le profil</h2>
 			<h:outputLabel for="avatar">URL de votre avatar (laissez vide pour utiliser Gravatar) :</h:outputLabel>
 			<h:inputText id="avatar" value="#{profileEditionBean.member.avatar}" maxlength="60" />
 			<h:message id="avatarMessage" for="avatar" errorClass="erreur" />
@@ -43,36 +43,69 @@
 			<h:commandButton value="Enregistrer" type="submit" action="#{profileEditionBean.editProfile(member)}" styleClass="btn" />
 		</o:form>
 		
+	<h:panelGroup rendered="#{member.id == param['memberId']}">
+		<hr style="clear: both;" />
+		
+		<o:form includeViewParams="true" id="formulaire">
+			<h2>Modifier votre mot de passe</h2>
+			<h:inputHidden id="pseudo" value="#{profileEditionBean.member.nickName}" binding="#{composantPseudo}" />
+			
+			<h:outputLabel for="oldPassword">Votre mot de passe actuel :</h:outputLabel>
+	        <h:inputSecret id="oldPassword" value="#{profileEditionBean.oldPassword}" size="20" maxlength="20">
+	          	<f:attribute name="composantPseudo" value="#{composantPseudo}" />
+	       	    <f:validator binding="#{connexionMotDePasseValidator}" />
+	        </h:inputSecret>
+	        <h:message id="oldPasswordMessage" for="oldPassword" errorClass="erreur" />
+			
+	        <h:outputLabel for="motdepasse">Votre nouveau mot de passe :</h:outputLabel>
+	        <h:inputSecret id="motdepasse" value="#{profileEditionBean.member.password}" binding="#{composantMotDePasse}" size="20" maxlength="20"/>
+	        <h:message id="motDePasseMessage" for="motdepasse" errorClass="erreur" />
+	
+	        <h:outputLabel for="confirmation">Confirmez votre nouveau mot de passe :</h:outputLabel>
+	        <h:inputSecret id="confirmation" value="#{profileEditionBean.member.password}" size="20" maxlength="20">
+   				<f:validator validatorId="confirmationMotDePasseValidator" />
+  			    <f:attribute name="composantMotDePasse" value="#{composantMotDePasse}" />
+	        </h:inputSecret>
+	        <h:message id="confirmationMessage" for="confirmation" errorClass="erreur" />
+
+			<h:commandButton value="Enregistrer" type="submit" action="#{profileEditionBean.editParameters(member)}" styleClass="btn">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+		</o:form>
+		
 		<hr style="clear: both;" />
 		
 		<o:form includeViewParams="true">
-			<h1>Modifier les paramètres</h1>
-			<h:outputLabel for="pseudo">Votre pseudo :</h:outputLabel>
-			<h:inputText id="pseudo" value="#{profileEditionBean.member.nickName}" maxlength="60" />
-			<h:message id="pseudoMessage" for="pseudo" errorClass="erreur" />
+			<h2>Modifier votre adresse email</h2>
 			<h:outputLabel for="email">Votre email :</h:outputLabel>
-			<h:inputText id="email" value="#{profileEditionBean.member.email}" maxlength="60" />
+	        <h:inputText id="email" value="#{profileEditionBean.member.email}" size="20" maxlength="60">
+	            <f:validator binding="#{existenceEmailValidator}" />
+	        </h:inputText>
 			<h:message id="emailMessage" for="email" errorClass="erreur" />
-			<h:outputLabel for="oldPassword">Votre mot de passe actuel :</h:outputLabel>
-			<h:inputSecret id="oldPassword" value="#{profileEditionBean.member.password}" maxlength="60" />
-			<h:message id="oldPasswordMessage" for="oldPassword" errorClass="erreur" />
-			<h:outputLabel for="newPassword">Votre nouveau mot de passe :</h:outputLabel>
-			<h:inputSecret id="newPassword" value="#{profileEditionBean.member.password}" maxlength="60" />
-			<h:message id="newPasswordMessage" for="newPassword" errorClass="erreur" />
-			<h:outputLabel for="newPasswordConfirmation">Votre nouveau mot de passe (confirmation) :</h:outputLabel>
-			<h:inputSecret id="newPasswordConfirmation" value="#{profileEditionBean.member.password}" maxlength="60" />
-			<h:message id="newPasswordConfirmationMessage" for="newPasswordConfirmation" errorClass="erreur" />
+			
+			<h:commandButton value="Enregistrer" type="submit" action="#{profileEditionBean.editParameters(member)}" styleClass="btn">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+		</o:form>
+
+		<hr style="clear: both;" />
+
+		<o:form includeViewParams="true">
+			<h2>Modifier d'autres informations</h2>
 			<h:outputLabel for="showEmail">Afficher publiquement votre adresse email dans votre profil :</h:outputLabel>
 			<h:selectBooleanCheckbox id="showEmail" value="#{profileEditionBean.member.showEmail}" />
 			<h:message id="showEmailMessage" for="showEmail" errorClass="erreur" />
 			<h:outputLabel for="showSignatures">Afficher les signatures des membres dans les forums :</h:outputLabel>
 			<h:selectBooleanCheckbox id="showSignatures" value="#{profileEditionBean.member.showSignatures}" />
 			<h:message id="showSignaturesMessage" for="showSignatures" errorClass="erreur" />
-
-			<h:commandButton value="Enregistrer" type="submit" action="#{profileEditionBean.editParameters(member)}" styleClass="btn" />
+			
+			<h:commandButton value="Enregistrer" type="submit" action="#{profileEditionBean.editParameters(member)}" styleClass="btn">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
 		</o:form>
 
 		<hr style="clear: both;" />
+	</h:panelGroup>
 
 	</ui:define>
 	<ui:define name="footer">

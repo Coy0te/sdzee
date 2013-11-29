@@ -31,8 +31,8 @@ import com.sdzee.forums.entities.Vote;
 import com.sdzee.membres.entities.Member;
 
 /**
- * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée une vue.
- * Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
+ * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
+ * une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -73,18 +73,18 @@ public class PostsBackingBean implements Serializable {
     private NotificationDao     notificationDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par la Facelet
-     * <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au sujet est connecté, et
-     * si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
+     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par
+     * la Facelet <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au
+     * sujet est connecté, et si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
-     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
-     * est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et {@link NotificationDao} injectés via l'annotation
-     * <code>@EJB</code> qui entrent en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
+     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
+     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et
+     * {@link NotificationDao} injectés via l'annotation <code>@EJB</code> qui entrent en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
-     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
-     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
+     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
+     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         post = new Post();
@@ -121,7 +121,8 @@ public class PostsBackingBean implements Serializable {
 
             /*
              * if ( topic.getLastPost().equals( derniereReponseAfficheeSurLaPage ) ) { context.addMessage( null, new FacesMessage(
-             * FacesMessage.SEVERITY_ERROR, "Le contenu du sujet a changé pendant que vous rédigiez votre message !", "Attention" ) ); return null; }
+             * FacesMessage.SEVERITY_ERROR, "Le contenu du sujet a changé pendant que vous rédigiez votre message !", "Attention" ) );
+             * return null; }
              */
 
             postDao.create( post );
@@ -387,12 +388,40 @@ public class PostsBackingBean implements Serializable {
         }
     }
 
-    public void masquer( Post post ) throws IOException {
-        Member member = (Member) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
-                .get( SESSION_MEMBER );
-        if ( member != null && member.getRights() >= DROITS_REQUIS_MASQUAGE ) {
-            // TODO : créer un système de masquage des posts
-            // postDao.update( post );
+    public String markPostAsUseful( Member member, Post post ) {
+        if ( member != null
+                && ( member.getRights() >= 3 || member.getNickName().equals(
+                        topic.getFirstPost().getAuthor().getNickName() ) )
+                && !post.equals( topic.getFirstPost() ) ) {
+            try {
+                post.setUseful( post.isUseful() ? false : true );
+                postDao.update( post );
+                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+            } catch ( DAOException e ) {
+                // TODO: logger l'échec de la mise à jour en base du post
+                return URL_404;
+            }
+        } else {
+            // TODO: logger l'intrus qui essaie de mettre en avant une réponse sans y être autorisé...
+            return URL_404;
+        }
+    }
+
+    public String hidePost( Member member, Post post ) {
+        if ( member != null && ( member.getRights() >= 3 ) ) {
+            try {
+                post.setHidden( post.isHidden() ? false : true );
+                post.setHiddenBy( member );
+                post.setHiddenCause( "TODO : Message de masquage." );
+                postDao.update( post );
+                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+            } catch ( DAOException e ) {
+                // TODO: logger l'échec de la mise à jour en base du post
+                return URL_404;
+            }
+        } else {
+            // TODO: logger l'intrus qui essaie de masquer une réponse sans y être autorisé...
+            return URL_404;
         }
     }
 

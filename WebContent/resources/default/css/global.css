@@ -1598,3 +1598,6 @@ ul.liste_btuto_chap {
 #creerCategorieForm{
 	width: 500px;
 }
+#mainSection div.comments div.row.greenBg{
+	background-color: #E5F0CB;
+}

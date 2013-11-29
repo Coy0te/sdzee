@@ -25,7 +25,7 @@
 			<li>Pseudo : #{profileBean.member.nickName}</li>
 			<li>Prénom : #{profileBean.member.firstName}</li>
 			<li>Nom : #{profileBean.member.lastName}</li>
-			<li>Email : #{profileBean.member.email}</li>
+			<li>Email : #{profileBean.member.showEmail ? profileBean.member.email : 'n/a'}</li>
 			<li>Inscription : #{uf:convertDateTime(profileBean.member.registrationDate)}</li>
 			<li>Dernière connexion : #{uf:convertDateTime(profileBean.member.lastConnectionDate)}</li>
 			<li>Signature : #{profileBean.member.signature}</li>

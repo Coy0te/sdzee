@@ -3,6 +3,7 @@ package com.sdzee.forums.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -62,6 +63,19 @@ public class Post implements Serializable {
     private Integer upVotes   = 0;
 
     private Integer downVotes = 0;
+
+    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
+    private boolean useful    = false;
+
+    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
+    private boolean hidden    = false;
+
+    @ManyToOne( fetch = FetchType.EAGER )
+    @JoinColumn( name = "hiddenBy" )
+    @JoinFetch
+    private Member  hiddenBy;
+
+    private String  hiddenCause;
 
     @NotNull( message = "{forums.post.ipAddress.notnull}" )
     private String  ipAddress;
@@ -160,6 +174,38 @@ public class Post implements Serializable {
 
     public void setIpAddress( String ipAddress ) {
         this.ipAddress = ipAddress;
+    }
+
+    public boolean isUseful() {
+        return useful;
+    }
+
+    public void setUseful( boolean useful ) {
+        this.useful = useful;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden( boolean hidden ) {
+        this.hidden = hidden;
+    }
+
+    public Member getHiddenBy() {
+        return hiddenBy;
+    }
+
+    public void setHiddenBy( Member hiddenBy ) {
+        this.hiddenBy = hiddenBy;
+    }
+
+    public String getHiddenCause() {
+        return hiddenCause;
+    }
+
+    public void setHiddenCause( String hiddenCause ) {
+        this.hiddenCause = hiddenCause;
     }
 
     @Override

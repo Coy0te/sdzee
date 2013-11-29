@@ -57,8 +57,8 @@
         </div>
 		</ui:fragment>
 		<div class="comments">
-			<ui:repeat value="#{postsBean.paginatedPosts}" var="post" id="forEach" varStatus="loop">
-			<div class="row">
+			<ui:repeat value="#{postsBean.paginatedPosts}" var="post" id="forEach">
+			<div class="row#{post.useful ? ' greenBg' : ''}">
 				<div class="userInfos">
 					<div class="avatar">
 						<div class="author">
@@ -87,6 +87,13 @@
 							<span class="actionIcon iconCite"></span>#{i18n.sujetMessageCiter}
 							</a>
 						</li>
+						<ui:fragment rendered="#{(postsBean.topic.firstPost.author.nickName == member.nickName or member.rights>=3) and post != postsBean.topic.firstPost}">
+						<li>
+							<o:form includeViewParams="true" styleClass="right">
+								<h:commandButton value="#{post.useful ? 'Ne plus marquer cette réponse comme utile'  : 'Marquer cette réponse comme utile'}" action="#{postsBean.markPostAsUseful(member, post)}" styleClass="#{post.useful ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
+							</o:form>
+						</li>
+						</ui:fragment>
 						<ui:fragment rendered="#{member.rights>=3 or post.author.nickName==member.nickName}">
 						<li>
 							<a href="#" class="editAction">
@@ -94,11 +101,11 @@
 							</a>
 						</li>
 						</ui:fragment>
-						<ui:fragment rendered="#{member.rights>=3}">
+						<ui:fragment rendered="#{member.rights>=3 and post != postsBean.topic.firstPost}">
 						<li>
-							<a class="moderateAction " data-toggle="modal" href="#moderateActionModal" data-simpleit-delete="/message/supprimer/84247162" data-simpleit-moderate="/message/moderer/84247162" data-simpleit-alert="false">
-							<span class="actionIcon iconModerate"></span><span class="actionDesc">#{i18n.sujetMessageModerer}</span>
-							</a>
+							<o:form includeViewParams="true" styleClass="right">
+								<h:commandButton value="#{post.hidden ? 'Restaurer'  : 'Masquer'}" action="#{postsBean.hidePost(member, post)}" styleClass="#{post.useful ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
+							</o:form>
 						</li>
 						</ui:fragment>
 					</ul>
@@ -117,7 +124,7 @@
 									</h:panelGroup>
 								</div>
 								<h:panelGroup layout="block" styleClass="hidden">
-									<h:panelGroup layout="block" style="#{loop.index == 0 ? '' : 'display: none;'}">
+									<h:panelGroup layout="block" rendered="#{post == postsBean.topic.firstPost}">
 										<h:outputLabel for="titre">#{i18n.labelInputTitreSujet}</h:outputLabel>
 										<h:inputText id="titre" value="#{postsBean.topic.title}" maxlength="60" />
 										<h:message id="titreMessage" for="titre" errorClass="erreur" />
@@ -125,7 +132,7 @@
 										<h:inputText id="sousTitre" value="#{postsBean.topic.subTitle}" maxlength="80" />
 										<h:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
 									</h:panelGroup>
-									<h:outputLabel for="editSujetArea">#{i18n.labelInputMessageSujet} </h:outputLabel>
+									<h:outputLabel for="editArea">#{i18n.labelInputMessageSujet} </h:outputLabel>
 									<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{post.text}" />
 									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{postsBean.editPost(member, post)}" styleClass="btn btn-primary">
 										<f:ajax execute="@form" render="@form :topicTitle :topicSubTitle" onevent="initAllCallback" />
@@ -165,7 +172,7 @@
 							</o:form>
 							</span> 
 						</h:panelGroup>
-						<div class="signature">#{post.author.signature}</div>
+						<div class="signature">#{member.showSignatures ? post.author.signature : ''}</div>
 					</div>
 				</div>
 			</div>

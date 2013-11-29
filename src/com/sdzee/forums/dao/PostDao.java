@@ -16,8 +16,8 @@ import com.sdzee.forums.entities.Post;
 import com.sdzee.forums.entities.Topic;
 
 /**
- * PostDao est la classe DAO contenant les opérations CRUD réalisables sur la table des réponses à un sujet. Il s'agit d'un EJB Stateless
- * dont la structure s'appuie sur JPA et JPQL.
+ * PostDao est la classe DAO contenant les opérations CRUD réalisables sur la table des réponses à un sujet. Il s'agit d'un EJB Stateless dont la
+ * structure s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%

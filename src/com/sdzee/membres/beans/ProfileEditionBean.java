@@ -27,6 +27,7 @@ public class ProfileEditionBean implements Serializable {
 
     private int                 memberId;
     private Member              member;
+    private String              oldPassword;
 
     @EJB
     private MemberDao           memberDao;
@@ -55,7 +56,6 @@ public class ProfileEditionBean implements Serializable {
     }
 
     public String editProfile( Member viewMember ) {
-        // TODO
         if ( viewMember != null
                 && ( viewMember.getRights() >= 3 || viewMember.getNickName().equals( member.getNickName() ) ) ) {
             try {
@@ -72,9 +72,9 @@ public class ProfileEditionBean implements Serializable {
     }
 
     public String editParameters( Member viewMember ) {
-        // TODO
-        if ( viewMember != null
-                && ( viewMember.getRights() >= 3 || viewMember.getNickName().equals( member.getNickName() ) ) ) {
+        // Si on arrive là, on est déjà passés par les différents validator JSF, donc tout est ok.
+        // Modifications faisable uniquement par l'utilisateur, le Staff n'a pas à y avoir accès
+        if ( viewMember != null && viewMember.getNickName().equals( member.getNickName() ) ) {
             try {
                 memberDao.update( member );
                 return URL_PROFILE_PAGE + member.getId() + "&faces-redirect=true";
@@ -102,6 +102,14 @@ public class ProfileEditionBean implements Serializable {
 
     public Member setMember() {
         return member;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword( String oldPassword ) {
+        this.oldPassword = oldPassword;
     }
 
     /**
