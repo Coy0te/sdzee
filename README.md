@@ -10,10 +10,12 @@ Testé avec Glassfish et MySQL.
 - les notifs (forum et MP)
 - le profil membre
 
-**À venir** :
-- ban membre / ban IP / LS
+**TODO** :
 - alertes dans les forums
+- ban membre / ban IP / LS
 - récupération du compte via email (mot de passe et/ou login oubliés)
 - les tutos en lecture seule
 - la rédaction et la validation des tutos
 - la home
+- rédaction des messages de validation
+- internationalisation
