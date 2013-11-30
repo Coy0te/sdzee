@@ -2,7 +2,9 @@ package com.sdzee.forums.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,54 +35,59 @@ import com.sdzee.membres.entities.Member;
 public class Post implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long    id;
+    private Long        id;
 
     @NotNull( message = "{forums.post.author.notnull}" )
     @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "author" )
     @JoinFetch
-    private Member  author;
+    private Member      author;
 
     @NotNull( message = "{forums.post.topic.notnull}" )
     @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "topic" )
     @JoinFetch
-    private Topic   topic;
+    private Topic       topic;
 
     @NotNull( message = "{forums.post.text.notnull}" )
-    private String  text;
+    private String      text;
 
     @Temporal( TemporalType.TIMESTAMP )
-    private Date    lastEditDate;
+    private Date        lastEditDate;
 
     @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "lastEditBy" )
     @JoinFetch
-    private Member  lastEditBy;
+    private Member      lastEditBy;
 
     @NotNull( message = "{forums.post.creationDate.notnull}" )
     @Temporal( TemporalType.TIMESTAMP )
-    private Date    creationDate;
+    private Date        creationDate;
 
-    private Integer upVotes   = 0;
+    private Integer     upVotes   = 0;
 
-    private Integer downVotes = 0;
-
-    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
-    private boolean useful    = false;
+    private Integer     downVotes = 0;
 
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )
-    private boolean hidden    = false;
+    private boolean     useful    = false;
+
+    @Column( nullable = false, columnDefinition = "TINYINT(1)" )
+    private boolean     hidden    = false;
 
     @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "hiddenBy" )
     @JoinFetch
-    private Member  hiddenBy;
+    private Member      hiddenBy;
 
-    private String  hiddenCause;
+    private String      hiddenCause;
 
     @NotNull( message = "{forums.post.ipAddress.notnull}" )
-    private String  ipAddress;
+    private String      ipAddress;
+
+    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "post" )
+    @OrderBy( "id DESC" )
+    @JoinFetch
+    private List<Alert> alerts;           // côté "owner" du mapping d'un post qui contient des alertes
 
     public Long getId() {
         return id;
@@ -206,6 +215,22 @@ public class Post implements Serializable {
 
     public void setHiddenCause( String hiddenCause ) {
         this.hiddenCause = hiddenCause;
+    }
+
+    public List<Alert> getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts( List<Alert> alerts ) {
+        this.alerts = alerts;
+    }
+
+    public void addAlert( Alert alert ) {
+        this.alerts.add( alert );
+    }
+
+    public void removeAlert( Alert alert ) {
+        this.alerts.remove( alert );
     }
 
     @Override
