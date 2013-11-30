@@ -16,12 +16,14 @@ import org.omnifaces.util.Faces;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
+import com.sdzee.forums.dao.AlertDao;
 import com.sdzee.forums.dao.BookmarkDao;
 import com.sdzee.forums.dao.ForumDao;
 import com.sdzee.forums.dao.NotificationDao;
 import com.sdzee.forums.dao.PostDao;
 import com.sdzee.forums.dao.TopicDao;
 import com.sdzee.forums.dao.VoteDao;
+import com.sdzee.forums.entities.Alert;
 import com.sdzee.forums.entities.Bookmark;
 import com.sdzee.forums.entities.Forum;
 import com.sdzee.forums.entities.Notification;
@@ -53,6 +55,7 @@ public class PostsBackingBean implements Serializable {
 
     private Post                post;
     private Topic               topic;
+    private Alert               alert;
     private Forum               forumDeplacement;
     private List<Post>          paginatedPosts;
     private int                 pagesNumber;
@@ -65,6 +68,8 @@ public class PostsBackingBean implements Serializable {
     private TopicDao            topicDao;
     @EJB
     private ForumDao            forumDao;
+    @EJB
+    private AlertDao            alertDao;
     @EJB
     private VoteDao             voteDao;
     @EJB
@@ -88,6 +93,7 @@ public class PostsBackingBean implements Serializable {
      */
     public void init() {
         post = new Post();
+        alert = new Alert();
         forumDeplacement = new Forum();
         topic = topicDao.find( topicId );
         setPagesNumber( (int) Math.ceil( topic.getNbPosts() / NB_POSTS_PER_PAGE ) );
@@ -332,15 +338,6 @@ public class PostsBackingBean implements Serializable {
         }
     }
 
-    public void signaler( Post post ) throws IOException {
-        Member member = (Member) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
-                .get( SESSION_MEMBER );
-        if ( member != null ) {
-            // TODO : créer une table d'alertes ? si oui, le DAO et l'entité qui vont avec.
-            // alerteDao.signaler( reponse );
-        }
-    }
-
     public String deletePost( Member member, Post post ) {
         if ( member != null && ( member.getRights() >= 3 ) ) {
             try {
@@ -421,6 +418,27 @@ public class PostsBackingBean implements Serializable {
             }
         } else {
             // TODO: logger l'intrus qui essaie de masquer une réponse sans y être autorisé...
+            return URL_404;
+        }
+    }
+
+    public String alertPost( Member member, Post post ) throws IOException {
+        if ( member != null ) {
+            try {
+                alert.setAuthor( member );
+                alert.setCreationDate( new Date( System.currentTimeMillis() ) );
+                alert.setPost( post );
+                alertDao.create( alert );
+                // TODO : ci-dessous bien nécessaire ?
+                post.addAlert( alert );
+                postDao.update( post );
+                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+            } catch ( DAOException e ) {
+                // TODO: logger l'échec de la mise à jour en base
+                return URL_404;
+            }
+        } else {
+            // TODO: logger l'intrus qui essaie d'alerter un post sans y être autorisé...
             return URL_404;
         }
     }
