@@ -144,7 +144,7 @@ public class MemberDao {
     /**
      * Cette méthode permet de mettre à jour un {@link Member} en base.
      * 
-     * @param member lae membre à mettre à jour en base.
+     * @param member le membre à mettre à jour en base.
      * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
      */
     public void update( Member member ) throws DAOException {

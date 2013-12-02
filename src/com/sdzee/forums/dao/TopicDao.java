@@ -85,8 +85,9 @@ public class TopicDao {
     public List<Topic> list( Forum forum, int pageNumber, int topicsPerPage ) throws DAOException {
         try {
             TypedQuery<Topic> query = em.createQuery( JPQL_TOPICS_LIST_PER_FORUM, Topic.class );
-            query.setParameter( PARAM_FORUM, forum ).setFirstResult( ( pageNumber - 1 ) * topicsPerPage )
-                    .setMaxResults( topicsPerPage );
+            query.setParameter( PARAM_FORUM, forum );
+            query.setFirstResult( ( pageNumber - 1 ) * topicsPerPage );
+            query.setMaxResults( topicsPerPage );
             return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );

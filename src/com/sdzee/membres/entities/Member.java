@@ -176,28 +176,6 @@ public class Member implements Serializable {
         this.signature = signature;
     }
 
-    @Override
-    public String toString() {
-        return String.format( "Member[%d]", id );
-    }
-
-    @Override
-    public boolean equals( Object obj ) {
-        if ( this == obj )
-            return true;
-        if ( obj == null )
-            return false;
-        if ( getClass() != obj.getClass() )
-            return false;
-        Member other = (Member) obj;
-        if ( id == null ) {
-            if ( other.id != null )
-                return false;
-        } else if ( !id.equals( other.id ) )
-            return false;
-        return true;
-    }
-
     public String getBiography() {
         return biography;
     }
@@ -230,4 +208,25 @@ public class Member implements Serializable {
         this.showSignatures = showSignatures;
     }
 
+    @Override
+    public String toString() {
+        return String.format( "Member[%d]", id );
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        Member other = (Member) obj;
+        if ( id == null ) {
+            if ( other.id != null )
+                return false;
+        } else if ( !id.equals( other.id ) )
+            return false;
+        return true;
+    }
 }
