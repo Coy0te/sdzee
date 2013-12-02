@@ -13,15 +13,15 @@ import com.sdzee.forums.entities.Alert;
 import com.sdzee.forums.entities.Post;
 
 /**
- * AlertDao est la classe DAO contenant les opérations CRUD réalisables sur la table des alertes du forum. Il s'agit d'un EJB Stateless dont
- * la structure s'appuie sur JPA et JPQL.
+ * AlertDao est la classe DAO contenant les opérations CRUD réalisables sur la table des alertes du forum. Il s'agit d'un EJB Stateless dont la
+ * structure s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
  */
 @Stateless
 public class AlertDao {
-    private static final String JPQL_ALERTS_LIST_PER_POST = "SELECT a FROM Alert a WHERE a.post=:post ORDER BY a.id DESC";
+    private static final String JPQL_ALERTS_LIST_PER_POST = "SELECT a FROM Alert a WHERE a.post=:post ORDER BY a.id ASC";
     private static final String PARAM_POST                = "post";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )

@@ -13,8 +13,8 @@ import com.sdzee.membres.entities.Member;
 import com.sdzee.privatemessages.entities.PrivateTopic;
 
 /**
- * PrivateTopicDao est la classe DAO contenant les opérations CRUD réalisables sur la table des MP. Il s'agit d'un EJB Stateless dont la
- * structure s'appuie sur JPA et JPQL.
+ * PrivateTopicDao est la classe DAO contenant les opérations CRUD réalisables sur la table des MP. Il s'agit d'un EJB Stateless dont la structure
+ * s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -22,8 +22,8 @@ import com.sdzee.privatemessages.entities.PrivateTopic;
 @Stateless
 public class PrivateTopicDao {
     private static final String JPQL_MPS_LIST                = "SELECT t FROM PrivateTopic t ORDER BY t.id DESC";
-    private static final String JPQL_MPS_LIST_PER_MEMBER     = "SELECT t FROM PrivateTopic t LEFT JOIN t.lastPrivatePost lp LEFT JOIN t.firstPrivatePost fp WHERE :member MEMBER OF t.participants ORDER BY COALESCE(lp.creationDate, fp.creationDate) DESC";
-    private static final String JPQL_COUNT_TOPICS_PER_MEMBER = "SELECT count(t) FROM PrivateTopic t WHERE :member MEMBER OF t.participants";
+    private static final String JPQL_MPS_LIST_PER_MEMBER     = "SELECT DISTINCT (t) FROM PrivateTopic t LEFT JOIN t.lastPrivatePost lp LEFT JOIN t.firstPrivatePost fp WHERE :member MEMBER OF t.participants ORDER BY COALESCE(lp.creationDate, fp.creationDate) DESC";
+    private static final String JPQL_COUNT_TOPICS_PER_MEMBER = "SELECT COUNT(t) FROM PrivateTopic t WHERE :member MEMBER OF t.participants";
     private static final String PARAM_MEMBER                 = "member";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
@@ -108,11 +108,8 @@ public class PrivateTopicDao {
             // TODO : WTF is wrong avec la pagination de cette requête.... Je deviens fou :
             // http://stackoverflow.com/questions/20264592/jpa-paginated-query-with-manytomany-collection-returns-wrong-number-of-entitie
 
-            // query.setFirstResult( ( pageNumber - 1 ) * mpsPerPage );
-            // query.setMaxResults( mpsPerPage );
-            List<PrivateTopic> temp = query.getResultList();
-            for ( PrivateTopic t : temp )
-                System.out.println( t );
+            query.setFirstResult( ( pageNumber - 1 ) * mpsPerPage );
+            query.setMaxResults( mpsPerPage );
             return query.getResultList();
         } catch ( Exception e ) {
             e.printStackTrace();

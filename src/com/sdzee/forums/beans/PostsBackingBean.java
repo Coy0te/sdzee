@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.omnifaces.util.Faces;
+import org.omnifaces.util.Messages;
 
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
@@ -33,8 +34,8 @@ import com.sdzee.forums.entities.Vote;
 import com.sdzee.membres.entities.Member;
 
 /**
- * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
- * une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
+ * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée une vue.
+ * Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -50,7 +51,7 @@ public class PostsBackingBean implements Serializable {
     private static final int    VOTE_DOWN              = -1;
     private static final int    DROITS_REQUIS_MASQUAGE = 3;
     private static final String SESSION_MEMBER         = "member";
-    private static final int    NB_POSTS_PER_PAGE      = 5;
+    private static final double NB_POSTS_PER_PAGE      = 5;
     private static final String VOTE_OBJECT_TYPE_POST  = "post";
 
     private Post                post;
@@ -78,26 +79,26 @@ public class PostsBackingBean implements Serializable {
     private NotificationDao     notificationDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par
-     * la Facelet <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au
-     * sujet est connecté, et si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
+     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par la Facelet
+     * <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au sujet est connecté, et
+     * si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
-     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
-     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et
-     * {@link NotificationDao} injectés via l'annotation <code>@EJB</code> qui entrent en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
+     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
+     * est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et {@link NotificationDao} injectés via l'annotation
+     * <code>@EJB</code> qui entrent en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
-     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
-     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
+     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
+     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         post = new Post();
         alert = new Alert();
         forumDeplacement = new Forum();
         topic = topicDao.find( topicId );
-        setPagesNumber( (int) Math.ceil( topic.getNbPosts() / NB_POSTS_PER_PAGE ) );
-        paginatedPosts = postDao.list( topic, page, NB_POSTS_PER_PAGE );
+        pagesNumber = (int) Math.ceil( topic.getNbPosts() / NB_POSTS_PER_PAGE );
+        paginatedPosts = postDao.list( topic, page, (int) NB_POSTS_PER_PAGE );
 
         Member member = (Member) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
                 .get( SESSION_MEMBER );
@@ -127,8 +128,7 @@ public class PostsBackingBean implements Serializable {
 
             /*
              * if ( topic.getLastPost().equals( derniereReponseAfficheeSurLaPage ) ) { context.addMessage( null, new FacesMessage(
-             * FacesMessage.SEVERITY_ERROR, "Le contenu du sujet a changé pendant que vous rédigiez votre message !", "Attention" ) );
-             * return null; }
+             * FacesMessage.SEVERITY_ERROR, "Le contenu du sujet a changé pendant que vous rédigiez votre message !", "Attention" ) ); return null; }
              */
 
             postDao.create( post );
@@ -428,10 +428,12 @@ public class PostsBackingBean implements Serializable {
                 alert.setAuthor( member );
                 alert.setCreationDate( new Date( System.currentTimeMillis() ) );
                 alert.setPost( post );
+                alert.setText( "TODO: implémenter la saisie de message d'alerte." );
                 alertDao.create( alert );
                 // TODO : ci-dessous bien nécessaire ?
                 post.addAlert( alert );
                 postDao.update( post );
+                Messages.addFlashGlobalError( "Votre alerte a bien été envoyée au Staff, merci !" );
                 return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base

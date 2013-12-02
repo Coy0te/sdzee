@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -39,7 +40,7 @@ public class Forum implements Serializable {
     @JoinFetch
     private ForumCategory category;    // côté "customer" du mapping d'un forum qui appartient à une catégorie
 
-    @ManyToOne( fetch = FetchType.EAGER )
+    @OneToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "lastPost" )
     @JoinFetch
     private Post          lastPost;

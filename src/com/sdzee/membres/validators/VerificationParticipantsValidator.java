@@ -23,8 +23,8 @@ public class VerificationParticipantsValidator implements Validator {
 
     private static final String NICKNAME_REQUIRED       = "Au moins un participant est requis.";
     private static final String SELF_MESSAGE            = "Vous ne pouvez pas être destinataire de votre message.";
-    private static final String NICKNAME_ALREADY_EXISTS = "Le pseudo suivant est incorrect : ";
-    private static final String NICKNAMES_ALREADY_EXIST = "Les pseudos suivants sont incorrects : ";
+    private static final String NICKNAME_DOES_NOT_EXIST = "Le pseudo suivant est incorrect : ";
+    private static final String NICKNAMES_DO_NOT_EXIST  = "Les pseudos suivants sont incorrects : ";
     private static final String PARTICIPANTS_SEPARATOR  = ",";
     private static final String SESSION_MEMBER          = "member";
 
@@ -47,8 +47,6 @@ public class VerificationParticipantsValidator implements Validator {
         // Suppression des espaces qui trainent éventuellement ça et là dans la liste
         participantsNickNames = participantsNickNames.replaceAll( "\\s+", "" );
         List<String> participantsNickNamesList = Arrays.asList( participantsNickNames.split( PARTICIPANTS_SEPARATOR ) );
-        System.out.println( "€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€" + participantsNickNamesList.size() + " "
-                + participantsNickNamesList );
 
         if ( participantsNickNamesList.contains( member.getNickName() ) ) {
             throw new ValidatorException(
@@ -73,7 +71,7 @@ public class VerificationParticipantsValidator implements Validator {
              */
             if ( badParticipantsNamesList.size() == 1 ) {
                 throw new ValidatorException(
-                        new FacesMessage( FacesMessage.SEVERITY_ERROR, NICKNAME_ALREADY_EXISTS
+                        new FacesMessage( FacesMessage.SEVERITY_ERROR, NICKNAME_DOES_NOT_EXIST
                                 + badParticipantsNamesList.get( 0 ), null ) );
             } else if ( badParticipantsNamesList.size() > 1 ) {
                 StringBuilder sb = new StringBuilder();
@@ -85,7 +83,7 @@ public class VerificationParticipantsValidator implements Validator {
                     sb.append( s );
                 }
                 throw new ValidatorException(
-                        new FacesMessage( FacesMessage.SEVERITY_ERROR, NICKNAMES_ALREADY_EXIST + sb.toString(), null ) );
+                        new FacesMessage( FacesMessage.SEVERITY_ERROR, NICKNAMES_DO_NOT_EXIST + sb.toString(), null ) );
             }
         } catch ( DAOException e ) {
             /*

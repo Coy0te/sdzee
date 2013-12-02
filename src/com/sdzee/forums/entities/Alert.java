@@ -90,4 +90,26 @@ public class Alert implements Serializable {
     public void setPost( Post post ) {
         this.post = post;
     }
+
+    @Override
+    public String toString() {
+        return String.format( "Alert[%d]", id );
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        Alert other = (Alert) obj;
+        if ( id == null ) {
+            if ( other.id != null )
+                return false;
+        } else if ( !id.equals( other.id ) )
+            return false;
+        return true;
+    }
 }

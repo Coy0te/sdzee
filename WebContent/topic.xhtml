@@ -56,6 +56,12 @@
             <div>#{i18n.sujetResolu}</div>
         </div>
 		</ui:fragment>
+		<ui:fragment rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}">
+		<div class="resolved">
+            <div class="iconResolved"></div>
+            <div><h:messages globalOnly="true" /></div>
+        </div>
+        </ui:fragment>
 		<div class="comments">
 			<ui:repeat value="#{postsBean.paginatedPosts}" var="post" id="forEach">
 			<div class="row#{post.useful ? ' greenBg' : ''}">
@@ -78,9 +84,9 @@
 				<ui:fragment rendered="#{member != null}">
 					<ul class="actions">
 						<li>
-							<a class="alertAction" data-toggle="modal" href="#alertActionModal" data-simpleit-alert="/message/alerte/signaler/message/84247162">
-							<span class="actionIcon iconAlert"></span><span class="actionDesc">#{i18n.sujetMessageSignaler}</span>
-							</a>
+							<o:form includeViewParams="true" styleClass="right">
+								<h:commandButton value="Alerter" action="#{postsBean.alertPost(member, post)}" styleClass="resoudreSujet" />
+							</o:form>
 						</li>
 						<li>
 							<a href="#texte" class="citeAction">
@@ -113,6 +119,7 @@
 					<div class="content">
 						<h:link class="date">
 							<f:param name="topicId" value="#{param['topicId']}" />
+							<f:param name="postId" value="#{post.id}" />
 							#{uf:convertDateTime(post.creationDate)}
 						</h:link>
 						<div class="message" id="msg#{post.id}">
@@ -172,7 +179,14 @@
 							</o:form>
 							</span> 
 						</h:panelGroup>
-						<div class="signature">#{member.showSignatures ? post.author.signature : ''}</div>
+						<div class="signature">#{(member == null or member.showSignatures) ? post.author.signature : ''}</div>
+						<ui:fragment rendered="#{member != null and member.rights>=3 and !empty post.alerts}">
+						<ul>
+							<ui:repeat value="#{post.alerts}" var="alert">
+							<li>[<h:link outcome="/profile"><f:param name="memberId" value="#{alert.author.id}" />#{alert.author.nickName}</h:link>, #{uf:convertDateTime(alert.creationDate)}] #{alert.text}</li>
+							</ui:repeat>
+						</ul>
+						</ui:fragment>
 					</div>
 				</div>
 			</div>

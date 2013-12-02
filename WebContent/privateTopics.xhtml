@@ -58,7 +58,7 @@
 				<h:outputLabel for="sousTitre">#{i18n.labelInputSousTitreSujet}</h:outputLabel>
 				<h:inputText id="sousTitre" value="#{privateTopicsBean.privateTopic.subTitle}" maxlength="80" />
 				<h:message id="sousTitreMessage" for="sousTitre" errorClass="erreur" />
-				<h:outputLabel for="participants">Pseudos des participants (séparés par une virgule)</h:outputLabel>
+				<h:outputLabel for="participants">Pseudos des participants (séparés par une virgule) <span class="requis">*</span></h:outputLabel>
 				<h:inputText id="participants" value="#{privateTopicsBean.participantsNames}" maxlength="80">
 					<f:ajax event="blur" render="participantsMessage" />
 					<f:validator binding="#{verificationParticipantsValidator}" />

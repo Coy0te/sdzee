@@ -29,8 +29,17 @@
 			</h:link>
 		</h1>
 		<h2><h:panelGroup id="topicSubTitle">#{privatePostsBean.privateTopic.subTitle}</h:panelGroup></h2>
+		<p>
+			<strong>Participants :</strong>
+			<ui:repeat value="#{privatePostsBean.privateTopic.participants}" var="participant">
+			<h:link outcome="/profile">
+				<f:param name="memberId" value="#{participant.id}" />
+				#{participant.nickName}, 
+			</h:link>
+			</ui:repeat>
+		 </p>
 		<div class="comments">
-			<ui:repeat value="#{privatePostsBean.paginatedPrivatePosts}" var="post" id="forEach" varStatus="loop">
+			<ui:repeat value="#{privatePostsBean.paginatedPrivatePosts}" var="post" id="forEach">
 			<div class="row">
 				<div class="userInfos">
 					<div class="avatar">
@@ -63,6 +72,7 @@
 					<div class="content">
 						<h:link class="date">
 							<f:param name="topicId" value="#{param['topicId']}" />
+							<f:param name="postId" value="#{post.id}" />
 							#{uf:convertDateTime(post.creationDate)}
 						</h:link>
 						<div class="message" id="msg#{post.id}">

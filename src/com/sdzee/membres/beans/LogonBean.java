@@ -8,7 +8,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -18,7 +18,7 @@ import com.sdzee.membres.dao.MemberDao;
 import com.sdzee.membres.entities.Member;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class LogonBean implements Serializable {
     private static final long   serialVersionUID           = 1L;
     private static final String NICKNAME                   = "nickName";
@@ -83,12 +83,6 @@ public class LogonBean implements Serializable {
 
         // On redirige le membre vers la page qu'il voulait visiter
         externalContext.redirect( urlOrigine );
-    }
-
-    public void logout() throws IOException {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        externalContext.invalidateSession();
-        externalContext.redirect( externalContext.getRequestContextPath() + PAGE_ACCUEIL );
     }
 
     public String getNickName() {

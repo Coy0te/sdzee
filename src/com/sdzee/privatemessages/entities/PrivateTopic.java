@@ -13,16 +13,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.eclipse.persistence.annotations.BatchFetch;
+import org.eclipse.persistence.annotations.BatchFetchType;
 import org.eclipse.persistence.annotations.JoinFetch;
 
 import com.sdzee.membres.entities.Member;
 
 /**
- * PrivateMessage est l'entité JPA décrivant la table des MP. La validation des champs s'appuie sur la JSR-303.
+ * PrivateTopic est l'entité JPA décrivant la table des MP. La validation des champs s'appuie sur la JSR-303.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -47,12 +50,12 @@ public class PrivateTopic implements Serializable {
     @JoinFetch
     private Member       author;
 
-    @ManyToOne( fetch = FetchType.EAGER )
+    @OneToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "firstPrivatePost" )
     @JoinFetch
     private PrivatePost  firstPrivatePost;
 
-    @ManyToOne( fetch = FetchType.EAGER )
+    @OneToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "lastPrivatePost" )
     @JoinFetch
     private PrivatePost  lastPrivatePost;
@@ -62,7 +65,7 @@ public class PrivateTopic implements Serializable {
             name = "private_join_topic_participant",
             joinColumns = @JoinColumn( name = "privateTopic" ),
             inverseJoinColumns = @JoinColumn( name = "participant" ) )
-    @JoinFetch
+    @BatchFetch( BatchFetchType.IN )
     private List<Member> participants   = new ArrayList<Member>();
 
     private Integer      nbPrivatePosts = 1;

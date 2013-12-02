@@ -14,7 +14,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.BatchFetch;
+import org.eclipse.persistence.annotations.BatchFetchType;
 
 /**
  * ForumCategory est l'entité JPA décrivant la table des catégories de forums. La validation des champs s'appuie sur la JSR-303.
@@ -37,7 +38,7 @@ public class ForumCategory implements Serializable {
 
     @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "category" )
     @OrderBy( "position ASC" )
-    @JoinFetch
+    @BatchFetch( BatchFetchType.IN )
     private List<Forum> forums;  // côté "owner" du mapping d'une catégorie qui contient des forums
 
     public Long getId() {

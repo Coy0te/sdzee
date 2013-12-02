@@ -41,7 +41,7 @@ public class PrivateTopicsBackingBean implements Serializable {
     private static final long      serialVersionUID           = 1L;
     private static final String    URL_PRIVATE_TOPIC_PAGE     = "/privateTopic.jsf?topicId=";
     private static final String    PARTICIPANTS_SEPARATOR     = ",";
-    private static final int       NB_PRIVATE_TOPICS_PER_PAGE = 5;
+    private static final double    NB_PRIVATE_TOPICS_PER_PAGE = 5;
     private static final String    SESSION_MEMBER             = "member";
 
     private PrivateTopic           privateTopic;
@@ -87,7 +87,7 @@ public class PrivateTopicsBackingBean implements Serializable {
             privateTopic = new PrivateTopic();
             privatePost = new PrivatePost();
             pagesNumber = (int) Math.ceil( privateTopicDao.count( member ) / NB_PRIVATE_TOPICS_PER_PAGE );
-            paginatedPrivateTopics = privateTopicDao.list( member, page, NB_PRIVATE_TOPICS_PER_PAGE );
+            paginatedPrivateTopics = privateTopicDao.list( member, page, (int) NB_PRIVATE_TOPICS_PER_PAGE );
         }
     }
 
@@ -120,6 +120,7 @@ public class PrivateTopicsBackingBean implements Serializable {
             // la valeur nbPosts est par défaut mise à 1 en BDD, donc rien à faire lors de la création d'un topic à ce niveau.
             // pareil pour lastPost qui est mis à null par défaut en BDD
             // Quand on arrive ici, on est déjà passés par le validator, donc tous les pseudos saisis sont OK.
+            participantsNames = participantsNames.replaceAll( "\\s+", "" );
             List<String> participantsNickNames = new ArrayList<String>( Arrays.asList( participantsNames
                     .split( PARTICIPANTS_SEPARATOR ) ) );
             // On ajoute l'auteur dans la liste des participants, pour que ça soit complet.

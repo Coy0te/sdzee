@@ -16,8 +16,8 @@ import com.sdzee.forums.entities.Post;
 import com.sdzee.forums.entities.Topic;
 
 /**
- * PostDao est la classe DAO contenant les opérations CRUD réalisables sur la table des réponses à un sujet. Il s'agit d'un EJB Stateless dont la
- * structure s'appuie sur JPA et JPQL.
+ * PostDao est la classe DAO contenant les opérations CRUD réalisables sur la table des réponses à un sujet. Il s'agit d'un EJB Stateless
+ * dont la structure s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -25,7 +25,7 @@ import com.sdzee.forums.entities.Topic;
 @Stateless
 public class PostDao {
     private static final String JPQL_POSTS_LIST_PER_TOPIC      = "SELECT p FROM Post p WHERE p.topic=:topic ORDER BY p.id ASC";
-    private static final String JPQL_POSTS_LIST_PER_TOPIC_DESC = "SELECT p FROM Post p WHERE p.topic=:topic ORDER BY p.id DESC";
+    private static final String JPQL_POSTS_LIST_PER_TOPIC_DESC = "SELECT DISTINCT(p) FROM Post p WHERE p.topic=:topic ORDER BY p.id DESC";
     private static final String JPQL_POSTS_LIST_PER_FORUM_DESC = "SELECT p FROM Post p JOIN p.topic t WHERE t.forum=:forum ORDER BY p.id DESC";
     private static final String PARAM_TOPIC                    = "topic";
     private static final String PARAM_FORUM                    = "forum";
@@ -131,8 +131,12 @@ public class PostDao {
     public List<Post> list( Topic topic, int pageNumber, int postsPerPage ) throws DAOException {
         try {
             TypedQuery<Post> query = em.createQuery( JPQL_POSTS_LIST_PER_TOPIC, Post.class );
-            query.setParameter( PARAM_TOPIC, topic ).setFirstResult( ( pageNumber - 1 ) * postsPerPage )
-                    .setMaxResults( postsPerPage );
+            query.setParameter( PARAM_TOPIC, topic );
+            query.setFirstResult( ( pageNumber - 1 ) * postsPerPage );
+            query.setMaxResults( postsPerPage );
+            // TODO : y'a une grosse couille à ce niveau !!! Quand y'a plus de 3 alertes sur un post, ça fait déconner ici le nombre
+            // d'entités
+            // retournées. Votre mission si vous l'acceptez, c'est de trouver d'où sort de truc complètement capillotracté...
             return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );

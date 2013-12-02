@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +19,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.persistence.annotations.BatchFetch;
+import org.eclipse.persistence.annotations.BatchFetchType;
 import org.eclipse.persistence.annotations.JoinFetch;
 
 import com.sdzee.membres.entities.Member;
@@ -84,9 +85,9 @@ public class Post implements Serializable {
     @NotNull( message = "{forums.post.ipAddress.notnull}" )
     private String      ipAddress;
 
-    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "post" )
+    @OneToMany( fetch = FetchType.LAZY, mappedBy = "post" )
     @OrderBy( "id DESC" )
-    @JoinFetch
+    @BatchFetch( BatchFetchType.IN )
     private List<Alert> alerts;           // côté "owner" du mapping d'un post qui contient des alertes
 
     public Long getId() {
