@@ -17,5 +17,6 @@ Testé avec Glassfish et MySQL.
 - les tutos en lecture seule
 - la rédaction et la validation des tutos
 - la home
+- mise en place d'un logger
 - rédaction des messages de validation
 - internationalisation
