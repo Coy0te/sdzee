@@ -22,6 +22,12 @@
 		</ui:include>
 	</ui:define>
 	<ui:define name="body">
+		<ui:fragment rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}">
+		<div class="resolved">
+            <div class="iconResolved"></div>
+            <div><h:messages globalOnly="true" /></div>
+        </div>
+        </ui:fragment>
 		<h1>
 			<h:link id="topicTitle">
 				<f:param name="topicId" value="#{param['topicId']}" />
@@ -29,7 +35,7 @@
 			</h:link>
 		</h1>
 		<h2><h:panelGroup id="topicSubTitle">#{privatePostsBean.privateTopic.subTitle}</h:panelGroup></h2>
-		<p>
+		<div>
 			<strong>Participants :</strong>
 			<ui:repeat value="#{privatePostsBean.privateTopic.participants}" var="participant">
 			<h:link outcome="/profile">
@@ -37,7 +43,7 @@
 				#{participant.nickName}, 
 			</h:link>
 			</ui:repeat>
-		 </p>
+		 </div>
 		<div class="comments">
 			<ui:repeat value="#{privatePostsBean.paginatedPrivatePosts}" var="post" id="forEach">
 			<div class="row">
