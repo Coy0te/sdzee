@@ -7,11 +7,11 @@ Testé avec Glassfish et MySQL.
 **Actuellement dispo** :
 - le forum
 - les MPs
-- les notifs (forum et MP)
+- les notifs (forums et MP)
 - le profil membre
+- les alertes dans les forums
 
 **TODO** :
-- alertes dans les forums
 - ban membre / ban IP / LS
 - récupération du compte via email (mot de passe et/ou login oubliés)
 - les tutos en lecture seule
