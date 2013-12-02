@@ -34,8 +34,8 @@ import com.sdzee.forums.entities.Vote;
 import com.sdzee.membres.entities.Member;
 
 /**
- * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée une vue.
- * Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
+ * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
+ * une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -43,16 +43,15 @@ import com.sdzee.membres.entities.Member;
 @ManagedBean( name = "postsBean" )
 @ViewScoped
 public class PostsBackingBean implements Serializable {
-    private static final long   serialVersionUID       = 1L;
-    private static final String URL_FORUM_PAGE         = "/forum.jsf?forumId=";
-    private static final String URL_TOPIC_PAGE         = "/topic.jsf?topicId=";
-    private static final String URL_404                = "/404.jsf";
-    private static final int    VOTE_UP                = 1;
-    private static final int    VOTE_DOWN              = -1;
-    private static final int    DROITS_REQUIS_MASQUAGE = 3;
-    private static final String SESSION_MEMBER         = "member";
-    private static final double NB_POSTS_PER_PAGE      = 5;
-    private static final String VOTE_OBJECT_TYPE_POST  = "post";
+    private static final long   serialVersionUID      = 1L;
+    private static final String URL_FORUM_PAGE        = "/forum.jsf?forumId=";
+    private static final String URL_TOPIC_PAGE        = "/topic.jsf?topicId=";
+    private static final String URL_404               = "/404.jsf";
+    private static final int    VOTE_UP               = 1;
+    private static final int    VOTE_DOWN             = -1;
+    private static final String SESSION_MEMBER        = "member";
+    private static final double NB_POSTS_PER_PAGE     = 5;
+    private static final String VOTE_OBJECT_TYPE_POST = "post";
 
     private Post                post;
     private Topic               topic;
@@ -61,7 +60,7 @@ public class PostsBackingBean implements Serializable {
     private List<Post>          paginatedPosts;
     private int                 pagesNumber;
     private int                 topicId;
-    private int                 page                   = 1;
+    private int                 page                  = 1;
 
     @EJB
     private PostDao             postDao;
@@ -79,18 +78,18 @@ public class PostsBackingBean implements Serializable {
     private NotificationDao     notificationDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par la Facelet
-     * <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au sujet est connecté, et
-     * si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
+     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par
+     * la Facelet <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au
+     * sujet est connecté, et si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
-     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
-     * est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et {@link NotificationDao} injectés via l'annotation
-     * <code>@EJB</code> qui entrent en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
+     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
+     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et
+     * {@link NotificationDao} injectés via l'annotation <code>@EJB</code> qui entrent en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
-     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
-     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
+     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
+     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         post = new Post();
@@ -128,7 +127,8 @@ public class PostsBackingBean implements Serializable {
 
             /*
              * if ( topic.getLastPost().equals( derniereReponseAfficheeSurLaPage ) ) { context.addMessage( null, new FacesMessage(
-             * FacesMessage.SEVERITY_ERROR, "Le contenu du sujet a changé pendant que vous rédigiez votre message !", "Attention" ) ); return null; }
+             * FacesMessage.SEVERITY_ERROR, "Le contenu du sujet a changé pendant que vous rédigiez votre message !", "Attention" ) );
+             * return null; }
              */
 
             postDao.create( post );
@@ -160,6 +160,7 @@ public class PostsBackingBean implements Serializable {
                 }
             }
             // post = null; // TODO : encore nécessaire après la redirection mise en place ci-après?
+            Messages.addFlashGlobalInfo( "Votre réponse a bien été ajoutée." );
             return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
         } catch ( DAOException e ) {
             // TODO : logger l'échec de la création d'une réponse
@@ -212,6 +213,7 @@ public class PostsBackingBean implements Serializable {
             try {
                 topic.setSticky( topic.isSticky() ? false : true );
                 topicDao.update( topic );
+                Messages.addFlashGlobalInfo( "Le sujet " + ( topic.isSticky() ? "est maintenant" : "n''est plus" ) + " épinglé en Post-It." );
                 return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du sujet
@@ -267,6 +269,7 @@ public class PostsBackingBean implements Serializable {
                 }
                 forumDao.update( forumBefore );
                 // TODO : logger la modification faite par le modo (date, membre, changement)
+                Messages.addFlashGlobalInfo( "Le sujet a bien été déplacé." );
                 return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base de la réponse
@@ -354,6 +357,7 @@ public class PostsBackingBean implements Serializable {
                     forumDao.update( topic.getForum() );
                     long forumId = topic.getForum().getId();
                     topicDao.delete( topic ); // TODO : est-ce que ça supprimerait automatiquement le post précédent en même temps ?
+                    Messages.addFlashGlobalInfo( "Le sujet a bien été supprimé." );
                     return URL_FORUM_PAGE + forumId + "&faces-redirect=true";
                 } else if ( post.equals( topic.getLastPost() ) ) {
                     // si on est sur le dernier post, on modifie le lastPost sur le topic
@@ -366,12 +370,14 @@ public class PostsBackingBean implements Serializable {
                         topic.getForum().setLastPost( postDao.findLast( topic.getForum() ) );
                         forumDao.update( topic.getForum() );
                     }
+                    Messages.addFlashGlobalInfo( "Le message a bien été supprimé." );
                     return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
                 } else {
                     postDao.delete( post );
                     // on retire 1 au compteur dénormalisé (TODO : ça devrait être le boulot d'un Trigger BDD ou d'un JPA event)
                     topic.removePost();
                     topicDao.update( topic );
+                    Messages.addFlashGlobalInfo( "Le message a bien été supprimé." );
                     return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
                 }
 
@@ -393,6 +399,8 @@ public class PostsBackingBean implements Serializable {
             try {
                 post.setUseful( post.isUseful() ? false : true );
                 postDao.update( post );
+                Messages.addFlashGlobalInfo( "Le message " + ( post.isUseful() ? "a bien été" : "n''est plus" )
+                        + " marqué comme utile, merci !" );
                 return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du post
@@ -411,6 +419,7 @@ public class PostsBackingBean implements Serializable {
                 post.setHiddenBy( member );
                 post.setHiddenCause( "TODO : Message de masquage." );
                 postDao.update( post );
+                Messages.addFlashGlobalInfo( "Le message a bien été " + ( post.isHidden() ? "masqué." : "restauré." ) );
                 return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du post
@@ -433,7 +442,7 @@ public class PostsBackingBean implements Serializable {
                 // TODO : ci-dessous bien nécessaire ?
                 post.addAlert( alert );
                 postDao.update( post );
-                Messages.addFlashGlobalError( "Votre alerte a bien été envoyée au Staff, merci !" );
+                Messages.addFlashGlobalInfo( "Votre alerte a bien été envoyée au Staff, merci !" );
                 return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base
