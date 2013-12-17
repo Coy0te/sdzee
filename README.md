@@ -58,6 +58,7 @@ Fonctionnalités implementées
 * Éditer son message si la dernière réponse postée dans le MP est la sienne
 * Supprimer un MP de sa boîte de réception
 * Être notifié de ses nouveaux MP, et des nouvelles réponses aux MP auxquels il participe
+* Faire disparaître les notifs en consultant les MP concernés
 
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
