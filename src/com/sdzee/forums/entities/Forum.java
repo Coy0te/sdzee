@@ -38,7 +38,7 @@ public class Forum implements Serializable {
     @JoinColumn( name = "category" )
     @NotNull( message = "{forums.forum.category.notnull}" )
     @JoinFetch
-    private ForumCategory category;    // côté "customer" du mapping d'un forum qui appartient à une catégorie
+    private ForumCategory category;   // côté "customer" du mapping d'un forum qui appartient à une catégorie
 
     @OneToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "lastPost" )
@@ -47,8 +47,6 @@ public class Forum implements Serializable {
 
     @NotNull( message = "{forums.forum.position.notnull}" )
     private Integer       position;
-
-    private Integer       nbTopics = 0;
 
     public Long getId() {
         return id;
@@ -96,22 +94,6 @@ public class Forum implements Serializable {
 
     public void setPosition( Integer position ) {
         this.position = position;
-    }
-
-    public Integer getNbTopics() {
-        return nbTopics;
-    }
-
-    public void setNbTopics( Integer nbTopics ) {
-        this.nbTopics = nbTopics;
-    }
-
-    public void addTopic() {
-        this.nbTopics++;
-    }
-
-    public void removeTopic() {
-        this.nbTopics--;
     }
 
     @Override

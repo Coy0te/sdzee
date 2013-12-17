@@ -26,8 +26,7 @@ import com.sdzee.forums.entities.Topic;
 import com.sdzee.membres.entities.Member;
 
 /**
- * TopicsBackingBean est le bean sur lequel s'appuie notamment la page de chaque forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
- * une vue.
+ * TopicsBackingBean est le bean sur lequel s'appuie notamment la page de chaque forum. Il s'agit d'un ManagedBean JSF, ayant pour portée une vue.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -56,25 +55,27 @@ public class TopicsBackingBean implements Serializable {
     private PostDao             postDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>forum</code> en récupérant en base le forum correspondant à l'id transmis par
-     * la Facelet <code>forum.xhtml</code>, contenu dans la variable <code>forumId</code>.
+     * Cette méthode initialise la variable d'instance <code>forum</code> en récupérant en base le forum correspondant à l'id transmis par la Facelet
+     * <code>forum.xhtml</code>, contenu dans la variable <code>forumId</code>.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
-     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
-     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, c'est le DAO {@link ForumDao} injecté via l'annotation
-     * <code>@EJB</code> qui entre en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
+     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
+     * est donc possible de faire appel à des dépendances. Ici, c'est le DAO {@link ForumDao} injecté via l'annotation <code>@EJB</code> qui entre en
+     * jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
-     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
-     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
+     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
+     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
-        topic = new Topic();
-        post = new Post();
-        forum = forumDao.find( forumId );
-        pagesNumber = (int) Math.ceil( forum.getNbTopics() / NB_TOPICS_PER_PAGE );
-        stickyTopics = topicDao.listStickies( forum );
-        paginatedTopics = topicDao.list( forum, page, NB_TOPICS_PER_PAGE );
+        if ( !FacesContext.getCurrentInstance().isPostback() ) {
+            topic = new Topic();
+            post = new Post();
+            forum = forumDao.find( forumId );
+            pagesNumber = (int) Math.ceil( topicDao.count( forum ) / NB_TOPICS_PER_PAGE );
+            stickyTopics = topicDao.listStickies( forum );
+            paginatedTopics = topicDao.list( forum, page, NB_TOPICS_PER_PAGE );
+        }
     }
 
     public List<Topic> getPaginatedTopics() {
@@ -85,6 +86,10 @@ public class TopicsBackingBean implements Serializable {
         return stickyTopics;
     }
 
+    public int getNbPosts( Topic topic ) {
+        return postDao.count( topic );
+    }
+
     /**
      * Cette méthode permet la création d'un {@link Topic} dans le {@link Forum} courant.
      * 
@@ -93,11 +98,15 @@ public class TopicsBackingBean implements Serializable {
      */
     public void create( Member member ) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        post.setIpAddress( Faces.getRemoteAddr() );
-        post.setCreationDate( new Date( System.currentTimeMillis() ) );
-        post.setAuthor( member );
-        topic.setForum( forum );
         try {
+            // on commence par rafraichir l'entité Forum, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+            forumDao.refresh( forum );
+
+            post.setIpAddress( Faces.getRemoteAddr() );
+            post.setCreationDate( new Date( System.currentTimeMillis() ) );
+            post.setAuthor( member );
+            topic.setForum( forum );
+
             topicDao.create( topic );
             context.addMessage( null, new FacesMessage( FacesMessage.SEVERITY_INFO, "Nouveau sujet créé avec succès",
                     topic.getTitle() ) );
@@ -106,11 +115,8 @@ public class TopicsBackingBean implements Serializable {
             postDao.create( post );
             // TODO : à surveiller, manque peut-être un refresh ici pour que le post récupère bien son ID après sa création !
             topic.setFirstPost( post );
-            // la valeur nbPosts est par défaut mise à 1 en BDD, donc rien à faire lors de la création d'un topic à ce niveau.
-            // pareil pour lastPost qui est mis à null par défaut en BDD
+            // lastPost est mis à null par défaut en BDD
             topicDao.update( topic );
-            // on ajoute 1 au compteur dénormalisé (TODO : ça devrait être le boulot d'un Trigger BDD ou d'un JPA event)
-            forum.addTopic();
             forum.setLastPost( post );
             forumDao.update( forum );
             ExternalContext externalContext = context.getExternalContext();

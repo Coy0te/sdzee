@@ -53,15 +53,13 @@ public class Topic implements Serializable {
     private Post    lastPost;
 
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )
-    private boolean locked  = false;
+    private boolean locked = false;
 
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )
-    private boolean sticky  = false;
+    private boolean sticky = false;
 
     @Column( nullable = false, columnDefinition = "TINYINT(1)" )
-    private boolean solved  = false;
-
-    private Integer nbPosts = 1;
+    private boolean solved = false;
 
     public Long getId() {
         return id;
@@ -133,22 +131,6 @@ public class Topic implements Serializable {
 
     public void setSolved( boolean solved ) {
         this.solved = solved;
-    }
-
-    public Integer getNbPosts() {
-        return nbPosts;
-    }
-
-    public void setNbPosts( Integer nbPosts ) {
-        this.nbPosts = nbPosts;
-    }
-
-    public void addPost() {
-        this.nbPosts++;
-    }
-
-    public void removePost() {
-        this.nbPosts--;
     }
 
     @Override

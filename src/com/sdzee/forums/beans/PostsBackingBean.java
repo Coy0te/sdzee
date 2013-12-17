@@ -34,8 +34,8 @@ import com.sdzee.forums.entities.Vote;
 import com.sdzee.membres.entities.Member;
 
 /**
- * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
- * une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
+ * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée une vue.
+ * Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -45,7 +45,7 @@ import com.sdzee.membres.entities.Member;
 public class PostsBackingBean implements Serializable {
     private static final long   serialVersionUID      = 1L;
     private static final String URL_FORUM_PAGE        = "/forum.jsf?forumId=";
-    private static final String URL_TOPIC_PAGE        = "/topic.jsf?topicId=";
+    private static final String URL_TOPIC_PAGE        = "/topic.jsf?page=%d&topicId=%d&faces-redirect=true";
     private static final String URL_404               = "/404.jsf";
     private static final int    VOTE_UP               = 1;
     private static final int    VOTE_DOWN             = -1;
@@ -78,25 +78,25 @@ public class PostsBackingBean implements Serializable {
     private NotificationDao     notificationDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par
-     * la Facelet <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au
-     * sujet est connecté, et si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
+     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par la Facelet
+     * <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au sujet est connecté, et
+     * si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
-     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
-     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et
-     * {@link NotificationDao} injectés via l'annotation <code>@EJB</code> qui entrent en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
+     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
+     * est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et {@link NotificationDao} injectés via l'annotation
+     * <code>@EJB</code> qui entrent en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
-     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
-     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
+     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
+     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
-        post = new Post();
+        post = ( post == null ? new Post() : post );
         alert = new Alert();
         forumDeplacement = new Forum();
         topic = topicDao.find( topicId );
-        pagesNumber = (int) Math.ceil( topic.getNbPosts() / NB_POSTS_PER_PAGE );
+        pagesNumber = (int) Math.ceil( postDao.count( topic ) / NB_POSTS_PER_PAGE );
         paginatedPosts = postDao.list( topic, page, (int) NB_POSTS_PER_PAGE );
 
         Member member = (Member) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
@@ -111,29 +111,30 @@ public class PostsBackingBean implements Serializable {
     }
 
     public String create( Member member ) {
-        // on commence par vérifier que le sujet n'est pas fermé
-        if ( topic.isLocked() && member.getRights() < 3 ) {
-            return URL_404;
-        }
-        post.setIpAddress( Faces.getRemoteAddr() );
-        post.setCreationDate( new Date( System.currentTimeMillis() ) );
-        post.setAuthor( member );
-        post.setTopic( topic );
-
         try {
-            // TODO : si l'id de la dernière réponse sur le sujet n'est pas le même que quand le type a répondu, alors ça veut dire qu'un
-            // autre gars a répondu ou que l'auteur a supprimé sa réponse, du coup il faut prévenir le posteur avant d'enregistrer sa
-            // réponse...
+            // on sauve le dernier post affiché à l'utilisateur
+            Post lastDisplayedPost = ( topic.getLastPost() == null ? topic.getFirstPost() : topic.getLastPost() );
+            // on rafraichit l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+            topic = topicDao.refresh( topic );
+            // on récupère le "vrai" dernier post, depuis le topic rafraichi
+            Post lastActualPost = ( topic.getLastPost() == null ? topic.getFirstPost() : topic.getLastPost() );
 
-            /*
-             * if ( topic.getLastPost().equals( derniereReponseAfficheeSurLaPage ) ) { context.addMessage( null, new FacesMessage(
-             * FacesMessage.SEVERITY_ERROR, "Le contenu du sujet a changé pendant que vous rédigiez votre message !", "Attention" ) );
-             * return null; }
-             */
+            // on vérifie que le sujet n'est pas fermé
+            if ( topic.isLocked() && member.getRights() < 3 ) {
+                return URL_404;
+            }
+            // on vérifie qu'un nouveau post n'a pas été ajouté entre temps par quelqu'un d'autre
+            if ( !lastDisplayedPost.equals( lastActualPost ) ) {
+                Messages.addFlashGlobalWarn( "Attention, au moins un autre membre est intervenu dans la discussion pendant que vous rédigiez votre message !" );
+                return null;
+            }
+
+            post.setIpAddress( Faces.getRemoteAddr() );
+            post.setCreationDate( new Date( System.currentTimeMillis() ) );
+            post.setAuthor( member );
+            post.setTopic( topic );
 
             postDao.create( post );
-            // on ajoute 1 au compteur dénormalisé (TODO : ça devrait être le boulot d'un Trigger BDD ou d'un JPA event)
-            topic.addPost();
             topic.setLastPost( post );
             topicDao.update( topic );
             topic.getForum().setLastPost( post );
@@ -159,9 +160,9 @@ public class PostsBackingBean implements Serializable {
                     notificationDao.create( notification ); // Rien ne sera créé s'il existe déjà une notification, voir implémentation DAO.
                 }
             }
-            // post = null; // TODO : encore nécessaire après la redirection mise en place ci-après?
+            post = new Post(); // TODO : encore nécessaire après la redirection mise en place ci-après?
             Messages.addFlashGlobalInfo( "Votre réponse a bien été ajoutée." );
-            return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+            return String.format( URL_TOPIC_PAGE, page, topic.getId() );
         } catch ( DAOException e ) {
             // TODO : logger l'échec de la création d'une réponse
             e.printStackTrace();
@@ -194,9 +195,12 @@ public class PostsBackingBean implements Serializable {
                 && ( member.getRights() >= 3 || member.getNickName().equals(
                         topic.getFirstPost().getAuthor().getNickName() ) ) ) {
             try {
+                // on commence par rafraichir l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                topic = topicDao.refresh( topic );
+
                 topic.setSolved( topic.isSolved() ? false : true );
                 topicDao.update( topic );
-                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                return String.format( URL_TOPIC_PAGE, 1, topic.getId() );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du sujet
                 return URL_404;
@@ -211,10 +215,14 @@ public class PostsBackingBean implements Serializable {
     public String pinTopic( Member member ) {
         if ( member != null && ( member.getRights() >= 3 ) ) {
             try {
+                // on commence par rafraichir l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                topic = topicDao.refresh( topic );
+
                 topic.setSticky( topic.isSticky() ? false : true );
                 topicDao.update( topic );
-                Messages.addFlashGlobalInfo( "Le sujet " + ( topic.isSticky() ? "est maintenant" : "n''est plus" ) + " épinglé en Post-It." );
-                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                Messages.addFlashGlobalInfo( "Le sujet " + ( topic.isSticky() ? "est maintenant" : "n''est plus" )
+                        + " épinglé en Post-It." );
+                return String.format( URL_TOPIC_PAGE, 1, topic.getId() );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du sujet
                 return URL_404;
@@ -229,9 +237,12 @@ public class PostsBackingBean implements Serializable {
     public String lockTopic( Member member ) {
         if ( member != null && ( member.getRights() >= 3 ) ) {
             try {
+                // on commence par rafraichir l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                topic = topicDao.refresh( topic );
+
                 topic.setLocked( topic.isLocked() ? false : true );
                 topicDao.update( topic );
-                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                return String.format( URL_TOPIC_PAGE, 1, topic.getId() );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du sujet
                 return URL_404;
@@ -247,10 +258,11 @@ public class PostsBackingBean implements Serializable {
         if ( member != null && member.getRights() >= 3 && forumDeplacement != null
                 && topic.getForum() != forumDeplacement ) {
             try {
+                // on commence par rafraichir l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                topic = topicDao.refresh( topic );
+
                 Forum forumBefore = topic.getForum();
                 topic.setForum( forumDeplacement );
-                // on ajoute 1 au compteur des topics (devrait être un bdd trigger ou jpa event)
-                forumDeplacement.addTopic();
                 if ( forumDeplacement.getLastPost() == null
                         || forumDeplacement.getLastPost().getId() < ( topic.getLastPost() == null ? topic
                                 .getFirstPost().getId() : topic
@@ -260,9 +272,7 @@ public class PostsBackingBean implements Serializable {
                 }
                 forumDao.update( forumDeplacement );
                 topicDao.update( topic );
-                forumDeplacement = null;
-                // on retire 1 du compteur des topics (devrait être un bdd trigger ou jpa event)
-                forumBefore.removeTopic();
+                forumDeplacement = new Forum();
                 if ( ( topic.getLastPost() != null && topic.getLastPost().equals( forumBefore.getLastPost() ) )
                         || ( topic.getLastPost() == null && topic.getFirstPost().equals( forumBefore.getLastPost() ) ) ) {
                     forumBefore.setLastPost( postDao.findLast( forumBefore ) );
@@ -270,19 +280,20 @@ public class PostsBackingBean implements Serializable {
                 forumDao.update( forumBefore );
                 // TODO : logger la modification faite par le modo (date, membre, changement)
                 Messages.addFlashGlobalInfo( "Le sujet a bien été déplacé." );
-                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                return String.format( URL_TOPIC_PAGE, 1, topic.getId() );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base de la réponse
                 return URL_404;
             }
         } else {
             // TODO: logger l'intrus qui essaie de jouer aux modos...
-            return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+            return URL_404;
         }
     }
 
     public void vote( Long memberId, Long objectId, int value, Post post ) {
         Vote vote = voteDao.find( memberId, objectId, VOTE_OBJECT_TYPE_POST );
+        post = postDao.refresh( post );
         if ( vote == null ) {
             // le membre n'a pas encore voté sur ce message
             vote = new Vote();
@@ -294,11 +305,10 @@ public class PostsBackingBean implements Serializable {
             // il faut ensuite MAJ le compteur dénormalisé sur la table réponse
             if ( value > 0 ) {
                 post.addUpVote();
-                postDao.update( post );
             } else {
                 post.addDownVote();
-                postDao.update( post );
             }
+            postDao.update( post );
         } else if ( vote.getValue() == value ) {
             // le membre avait déjà effectué le même vote, donc c'est un re-clic
             // et il faut annuler son précédent vote
@@ -325,9 +335,6 @@ public class PostsBackingBean implements Serializable {
         }
     }
 
-    // TODO : refaire ça avec du if(objet instanceOf Reponse)... et ainsi se
-    // débarrasser des arguments superflus
-
     public void upVotePost( Member member, Post post ) {
         // on ne vote pas sur ses propres messages
         if ( !member.getNickName().equals( post.getAuthor().getNickName() ) ) {
@@ -344,11 +351,13 @@ public class PostsBackingBean implements Serializable {
     public String deletePost( Member member, Post post ) {
         if ( member != null && ( member.getRights() >= 3 ) ) {
             try {
+                // on commence par rafraichir l'entité Post et Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                post = postDao.refresh( post );
+                topic = topicDao.refresh( topic );
+
                 if ( post.equals( topic.getFirstPost() ) ) {
                     // si on est sur le premier post, on supprime le topic et on redirige vers le forum
                     postDao.delete( post );
-                    // on retire 1 au compteur dénormalisé (TODO : ça devrait être le boulot d'un Trigger BDD ou d'un JPA event)
-                    topic.getForum().removeTopic();
                     // TODO : mettre à jour le lastPost du forum
                     if ( topic.getForum().getLastPost().equals( post )
                             || topic.getForum().getLastPost().equals( topic.getLastPost() ) ) {
@@ -358,12 +367,11 @@ public class PostsBackingBean implements Serializable {
                     long forumId = topic.getForum().getId();
                     topicDao.delete( topic ); // TODO : est-ce que ça supprimerait automatiquement le post précédent en même temps ?
                     Messages.addFlashGlobalInfo( "Le sujet a bien été supprimé." );
-                    return URL_FORUM_PAGE + forumId + "&faces-redirect=true";
+                    return String.format( URL_TOPIC_PAGE, 1, topic.getId() );
                 } else if ( post.equals( topic.getLastPost() ) ) {
                     // si on est sur le dernier post, on modifie le lastPost sur le topic
                     postDao.delete( post );
                     topic.setLastPost( postDao.findLast( topic ) );
-                    topic.removePost();
                     topicDao.update( topic );
                     // si on vient de supprimer le lastPost du forum
                     if ( topic.getForum().getLastPost().equals( post ) ) {
@@ -371,14 +379,11 @@ public class PostsBackingBean implements Serializable {
                         forumDao.update( topic.getForum() );
                     }
                     Messages.addFlashGlobalInfo( "Le message a bien été supprimé." );
-                    return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                    return String.format( URL_TOPIC_PAGE, 1, topic.getId() );
                 } else {
                     postDao.delete( post );
-                    // on retire 1 au compteur dénormalisé (TODO : ça devrait être le boulot d'un Trigger BDD ou d'un JPA event)
-                    topic.removePost();
-                    topicDao.update( topic );
                     Messages.addFlashGlobalInfo( "Le message a bien été supprimé." );
-                    return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                    return String.format( URL_TOPIC_PAGE, 1, topic.getId() );
                 }
 
             } catch ( DAOException e ) {
@@ -397,11 +402,14 @@ public class PostsBackingBean implements Serializable {
                         topic.getFirstPost().getAuthor().getNickName() ) )
                 && !post.equals( topic.getFirstPost() ) ) {
             try {
+                // on commence par rafraichir l'entité Post, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                post = postDao.refresh( post );
+
                 post.setUseful( post.isUseful() ? false : true );
                 postDao.update( post );
                 Messages.addFlashGlobalInfo( "Le message " + ( post.isUseful() ? "a bien été" : "n''est plus" )
                         + " marqué comme utile, merci !" );
-                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                return String.format( URL_TOPIC_PAGE, page, topic.getId() );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du post
                 return URL_404;
@@ -415,12 +423,15 @@ public class PostsBackingBean implements Serializable {
     public String hidePost( Member member, Post post ) {
         if ( member != null && ( member.getRights() >= 3 ) ) {
             try {
+                // on commence par rafraichir l'entité Post, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                post = postDao.refresh( post );
+
                 post.setHidden( post.isHidden() ? false : true );
                 post.setHiddenBy( member );
                 post.setHiddenCause( "TODO : Message de masquage." );
                 postDao.update( post );
                 Messages.addFlashGlobalInfo( "Le message a bien été " + ( post.isHidden() ? "masqué." : "restauré." ) );
-                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                return String.format( URL_TOPIC_PAGE, page, topic.getId() );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du post
                 return URL_404;
@@ -434,6 +445,9 @@ public class PostsBackingBean implements Serializable {
     public String alertPost( Member member, Post post ) throws IOException {
         if ( member != null ) {
             try {
+                // on commence par rafraichir l'entité Post, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                post = postDao.refresh( post );
+
                 alert.setAuthor( member );
                 alert.setCreationDate( new Date( System.currentTimeMillis() ) );
                 alert.setPost( post );
@@ -442,8 +456,9 @@ public class PostsBackingBean implements Serializable {
                 // TODO : ci-dessous bien nécessaire ?
                 post.addAlert( alert );
                 postDao.update( post );
+                alert = new Alert();
                 Messages.addFlashGlobalInfo( "Votre alerte a bien été envoyée au Staff, merci !" );
-                return URL_TOPIC_PAGE + topic.getId() + "&faces-redirect=true";
+                return String.format( URL_TOPIC_PAGE, page, topic.getId() );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base
                 return URL_404;

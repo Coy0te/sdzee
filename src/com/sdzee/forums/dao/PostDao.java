@@ -16,8 +16,8 @@ import com.sdzee.forums.entities.Post;
 import com.sdzee.forums.entities.Topic;
 
 /**
- * PostDao est la classe DAO contenant les opérations CRUD réalisables sur la table des réponses à un sujet. Il s'agit d'un EJB Stateless
- * dont la structure s'appuie sur JPA et JPQL.
+ * PostDao est la classe DAO contenant les opérations CRUD réalisables sur la table des réponses à un sujet. Il s'agit d'un EJB Stateless dont la
+ * structure s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -25,6 +25,7 @@ import com.sdzee.forums.entities.Topic;
 @Stateless
 public class PostDao {
     private static final String JPQL_POSTS_LIST_PER_TOPIC      = "SELECT p FROM Post p WHERE p.topic=:topic ORDER BY p.id ASC";
+    private static final String JPQL_COUNT_POSTS_PER_TOPIC     = "SELECT count(p) FROM Post p WHERE p.topic=:topic";
     private static final String JPQL_POSTS_LIST_PER_TOPIC_DESC = "SELECT DISTINCT(p) FROM Post p WHERE p.topic=:topic ORDER BY p.id DESC";
     private static final String JPQL_POSTS_LIST_PER_FORUM_DESC = "SELECT p FROM Post p JOIN p.topic t WHERE t.forum=:forum ORDER BY p.id DESC";
     private static final String PARAM_TOPIC                    = "topic";
@@ -59,6 +60,24 @@ public class PostDao {
     public Post find( long id ) throws DAOException {
         try {
             return em.find( Post.class, id );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de récupérer le nombre de {@link Post} pour un {@link Topic} donné.
+     * 
+     * @param topic le sujet dans lequel effectuer le décompte.
+     * @return le nombre de posts correspondant.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public Integer count( Topic topic ) throws DAOException {
+        try {
+            Query query = em.createQuery( JPQL_COUNT_POSTS_PER_TOPIC );
+            query.setParameter( PARAM_TOPIC, topic );
+            // TODO : quid du cas NoResultException ?
+            return ( (Long) query.getSingleResult() ).intValue();
         } catch ( Exception e ) {
             throw new DAOException( e );
         }
@@ -152,6 +171,23 @@ public class PostDao {
     public void update( Post post ) throws DAOException {
         try {
             em.merge( post );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de rafraîchir un {@link Post} dans le modèle objet.
+     * 
+     * @param post le post à rafraîchir dans le modèle objet.
+     * @return le post fraîchement récupéré depuis la base.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public Post refresh( Post post ) throws DAOException {
+        try {
+            Post freshPost = find( post.getId() );
+            em.refresh( freshPost );
+            return freshPost;
         } catch ( Exception e ) {
             throw new DAOException( e );
         }

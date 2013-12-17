@@ -14,8 +14,8 @@ import com.sdzee.forums.entities.Forum;
 import com.sdzee.forums.entities.ForumCategory;
 
 /**
- * ForumDao est la classe DAO contenant les opérations CRUD réalisables sur la table des forums. Il s'agit d'un EJB Stateless dont la
- * structure s'appuie sur JPA et JPQL.
+ * ForumDao est la classe DAO contenant les opérations CRUD réalisables sur la table des forums. Il s'agit d'un EJB Stateless dont la structure
+ * s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -124,8 +124,21 @@ public class ForumDao {
         try {
             em.merge( forum );
         } catch ( Exception e ) {
-            System.out.println( "############# YOU FAIL!!!! #############" );
             e.printStackTrace();
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de rafraîchir un {@link Forum} dans le modèle objet.
+     * 
+     * @param forum le forum à rafraîchir dans le modèle objet.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public void refresh( Forum forum ) throws DAOException {
+        try {
+            em.refresh( find( forum.getId() ) );
+        } catch ( Exception e ) {
             throw new DAOException( e );
         }
     }
