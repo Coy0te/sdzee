@@ -151,6 +151,23 @@ public class PrivatePostDao {
     }
 
     /**
+     * Cette méthode permet de rafraîchir un {@link PrivatePost} dans le modèle objet.
+     * 
+     * @param privatePost le post privé à rafraîchir dans le modèle objet.
+     * @return le post privé fraîchement récupéré depuis la base.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public PrivatePost refresh( PrivatePost privatePost ) throws DAOException {
+        try {
+            PrivatePost freshPrivatePost = find( privatePost.getId() );
+            em.refresh( freshPrivatePost );
+            return freshPrivatePost;
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
      * Cette méthode permet de supprimer un {@link PrivatePost} de la base.
      * 
      * @param privatePost la réponse privée à supprimer de la base.

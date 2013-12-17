@@ -43,6 +43,7 @@
 		<ui:repeat value="#{privateTopicsBean.paginatedPrivateTopics}" var="privateTopic">
 			<ui:include src="/WEB-INF/snippets/body/inc_private_topic.xhtml">
 				<ui:param name="privateTopic" value="#{privateTopic}"/>
+				<ui:param name="nbPrivatePosts" value="#{privateTopicsBean.getNbPrivatePosts(privateTopic)}"/>
 			</ui:include>
 		</ui:repeat>
 		</ul>

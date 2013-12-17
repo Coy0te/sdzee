@@ -32,6 +32,7 @@
 		<ui:repeat value="#{topicsBean.stickyTopics}" var="topic">
 			<ui:include src="/WEB-INF/snippets/body/inc_topic.xhtml">
 				<ui:param name="topic" value="#{topic}"/>
+				<ui:param name="nbPosts" value="#{topicsBean.nbPosts}"/>
 			</ui:include>
 		</ui:repeat>
 		</ul>
@@ -54,6 +55,7 @@
 		<ui:repeat value="#{topicsBean.paginatedTopics}" var="topic">
 			<ui:include src="/WEB-INF/snippets/body/inc_topic.xhtml">
 				<ui:param name="topic" value="#{topic}"/>
+				<ui:param name="nbPosts" value="#{topicsBean.getNbPosts(topic)}"/>
 			</ui:include>
 		</ui:repeat>
 		</ul>

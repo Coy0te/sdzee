@@ -74,25 +74,31 @@ public class PrivateTopicsBackingBean implements Serializable {
      * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Member member = (Member) externalContext.getSessionMap().get( SESSION_MEMBER );
-        if ( member == null ) {
-            // si le visiteur n'est pas connecté, on le redirige
-            try {
-                externalContext.redirect( "connection.jsf?urlOrigine=/sdzee/privateTopics.jsf" );
-                return;
-            } catch ( IOException e ) {
+        if ( !FacesContext.getCurrentInstance().isPostback() ) {
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Member member = (Member) externalContext.getSessionMap().get( SESSION_MEMBER );
+            if ( member == null ) {
+                // si le visiteur n'est pas connecté, on le redirige
+                try {
+                    externalContext.redirect( "connection.jsf?urlOrigine=/sdzee/privateTopics.jsf" );
+                    return;
+                } catch ( IOException e ) {
+                }
+            } else {
+                privateTopic = new PrivateTopic();
+                privatePost = new PrivatePost();
+                pagesNumber = (int) Math.ceil( privateTopicDao.count( member ) / NB_PRIVATE_TOPICS_PER_PAGE );
+                paginatedPrivateTopics = privateTopicDao.list( member, page, (int) NB_PRIVATE_TOPICS_PER_PAGE );
             }
-        } else {
-            privateTopic = new PrivateTopic();
-            privatePost = new PrivatePost();
-            pagesNumber = (int) Math.ceil( privateTopicDao.count( member ) / NB_PRIVATE_TOPICS_PER_PAGE );
-            paginatedPrivateTopics = privateTopicDao.list( member, page, (int) NB_PRIVATE_TOPICS_PER_PAGE );
         }
     }
 
     public List<PrivateTopic> getPaginatedPrivateTopics() {
         return paginatedPrivateTopics;
+    }
+
+    public int getNbPrivatePosts( PrivateTopic privateTopic ) {
+        return privatePostDao.count( privateTopic );
     }
 
     /**
@@ -103,11 +109,12 @@ public class PrivateTopicsBackingBean implements Serializable {
      */
     public void create( Member member ) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        privatePost.setIpAddress( Faces.getRemoteAddr() );
-        privatePost.setCreationDate( new Date( System.currentTimeMillis() ) );
-        privatePost.setAuthor( member );
-        privateTopic.setAuthor( member );
         try {
+            privatePost.setIpAddress( Faces.getRemoteAddr() );
+            privatePost.setCreationDate( new Date( System.currentTimeMillis() ) );
+            privatePost.setAuthor( member );
+            privateTopic.setAuthor( member );
+
             privateTopicDao.create( privateTopic );
             context.addMessage( null, new FacesMessage( FacesMessage.SEVERITY_INFO, "Nouveau MP créé avec succès",
                     privateTopic.getTitle() ) );
@@ -117,8 +124,7 @@ public class PrivateTopicsBackingBean implements Serializable {
             // TODO : à surveiller, manque peut-être un refresh ici pour que le post récupère bien son ID après sa création !
             privateTopic.setFirstPrivatePost( privatePost );
             privateTopicDao.update( privateTopic );
-            // la valeur nbPosts est par défaut mise à 1 en BDD, donc rien à faire lors de la création d'un topic à ce niveau.
-            // pareil pour lastPost qui est mis à null par défaut en BDD
+            // lastPost est mis à null par défaut en BDD
             // Quand on arrive ici, on est déjà passés par le validator, donc tous les pseudos saisis sont OK.
             participantsNames = participantsNames.replaceAll( "\\s+", "" );
             List<String> participantsNickNames = new ArrayList<String>( Arrays.asList( participantsNames
@@ -140,6 +146,8 @@ public class PrivateTopicsBackingBean implements Serializable {
                     privateNotificationDao.create( notification ); // Rien ne sera créé s'il existe déjà une notification, voir implémentation DAO.
                 }
             }
+
+            privatePost = new PrivatePost();
 
             ExternalContext externalContext = context.getExternalContext();
             externalContext.redirect( externalContext.getRequestContextPath() + URL_PRIVATE_TOPIC_PAGE
@@ -195,7 +203,6 @@ public class PrivateTopicsBackingBean implements Serializable {
     public List<BreadCrumbItem> getBreadCrumb() {
         String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( path );
-        // TODO : ci-dessous, changer l'entrée forums du fil par "MP"
         BreadCrumbHelper.addPrivatesItem( breadCrumb, path, false );
         return breadCrumb;
     }

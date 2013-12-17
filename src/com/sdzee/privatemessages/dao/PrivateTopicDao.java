@@ -54,7 +54,6 @@ public class PrivateTopicDao {
         try {
             return em.find( PrivateTopic.class, id );
         } catch ( Exception e ) {
-            e.printStackTrace();
             throw new DAOException( e );
         }
     }
@@ -126,6 +125,23 @@ public class PrivateTopicDao {
     public void update( PrivateTopic privateTopic ) throws DAOException {
         try {
             em.merge( privateTopic );
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de rafraîchir un {@link PrivateTopic} dans le modèle objet.
+     * 
+     * @param privateTopic le MP à rafraîchir dans le modèle objet.
+     * @return le MP fraîchement récupéré depuis la base.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public PrivateTopic refresh( PrivateTopic privateTopic ) throws DAOException {
+        try {
+            PrivateTopic freshPrivateTopic = find( privateTopic.getId() );
+            em.refresh( freshPrivateTopic );
+            return freshPrivateTopic;
         } catch ( Exception e ) {
             throw new DAOException( e );
         }

@@ -98,7 +98,7 @@ public class AdminForumsBackingBean implements Serializable {
                         forumDao.update( f );
                     }
                 }
-                categorieDeplacement = null;
+                categorieDeplacement = new ForumCategory();
                 // TODO : logger la modification faite par l'admin (date, membre, changement)
                 return URL_PAGE_ADMIN_FORUMS + "?faces-redirect=true";
             } catch ( DAOException e ) {

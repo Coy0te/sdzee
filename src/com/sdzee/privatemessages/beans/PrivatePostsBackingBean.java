@@ -28,8 +28,8 @@ import com.sdzee.privatemessages.entities.PrivatePost;
 import com.sdzee.privatemessages.entities.PrivateTopic;
 
 /**
- * PrivatePostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour
- * portée une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
+ * PrivatePostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
+ * une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -38,7 +38,7 @@ import com.sdzee.privatemessages.entities.PrivateTopic;
 @ViewScoped
 public class PrivatePostsBackingBean implements Serializable {
     private static final long      serialVersionUID       = 1L;
-    private static final String    URL_PRIVATE_TOPIC_PAGE = "/privateTopic.jsf?topicId=";
+    private static final String    URL_PRIVATE_TOPIC_PAGE = "/privateTopic.jsf?page=%d&topicId=%d&faces-redirect=true";
     private static final String    URL_404                = "/404.jsf";
     private static final String    SESSION_MEMBER         = "member";
     private static final int       NB_POSTS_PER_PAGE      = 5;
@@ -58,18 +58,18 @@ public class PrivatePostsBackingBean implements Serializable {
     private PrivateNotificationDao privateNotificationDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par
-     * la Facelet <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au
-     * sujet est connecté, et si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
+     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par la Facelet
+     * <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au sujet est connecté, et
+     * si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
-     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
-     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et
-     * {@link NotificationDao} injectés via l'annotation <code>@EJB</code> qui entrent en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
+     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
+     * est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et {@link NotificationDao} injectés via l'annotation
+     * <code>@EJB</code> qui entrent en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
-     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
-     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
+     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
+     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -82,9 +82,9 @@ public class PrivatePostsBackingBean implements Serializable {
             } catch ( IOException e ) {
             }
         } else {
-            privatePost = new PrivatePost();
+            privatePost = ( privatePost == null ? new PrivatePost() : privatePost );
             privateTopic = privateTopicDao.find( topicId );
-            setPagesNumber( (int) Math.ceil( privateTopic.getNbPrivatePosts() / NB_POSTS_PER_PAGE ) );
+            setPagesNumber( (int) Math.ceil( privatePostDao.count( privateTopic ) / NB_POSTS_PER_PAGE ) );
             paginatedPrivatePosts = privatePostDao.list( privateTopic, page, NB_POSTS_PER_PAGE );
             privateNotificationDao.delete( member.getId(), Long.valueOf( topicId ) );
         }
@@ -95,25 +95,28 @@ public class PrivatePostsBackingBean implements Serializable {
     }
 
     public String create( Member member ) {
-        privatePost.setIpAddress( Faces.getRemoteAddr() );
-        privatePost.setCreationDate( new Date( System.currentTimeMillis() ) );
-        privatePost.setAuthor( member );
-        privatePost.setPrivateTopic( privateTopic );
-
         try {
-            // TODO : si l'id de la dernière réponse sur le sujet n'est pas le même que quand le type a répondu, alors ça veut dire qu'un
-            // autre gars a répondu ou que l'auteur a supprimé sa réponse, du coup il faut prévenir le posteur avant d'enregistrer sa
-            // réponse...
+            // on sauve le dernier post affiché à l'utilisateur
+            PrivatePost lastDisplayedPrivatePost = ( privateTopic.getLastPrivatePost() == null ? privateTopic
+                    .getFirstPrivatePost() : privateTopic.getLastPrivatePost() );
+            // on rafraichit l'entité PrivateTopic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+            privateTopic = privateTopicDao.refresh( privateTopic );
+            // on récupère le "vrai" dernier post, depuis le topic rafraichi
+            PrivatePost lastActualPrivatePost = ( privateTopic.getLastPrivatePost() == null ? privateTopic
+                    .getFirstPrivatePost() : privateTopic.getLastPrivatePost() );
 
-            /*
-             * if ( topic.getLastPost().equals( derniereReponseAfficheeSurLaPage ) ) { context.addMessage( null, new FacesMessage(
-             * FacesMessage.SEVERITY_ERROR, "Le contenu du sujet a changé pendant que vous rédigiez votre message !", "Attention" ) );
-             * return null; }
-             */
+            // on vérifie qu'un nouveau post n'a pas été ajouté entre temps par quelqu'un d'autre
+            if ( !lastDisplayedPrivatePost.equals( lastActualPrivatePost ) ) {
+                Messages.addFlashGlobalWarn( "Attention, au moins un autre membre est intervenu dans la discussion pendant que vous rédigiez votre message !" );
+                return null;
+            }
+
+            privatePost.setIpAddress( Faces.getRemoteAddr() );
+            privatePost.setCreationDate( new Date( System.currentTimeMillis() ) );
+            privatePost.setAuthor( member );
+            privatePost.setPrivateTopic( privateTopic );
 
             privatePostDao.create( privatePost );
-            // on ajoute 1 au compteur dénormalisé (TODO : ça devrait être le boulot d'un Trigger BDD ou d'un JPA event)
-            privateTopic.addPrivatePost();
             privateTopic.setLastPrivatePost( privatePost );
             privateTopicDao.update( privateTopic );
             PrivateNotification notification;
@@ -127,9 +130,9 @@ public class PrivatePostsBackingBean implements Serializable {
                                                                    // implémentation DAO.
                 }
             }
-            // post = null; // TODO : encore nécessaire après la redirection mise en place ci-après?
+            privatePost = new PrivatePost(); // TODO : encore nécessaire après la redirection mise en place ci-après?
             Messages.addFlashGlobalInfo( "Votre réponse a bien été ajoutée." );
-            return URL_PRIVATE_TOPIC_PAGE + privateTopic.getId() + "&faces-redirect=true";
+            return String.format( URL_PRIVATE_TOPIC_PAGE, page, privateTopic.getId() );
         } catch ( DAOException e ) {
             // TODO : logger l'échec de la création d'une réponse
             e.printStackTrace();

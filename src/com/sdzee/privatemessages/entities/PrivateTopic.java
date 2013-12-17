@@ -66,9 +66,7 @@ public class PrivateTopic implements Serializable {
             joinColumns = @JoinColumn( name = "privateTopic" ),
             inverseJoinColumns = @JoinColumn( name = "participant" ) )
     @BatchFetch( BatchFetchType.IN )
-    private List<Member> participants   = new ArrayList<Member>();
-
-    private Integer      nbPrivatePosts = 1;
+    private List<Member> participants = new ArrayList<Member>();
 
     public Long getId() {
         return id;
@@ -116,22 +114,6 @@ public class PrivateTopic implements Serializable {
 
     public void setLastPrivatePost( PrivatePost lastPrivatePost ) {
         this.lastPrivatePost = lastPrivatePost;
-    }
-
-    public Integer getNbPrivatePosts() {
-        return nbPrivatePosts;
-    }
-
-    public void setNbPrivatePosts( Integer nbPrivatePosts ) {
-        this.nbPrivatePosts = nbPrivatePosts;
-    }
-
-    public void addPrivatePost() {
-        this.nbPrivatePosts++;
-    }
-
-    public void removePrivatePost() {
-        this.nbPrivatePosts--;
     }
 
     public List<Member> getParticipants() {
