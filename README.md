@@ -25,7 +25,7 @@ Fonctionnalités implementées
 
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
-* Masquer ou supprimer un post
+* Masquer ou supprimer un post (TODO)
 * Résoudre une alerte sur un post
 * Marquer n'importe quel topic comme résolu
 * Mettre n'importe quel topic en post-it
@@ -45,18 +45,18 @@ Fonctionnalités implementées
 
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
-* Bannir des membres (temporairement ou à vie)
-* Mettre des membres en lecture seule (temporairement ou à vie)
+* Bannir des membres (temporairement ou à vie) (TODO)
+* Mettre des membres en lecture seule (temporairement ou à vie) (TODO)
 
 
 ### La gestion des Messages Privés
 #### Un membre peut :
 * Créer des MP
-* Ajouter des membres aux MP dont il est l'auteur
+* Ajouter des membres aux MP dont il est l'auteur (TODO)
 * Répondre aux MP dans lesquels il participe
-* Sortir d'un MP sans supprimer la conversation
-* Éditer son message si la dernière réponse postée dans le MP est la sienne
-* Supprimer un MP de sa boîte de réception
+* Sortir d'un MP sans supprimer la conversation (TODO)
+* Éditer son message si la dernière réponse postée dans le MP est la sienne (TODO)
+* Supprimer un MP de sa boîte de réception (TODO)
 * Être notifié de ses nouveaux MP, et des nouvelles réponses aux MP auxquels il participe
 * Faire disparaître les notifs en consultant les MP concernés
 
