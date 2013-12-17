@@ -9,10 +9,12 @@ Fonctionnalités implementées
 ### La gestion des forums
 #### Un membre peut :
 * Créer des topics dans les forums
+* Écrire en syntaxe markdown évoluée (todo: barre d'édition et smileys)
 * Éditer ses propres topic (en mode ajaxisé)
 * Marquer les réponses utiles dans ses topics
 * Marquer ses topics comme résolus
-* Poster dans les topics des autres (sans smileys)
+* Poster dans les topics des autres
+* Être averti si le topic auquel il répond a changé (nouveaux posts non lus)
 * Voter sur les posts des autres
 * Signaler des posts aux modérateurs
 * Être notifié des réponses aux topics dans lesquels il a posté
@@ -59,7 +61,8 @@ Fonctionnalités implementées
 * Faire tout ce que peut faire un membre simple
 
 
-**TODO** :
+Fonctionnalités à venir
+------------------------
 - ban membre / ban IP / LS
 - récupération du compte via email (mot de passe et/ou login oubliés)
 - les tutos en lecture seule
@@ -68,3 +71,4 @@ Fonctionnalités implementées
 - mise en place d'un logger
 - rédaction des messages de validation
 - internationalisation
+- les articles
