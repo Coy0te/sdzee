@@ -21,6 +21,7 @@ Fonctionnalités implementées
 * Marquer un topic en favori
 * Être notifié des réponses aux topics qu'il a marqués en favori
 * Choisir de ne plus être notifié de certains topics
+* Faire disparaître les notifs en consultant les topics concernés
 
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
@@ -56,6 +57,7 @@ Fonctionnalités implementées
 * Sortir d'un MP sans supprimer la conversation
 * Éditer son message si la dernière réponse postée dans le MP est la sienne
 * Supprimer un MP de sa boîte de réception
+* Être notifié de ses nouveaux MP, et des nouvelles réponses aux MP auxquels il participe
 
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
