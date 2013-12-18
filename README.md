@@ -93,11 +93,12 @@ Comment démarrer une instance de sdzee ?
 - Installez le dernier MySQL 5.x sur votre poste
 - Récupérez et décompressez le zip de Glassfish 3.1.2.2 ([direct download](http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2-web.zip))
 
-### Commandes Glassfish
+### Config Glassfish
 1. Allez dans le dossier glassfish3/bin, et lancez l'exécutable **asadmin**
 2. Entrez la commande `add-resources <chemin-vers-le-fichier-bonecp_datasource.xml-dans-le-repertoire-annexes>`
+3. Copiez les fichiers Jar de boneCP, guava, slf4j, mysql-connector, parboiled, pegdown, et asm-all (tous présents dans le dossier **annexes** du projet) dans le répertoire `glassfish3/glassfish/domains/domain1/lib/ext/`
 
-### Commandes MySQL
+### Config MySQL
 1. Ouvrez un terminal MySQL
 2. Créez la base : `CREATE DATABASE bdd_sdzee DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;`
 3. Créez un utilisateur : `CREATE USER 'java'@'localhost' IDENTIFIED BY 'SdZ_eE';`
