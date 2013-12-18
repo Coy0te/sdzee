@@ -94,9 +94,9 @@ Comment démarrer une instance de sdzee ?
 - Récupérez et décompressez le zip de Glassfish 3.1.2.2 ([direct download](http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2-web.zip))
 
 ### Config Glassfish
-1. Allez dans le dossier glassfish3/bin, et lancez l'exécutable **asadmin**
+1. Allez dans le dossier **glassfish3/bin**, et lancez l'exécutable **asadmin**
 2. Entrez la commande `add-resources <chemin-vers-le-fichier-bonecp_datasource.xml-dans-le-repertoire-annexes>`
-3. Copiez les fichiers Jar de boneCP, guava, slf4j, mysql-connector, parboiled, pegdown, et asm-all (tous présents dans le dossier **annexes** du projet) dans le répertoire `glassfish3/glassfish/domains/domain1/lib/ext/`
+3. Copiez les fichiers Jar de boneCP, guava, slf4j, mysql-connector, parboiled, pegdown, et asm-all (tous présents dans le dossier **annexes** du projet) dans le répertoire **glassfish3/glassfish/domains/domain1/lib/ext/**
 
 ### Config MySQL
 1. Ouvrez un terminal MySQL
@@ -108,6 +108,6 @@ Comment démarrer une instance de sdzee ?
 7. Intégrez les données de test du start-dump : `mysql -h localhost -u java -pSdZ_eE bdd_sdzee < bdd_sdzee.sql`
 
 ### Déploiement
-Copiez l'intégralité du dossier mère **sdzee** dans le répertoire `glassfish3/glassfish/domains/domain1/applications/`
+Copiez l'intégralité du dossier mère **sdzee** dans le répertoire **glassfish3/glassfish/domains/domain1/applications/**
 
 Lancez enfin Glassfish, et accédez au site depuis l'URL `http://localhost:8080/sdzee/`.
