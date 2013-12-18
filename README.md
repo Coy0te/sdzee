@@ -1,8 +1,14 @@
 sdzee
 =====
 
-Projet communautaire réalisé à l'aide des technos Java EE / JPA / JSF. 
-Développé et testé avec Glassfish et MySQL.
+Projet communautaire réalisé à l'aide des technos Java EE / JPA / JSF.  
+Développé et testé avec :
+- Glassfish 3.1.2.2 :
+   - Java EE 6
+   - JPA 2 (EclipseLink)
+   - JSF 2.1 (Mojarra 2.1.21) 
+- OmniFaces 1.4.1 
+- MySQL 5.5.28
 
 Fonctionnalités implementées
 ----------------------------
@@ -56,6 +62,7 @@ Fonctionnalités implementées
 * Créer des MP
 * Ajouter des membres aux MP dont il est l'auteur (TODO)
 * Répondre aux MP dans lesquels il participe
+* Être averti si le MP auquel il répond a changé (nouveaux posts non lus)
 * Sortir d'un MP sans supprimer la conversation (TODO)
 * Éditer son post si la dernière réponse postée dans le MP est la sienne
 * Supprimer un MP de sa boîte de réception (TODO)
