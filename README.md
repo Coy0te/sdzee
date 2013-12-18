@@ -91,7 +91,7 @@ Comment démarrer une instance de sdzee ?
 ----------------------------------------
 ### Pré-requis
 - Installez le dernier MySQL 5.x sur votre poste
-- Récupérez et décompressez le zip de Glassfish 3.1.2.2 ([direct download](http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2-web.zip)
+- Récupérez et décompressez le zip de Glassfish 3.1.2.2 ([direct download](http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2-web.zip))
 
 ### Commandes Glassfish
 1. Allez dans le dossier glassfish3/bin, et lancez l'exécutable **asadmin**
