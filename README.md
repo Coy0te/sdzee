@@ -9,7 +9,7 @@ Fonctionnalités implementées
 ### La gestion des forums
 #### Un membre peut :
 * Créer des topics dans les forums
-* Écrire en syntaxe markdown évoluée (todo: barre d'édition et smileys)
+* Écrire en syntaxe markdown évoluée (TODO: barre d'édition et smileys)
 * Éditer ses propres topic (en mode ajaxisé)
 * Marquer les réponses utiles dans ses topics
 * Marquer ses topics comme résolus
@@ -18,7 +18,7 @@ Fonctionnalités implementées
 * Voter sur les posts des autres (en mode ajaxisé)
 * Signaler des posts aux modérateurs
 * Être notifié des réponses aux topics dans lesquels il a posté
-* Marquer un topic en favori
+* Marquer un topic en favori (TODO)
 * Être notifié des réponses aux topics qu'il a marqués en favori
 * Choisir de ne plus être notifié de certains topics
 * Faire disparaître les notifs en consultant les topics concernés
