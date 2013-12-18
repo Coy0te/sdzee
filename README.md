@@ -55,13 +55,14 @@ Fonctionnalités implementées
 * Ajouter des membres aux MP dont il est l'auteur (TODO)
 * Répondre aux MP dans lesquels il participe
 * Sortir d'un MP sans supprimer la conversation (TODO)
-* Éditer son message si la dernière réponse postée dans le MP est la sienne (TODO)
+* Éditer son post si la dernière réponse postée dans le MP est la sienne
 * Supprimer un MP de sa boîte de réception (TODO)
 * Être notifié de ses nouveaux MP, et des nouvelles réponses aux MP auxquels il participe
 * Faire disparaître les notifs en consultant les MP concernés
 
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
+* Éditer n'importe quel post dans un MP auquel il participe
 
 
 Fonctionnalités à venir
