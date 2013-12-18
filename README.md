@@ -16,7 +16,7 @@ Fonctionnalités implementées
 * Poster dans les topics des autres
 * Être averti si le topic auquel il répond a changé (nouveaux posts non lus)
 * Voter sur les posts des autres (en mode ajaxisé)
-* Signaler des posts aux modérateurs
+* Signaler des posts aux modérateurs (TODO : permettre la saisie d'un message d'alerte)
 * Être notifié des réponses aux topics dans lesquels il a posté
 * Marquer un topic en favori (TODO)
 * Être notifié des réponses aux topics qu'il a marqués en favori
