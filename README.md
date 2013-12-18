@@ -85,3 +85,28 @@ Fonctionnalités à venir
 - rédaction des messages de validation
 - internationalisation
 - les articles
+
+
+Comment démarrer une instance de sdzee ?
+----------------------------------------
+### Pré-requis
+- Installez le dernier MySQL 5.x sur votre poste
+- Récupérez et décompressez le zip de Glassfish 3.1.2.2 ([direct download](http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2-web.zip)
+
+### Commandes Glassfish
+1. Allez dans le dossier glassfish3/bin, et lancez l'exécutable **asadmin**
+2. Entrez la commande `add-resources <chemin-vers-le-fichier-bonecp_datasource.xml-dans-le-repertoire-annexes>`
+
+### Commandes MySQL
+1. Ouvrez un terminal MySQL
+2. Créez la base : `CREATE DATABASE bdd_sdzee DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;`
+3. Créez un utilisateur : `CREATE USER 'java'@'localhost' IDENTIFIED BY 'SdZ_eE';`
+4. Donnez-lui les droits : `GRANT ALL ON bdd_sdzee.* TO 'java'@'localhost' IDENTIFIED BY 'SdZ_eE';`
+5. Quittez le terminal MySQL, et ouvrez un terminal système
+6. Placez-vous dans le dossier **annexes** du projet
+7. Intégrez les données de test du start-dump : `mysql -h localhost -u java -pSdZ_eE bdd_sdzee < bdd_sdzee.sql`
+
+### Déploiement
+Copiez l'intégralité du dossier mère **sdzee** dans le répertoire `glassfish3/glassfish/domains/domain1/applications/`
+
+Lancez enfin Glassfish, et accédez au site depuis l'URL `http://localhost:8080/sdzee/`.
