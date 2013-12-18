@@ -15,7 +15,7 @@ Fonctionnalités implementées
 * Marquer ses topics comme résolus
 * Poster dans les topics des autres
 * Être averti si le topic auquel il répond a changé (nouveaux posts non lus)
-* Voter sur les posts des autres
+* Voter sur les posts des autres (en mode ajaxisé)
 * Signaler des posts aux modérateurs
 * Être notifié des réponses aux topics dans lesquels il a posté
 * Marquer un topic en favori
