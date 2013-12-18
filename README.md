@@ -1,8 +1,14 @@
 sdzee
 =====
 
-Projet communautaire réalisé à l'aide des technos Java EE / JPA / JSF. 
-Développé et testé avec Glassfish et MySQL.
+Projet communautaire réalisé à l'aide des technos Java EE / JPA / JSF.  
+Développé et testé avec :
+- Glassfish 3.1.2.2 :
+   - Java EE 6
+   - JPA 2 (EclipseLink)
+   - JSF 2.1 (Mojarra 2.1.21) 
+- OmniFaces 1.4.1 
+- MySQL 5.5.28
 
 Fonctionnalités implementées
 ----------------------------
