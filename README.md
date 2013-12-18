@@ -62,6 +62,7 @@ Fonctionnalités implementées
 * Créer des MP
 * Ajouter des membres aux MP dont il est l'auteur (TODO)
 * Répondre aux MP dans lesquels il participe
+* Être averti si le MP auquel il répond a changé (nouveaux posts non lus)
 * Sortir d'un MP sans supprimer la conversation (TODO)
 * Éditer son post si la dernière réponse postée dans le MP est la sienne
 * Supprimer un MP de sa boîte de réception (TODO)
