@@ -25,8 +25,10 @@ Fonctionnalités implementées
 
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
-* Masquer ou supprimer un post (TODO)
-* Résoudre une alerte sur un post
+* Masquer un post (TODO: backend ok, frontend à terminer)
+* Supprimer un post (TODO: backend à tester, frontend à réaliser)
+* Supprimer un topic (TODO: backend à tester, frontend à réaliser)
+* Résoudre une alerte sur un post (TODO)
 * Marquer n'importe quel topic comme résolu
 * Mettre n'importe quel topic en post-it
 * Verrouiller n'importe quel topic
