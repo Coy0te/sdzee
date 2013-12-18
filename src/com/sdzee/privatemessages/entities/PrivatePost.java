@@ -51,6 +51,14 @@ public class PrivatePost implements Serializable {
     @Temporal( TemporalType.TIMESTAMP )
     private Date         creationDate;
 
+    @Temporal( TemporalType.TIMESTAMP )
+    private Date         lastEditDate;
+
+    @ManyToOne( fetch = FetchType.EAGER )
+    @JoinColumn( name = "lastEditBy" )
+    @JoinFetch
+    private Member       lastEditBy;
+
     @NotNull( message = "{private.post.ipAddress.notnull}" )
     private String       ipAddress;
 
@@ -92,6 +100,22 @@ public class PrivatePost implements Serializable {
 
     public void setCreationDate( Date creationDate ) {
         this.creationDate = creationDate;
+    }
+
+    public Date getLastEditDate() {
+        return lastEditDate;
+    }
+
+    public void setLastEditDate( Date lastEditDate ) {
+        this.lastEditDate = lastEditDate;
+    }
+
+    public Member getLastEditBy() {
+        return lastEditBy;
+    }
+
+    public void setLastEditBy( Member lastEditBy ) {
+        this.lastEditBy = lastEditBy;
     }
 
     public String getIpAddress() {

@@ -15,8 +15,8 @@ import com.sdzee.forums.entities.Topic;
 import com.sdzee.membres.entities.Member;
 
 /**
- * BookmarkDao est la classe DAO contenant les opérations CRUD réalisables sur la table des bookmarks. Il s'agit d'un EJB Stateless dont la
- * structure s'appuie sur JPA et JPQL.
+ * BookmarkDao est la classe DAO contenant les opérations CRUD réalisables sur la table des bookmarks. Il s'agit d'un EJB Stateless dont la structure
+ * s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -80,6 +80,7 @@ public class BookmarkDao {
             query.setParameter( PARAM_TOPIC_ID, topic.getId() );
             return query.getResultList();
         } catch ( Exception e ) {
+            e.printStackTrace();
             throw new DAOException( e );
         }
     }

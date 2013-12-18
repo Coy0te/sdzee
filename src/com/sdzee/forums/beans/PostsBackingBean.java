@@ -111,61 +111,68 @@ public class PostsBackingBean implements Serializable {
     }
 
     public String create( Member member ) {
-        try {
-            // on sauve le dernier post affiché à l'utilisateur
-            Post lastDisplayedPost = ( topic.getLastPost() == null ? topic.getFirstPost() : topic.getLastPost() );
-            // on rafraichit l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
-            topic = topicDao.refresh( topic );
-            // on récupère le "vrai" dernier post, depuis le topic rafraichi
-            Post lastActualPost = ( topic.getLastPost() == null ? topic.getFirstPost() : topic.getLastPost() );
+        if ( member != null ) {
+            try {
+                // on sauve le dernier post affiché à l'utilisateur
+                Post lastDisplayedPost = ( topic.getLastPost() == null ? topic.getFirstPost() : topic.getLastPost() );
+                // on rafraichit l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                topic = topicDao.refresh( topic );
+                // on récupère le "vrai" dernier post, depuis le topic rafraichi
+                Post lastActualPost = ( topic.getLastPost() == null ? topic.getFirstPost() : topic.getLastPost() );
 
-            // on vérifie que le sujet n'est pas fermé
-            if ( topic.isLocked() && member.getRights() < 3 ) {
+                // on vérifie que le sujet n'est pas fermé
+                if ( topic.isLocked() && member.getRights() < 3 ) {
+                    return URL_404;
+                }
+                // on vérifie qu'un nouveau post n'a pas été ajouté entre temps par quelqu'un d'autre
+                if ( !lastDisplayedPost.equals( lastActualPost ) ) {
+                    Messages.addFlashGlobalWarn( "Attention, au moins un autre membre est intervenu dans la discussion pendant que vous rédigiez votre message !" );
+                    return null;
+                }
+
+                post.setIpAddress( Faces.getRemoteAddr() );
+                post.setCreationDate( new Date( System.currentTimeMillis() ) );
+                post.setAuthor( member );
+                post.setTopic( topic );
+
+                postDao.create( post );
+                topic.setLastPost( post );
+                topicDao.update( topic );
+                topic.getForum().setLastPost( post );
+                forumDao.update( topic.getForum() );
+
+                // Ajout auto d'un bookmark sur le sujet pour l'auteur de la réponse
+                Bookmark bookmark = new Bookmark();
+                bookmark.setMemberId( member.getId() );
+                bookmark.setTopicId( topic.getId() );
+                bookmarkDao.create( bookmark );
+                // Ajout en série de notifications aux membres qui suivent le sujet
+                List<Bookmark> bookmarks = bookmarkDao.list( topic );
+                if ( bookmarks == null ) {
+                    bookmarks = new ArrayList<Bookmark>();
+                }
+                Notification notification;
+                for ( Bookmark item : bookmarks ) {
+                    if ( item.getMemberId() != member.getId() ) { // On ne se notifie pas de sa propre réponse...
+                        notification = new Notification();
+                        notification.setMemberId( item.getMemberId() );
+                        notification.setTopicId( item.getTopicId() );
+                        notification.setPost( post );
+                        notificationDao.create( notification ); // Rien ne sera créé s'il existe déjà une notification, voir implémentation DAO.
+                    }
+                }
+
+                post = new Post(); // TODO : encore nécessaire après la redirection mise en place ci-après?
+                Messages.addFlashGlobalInfo( "Votre réponse a bien été ajoutée." );
+                return String.format( URL_TOPIC_PAGE, page, topic.getId() );
+            } catch ( DAOException e ) {
+                // TODO : logger l'échec de la création d'une réponse
+                e.printStackTrace();
                 return URL_404;
             }
-            // on vérifie qu'un nouveau post n'a pas été ajouté entre temps par quelqu'un d'autre
-            if ( !lastDisplayedPost.equals( lastActualPost ) ) {
-                Messages.addFlashGlobalWarn( "Attention, au moins un autre membre est intervenu dans la discussion pendant que vous rédigiez votre message !" );
-                return null;
-            }
-
-            post.setIpAddress( Faces.getRemoteAddr() );
-            post.setCreationDate( new Date( System.currentTimeMillis() ) );
-            post.setAuthor( member );
-            post.setTopic( topic );
-
-            postDao.create( post );
-            topic.setLastPost( post );
-            topicDao.update( topic );
-            topic.getForum().setLastPost( post );
-            forumDao.update( topic.getForum() );
-            // Ajout auto d'un bookmark sur le sujet pour l'auteur de la réponse
-            Bookmark bookmark = new Bookmark();
-            bookmark.setMemberId( member.getId() );
-            bookmark.setTopicId( topic.getId() );
-            bookmarkDao.create( bookmark );
-
-            // Ajout en série de notifications aux membres qui suivent le sujet
-            List<Bookmark> bookmarks = bookmarkDao.list( topic );
-            if ( bookmarks == null ) {
-                bookmarks = new ArrayList<Bookmark>();
-            }
-            Notification notification;
-            for ( Bookmark item : bookmarks ) {
-                if ( item.getMemberId() != member.getId() ) { // On ne se notifie pas de sa propre réponse...
-                    notification = new Notification();
-                    notification.setMemberId( item.getMemberId() );
-                    notification.setTopicId( item.getTopicId() );
-                    notification.setPost( post );
-                    notificationDao.create( notification ); // Rien ne sera créé s'il existe déjà une notification, voir implémentation DAO.
-                }
-            }
-            post = new Post(); // TODO : encore nécessaire après la redirection mise en place ci-après?
-            Messages.addFlashGlobalInfo( "Votre réponse a bien été ajoutée." );
-            return String.format( URL_TOPIC_PAGE, page, topic.getId() );
-        } catch ( DAOException e ) {
-            // TODO : logger l'échec de la création d'une réponse
-            e.printStackTrace();
+        } else {
+            // TODO: logger l'intrus qui essaie de créer un message sans y
+            // être autorisé...
             return URL_404;
         }
     }
@@ -364,7 +371,6 @@ public class PostsBackingBean implements Serializable {
                         topic.getForum().setLastPost( postDao.findLast( topic.getForum() ) );
                     }
                     forumDao.update( topic.getForum() );
-                    long forumId = topic.getForum().getId();
                     topicDao.delete( topic ); // TODO : est-ce que ça supprimerait automatiquement le post précédent en même temps ?
                     Messages.addFlashGlobalInfo( "Le sujet a bien été supprimé." );
                     return String.format( URL_TOPIC_PAGE, 1, topic.getId() );

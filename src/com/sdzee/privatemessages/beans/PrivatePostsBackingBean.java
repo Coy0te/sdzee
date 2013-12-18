@@ -41,7 +41,7 @@ public class PrivatePostsBackingBean implements Serializable {
     private static final String    URL_PRIVATE_TOPIC_PAGE = "/privateTopic.jsf?page=%d&topicId=%d&faces-redirect=true";
     private static final String    URL_404                = "/404.jsf";
     private static final String    SESSION_MEMBER         = "member";
-    private static final int       NB_POSTS_PER_PAGE      = 5;
+    private static final double    NB_POSTS_PER_PAGE      = 5;
 
     private PrivatePost            privatePost;
     private PrivateTopic           privateTopic;
@@ -84,8 +84,19 @@ public class PrivatePostsBackingBean implements Serializable {
         } else {
             privatePost = ( privatePost == null ? new PrivatePost() : privatePost );
             privateTopic = privateTopicDao.find( topicId );
-            setPagesNumber( (int) Math.ceil( privatePostDao.count( privateTopic ) / NB_POSTS_PER_PAGE ) );
-            paginatedPrivatePosts = privatePostDao.list( privateTopic, page, NB_POSTS_PER_PAGE );
+
+            if ( !privateTopic.getParticipants().contains( member ) ) {
+                // si le membre n'est pas un participant du MP, on le dégage et on loggue
+                try {
+                    // TODO : logger la tentative d'espionnage du MP
+                    externalContext.redirect( "404.jsf" );
+                    return;
+                } catch ( IOException e ) {
+                }
+            }
+
+            pagesNumber = (int) Math.ceil( privatePostDao.count( privateTopic ) / NB_POSTS_PER_PAGE );
+            paginatedPrivatePosts = privatePostDao.list( privateTopic, page, (int) NB_POSTS_PER_PAGE );
             privateNotificationDao.delete( member.getId(), Long.valueOf( topicId ) );
         }
     }
@@ -95,48 +106,85 @@ public class PrivatePostsBackingBean implements Serializable {
     }
 
     public String create( Member member ) {
-        try {
-            // on sauve le dernier post affiché à l'utilisateur
-            PrivatePost lastDisplayedPrivatePost = ( privateTopic.getLastPrivatePost() == null ? privateTopic
-                    .getFirstPrivatePost() : privateTopic.getLastPrivatePost() );
-            // on rafraichit l'entité PrivateTopic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
-            privateTopic = privateTopicDao.refresh( privateTopic );
-            // on récupère le "vrai" dernier post, depuis le topic rafraichi
-            PrivatePost lastActualPrivatePost = ( privateTopic.getLastPrivatePost() == null ? privateTopic
-                    .getFirstPrivatePost() : privateTopic.getLastPrivatePost() );
+        if ( member != null ) {
+            try {
+                // on sauve le dernier post affiché à l'utilisateur
+                PrivatePost lastDisplayedPrivatePost = ( privateTopic.getLastPrivatePost() == null ? privateTopic
+                        .getFirstPrivatePost() : privateTopic.getLastPrivatePost() );
+                // on rafraichit l'entité PrivateTopic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                privateTopic = privateTopicDao.refresh( privateTopic );
+                // on récupère le "vrai" dernier post, depuis le topic rafraichi
+                PrivatePost lastActualPrivatePost = ( privateTopic.getLastPrivatePost() == null ? privateTopic
+                        .getFirstPrivatePost() : privateTopic.getLastPrivatePost() );
 
-            // on vérifie qu'un nouveau post n'a pas été ajouté entre temps par quelqu'un d'autre
-            if ( !lastDisplayedPrivatePost.equals( lastActualPrivatePost ) ) {
-                Messages.addFlashGlobalWarn( "Attention, au moins un autre membre est intervenu dans la discussion pendant que vous rédigiez votre message !" );
-                return null;
-            }
-
-            privatePost.setIpAddress( Faces.getRemoteAddr() );
-            privatePost.setCreationDate( new Date( System.currentTimeMillis() ) );
-            privatePost.setAuthor( member );
-            privatePost.setPrivateTopic( privateTopic );
-
-            privatePostDao.create( privatePost );
-            privateTopic.setLastPrivatePost( privatePost );
-            privateTopicDao.update( privateTopic );
-            PrivateNotification notification;
-            for ( Member item : privateTopic.getParticipants() ) {
-                if ( item.getId() != member.getId() ) { // On ne se notifie pas de sa propre réponse...
-                    notification = new PrivateNotification();
-                    notification.setMemberId( item.getId() );
-                    notification.setPrivateTopicId( privateTopic.getId() );
-                    notification.setPrivatePost( privatePost );
-                    privateNotificationDao.create( notification ); // Rien ne sera créé s'il existe déjà une notification, voir
-                                                                   // implémentation DAO.
+                // on vérifie qu'un nouveau post n'a pas été ajouté entre temps par quelqu'un d'autre
+                if ( !lastDisplayedPrivatePost.equals( lastActualPrivatePost ) ) {
+                    Messages.addFlashGlobalWarn( "Attention, au moins un autre membre est intervenu dans la discussion pendant que vous rédigiez votre message !" );
+                    return null;
                 }
+
+                privatePost.setIpAddress( Faces.getRemoteAddr() );
+                privatePost.setCreationDate( new Date( System.currentTimeMillis() ) );
+                privatePost.setAuthor( member );
+                privatePost.setPrivateTopic( privateTopic );
+
+                privatePostDao.create( privatePost );
+                privateTopic.setLastPrivatePost( privatePost );
+                privateTopicDao.update( privateTopic );
+                PrivateNotification notification;
+                for ( Member item : privateTopic.getParticipants() ) {
+                    if ( item.getId() != member.getId() ) { // On ne se notifie pas de sa propre réponse...
+                        notification = new PrivateNotification();
+                        notification.setMemberId( item.getId() );
+                        notification.setPrivateTopicId( privateTopic.getId() );
+                        notification.setPrivatePost( privatePost );
+                        privateNotificationDao.create( notification ); // Rien ne sera créé s'il existe déjà une notification, voir
+                                                                       // implémentation DAO.
+                    }
+                }
+                privatePost = new PrivatePost(); // TODO : encore nécessaire après la redirection mise en place ci-après?
+                Messages.addFlashGlobalInfo( "Votre réponse a bien été ajoutée." );
+                return String.format( URL_PRIVATE_TOPIC_PAGE, page, privateTopic.getId() );
+            } catch ( DAOException e ) {
+                // TODO : logger l'échec de la création d'un message
+                e.printStackTrace();
+                return URL_404;
             }
-            privatePost = new PrivatePost(); // TODO : encore nécessaire après la redirection mise en place ci-après?
-            Messages.addFlashGlobalInfo( "Votre réponse a bien été ajoutée." );
-            return String.format( URL_PRIVATE_TOPIC_PAGE, page, privateTopic.getId() );
-        } catch ( DAOException e ) {
-            // TODO : logger l'échec de la création d'une réponse
-            e.printStackTrace();
+        } else {
+            // TODO: logger l'intrus qui essaie de créer un message sans y
+            // être autorisé...
             return URL_404;
+        }
+    }
+
+    public void editPrivatePost( Member member, PrivatePost privatePost ) {
+        if ( member != null
+                && ( member.getRights() >= 3 || member.getNickName().equals( privatePost.getAuthor().getNickName() ) ) ) {
+            try {
+                // si le membre est Staff, on enregistre l'édition sans conditions
+                if ( member.getRights() >= 3 ) {
+                    privatePost.setLastEditDate( new Date( System.currentTimeMillis() ) );
+                    privatePost.setLastEditBy( member );
+                    privatePostDao.update( privatePost );
+                    return;
+                }
+                // sinon, on rafraichit l'entité PrivateTopic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                privateTopic = privateTopicDao.refresh( privateTopic );
+                // et on vérifie que le message en train d'être édité ici est bien le dernier du MP
+                if ( privatePost.equals( privateTopic.getLastPrivatePost() == null ? privateTopic
+                        .getFirstPrivatePost() : privateTopic.getLastPrivatePost() ) ) {
+                    privatePost.setLastEditDate( new Date( System.currentTimeMillis() ) );
+                    privatePost.setLastEditBy( member );
+                    privatePostDao.update( privatePost );
+                } else {
+                    // TODO : gérer la tentative de modif impossible car nouveau message posté entre-temps
+                }
+            } catch ( DAOException e ) {
+                // TODO : logger l'échec de la mise à jour en base de la réponse
+            }
+        } else {
+            // TODO : logger l'intrus qui essaie d'éditer un message sans y être
+            // autorisé...
         }
     }
 

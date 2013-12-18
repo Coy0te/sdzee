@@ -65,15 +65,17 @@
 				<div class="comment">
 					<ul class="actions">
 						<li>
-							<a class="alertAction" data-toggle="modal" href="#alertActionModal" data-simpleit-alert="/message/alerte/signaler/message/84247162">
-							<span class="actionIcon iconAlert"></span><span class="actionDesc">#{i18n.sujetMessageSignaler}</span>
-							</a>
-						</li>
-						<li>
 							<a href="#texte" class="citeAction">
 							<span class="actionIcon iconCite"></span>#{i18n.sujetMessageCiter}
 							</a>
 						</li>
+						<ui:fragment rendered="#{member.rights>=3 or (post.author.nickName==member.nickName and post == (privatePostsBean.privateTopic.lastPrivatePost == null ? privatePostsBean.privateTopic.firstPrivatePost : privatePostsBean.privateTopic.lastPrivatePost))}">
+						<li>
+							<a href="#" class="editAction">
+							<span class="actionIcon iconEdit"></span>#{i18n.sujetMessageModifier}
+							</a>
+						</li>
+						</ui:fragment>
 					</ul>
 					<div class="content">
 						<h:link class="date">
@@ -82,10 +84,29 @@
 							#{uf:convertDateTime(post.creationDate)}
 						</h:link>
 						<div class="message" id="msg#{post.id}">
-							<h:panelGroup layout="block" syleClass="markdownBody">
+							<o:form id="editReponseForm" prependId="false" includeViewParams="true" rendered="#{member.rights >= 3 or member.nickName == post.author.nickName}">
+								<div class="markdownBody">
+									<h:outputText value="#{uf:parseMarkdown(post.text)}" escape="false"/>
+									<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty post.lastEditBy}">
+										- <br/> #{i18n.lastEditBy} #{post.lastEditBy.nickName} <span class="lastEditDate">#{uf:convertDateTime(post.lastEditDate)}</span>
+									</h:panelGroup>
+								</div>
+								<h:panelGroup layout="block" styleClass="hidden">
+									<h:outputLabel for="editArea">#{i18n.labelInputMessageSujet} </h:outputLabel>
+									<h:inputTextarea id="editArea" placeholder="#{i18n.placeholderTextareaReponse}" value="#{post.text}" />
+									<h:commandButton id="editAction" value="Éditer" type="submit" action="#{privatePostsBean.editPrivatePost(member, post)}" styleClass="btn btn-primary">
+										<f:ajax execute="@form" render="@form" onevent="initAllCallback" />
+									</h:commandButton>
+									<h:commandButton value="Annuler" type="button" styleClass="btn btn-inverse cancelEdit" />
+								</h:panelGroup>
+							</o:form>
+							<h:panelGroup layout="block" syleClass="markdownBody" rendered="#{member == null or (member.rights lt 3 and member.nickName != post.author.nickName)}">
 								<h:outputText value="#{uf:parseMarkdown(post.text)}" escape="false"/>
+								<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty post.lastEditBy}">
+									- <br/> #{i18n.lastEditBy} #{post.lastEditBy.nickName} <span class="lastEditDate">#{uf:convertDateTime(post.lastEditDate)}</span>
+								</h:panelGroup>
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="bruteMarkdownBody">
+							<h:panelGroup layout="block" styleClass="bruteMarkdownBody" rendered="#{member != null}">
 								#{post.text}
 							</h:panelGroup>
 						</div>

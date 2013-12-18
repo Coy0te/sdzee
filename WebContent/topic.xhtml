@@ -56,7 +56,7 @@
             <div>#{i18n.sujetResolu}</div>
         </div>
 		</ui:fragment>
-		<ui:fragment rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}">
+		<ui:fragment rendered="#{!facesContext.validationFailed and !empty facesContext.messageList}">
 		<div class="resolved">
             <div class="iconResolved"></div>
             <div><h:messages globalOnly="true" /></div>
