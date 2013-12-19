@@ -15,7 +15,7 @@ Fonctionnalités implementées
 ### La gestion des forums
 #### Un membre peut :
 * Créer des topics dans les forums
-* Écrire en syntaxe markdown évoluée (TODO: barre d'édition et smileys)
+* Écrire en syntaxe markdown évoluée (TODO: barre d'édition, smileys et optimisation ressources parseur)
 * Éditer ses propres topic (en mode ajaxisé)
 * Marquer les réponses utiles dans ses topics
 * Marquer ses topics comme résolus
