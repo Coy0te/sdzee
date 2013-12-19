@@ -98,6 +98,7 @@ Comment démarrer une instance de sdzee ?
 2. Démarrez le serveur en entrant la commande `start-domain` 
 3. Entrez ensuite la commande `add-resources <chemin-vers-le-fichier-bonecp_datasource.xml-dans-le-repertoire-annexes>`
 4. Fermez l'utilitaire **asadmin**
+5. Remplacez le Jar de Mojarra (javax.faces.jar) dans le répertoire **glassfish3/glassfish/modules/** par celui foruni dans **annexes**
 5. Copiez les fichiers Jar de boneCP, guava, slf4j, mysql-connector, parboiled, pegdown, et asm-all (tous présents dans le dossier **annexes** du projet) dans le répertoire **glassfish3/glassfish/domains/domain1/lib/ext/**
 
 ### Config MySQL
