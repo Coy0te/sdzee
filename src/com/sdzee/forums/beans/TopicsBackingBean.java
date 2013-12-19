@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 
 import org.omnifaces.util.Faces;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
@@ -34,6 +35,7 @@ import com.sdzee.membres.entities.Member;
  */
 @ManagedBean( name = "topicsBean" )
 @ViewScoped
+@URLMapping( id = "forum", pattern = "/forums/#{forumId : topicsBean.forumId}/", viewId = "/forum.jsf" )
 public class TopicsBackingBean implements Serializable {
     private static final long   serialVersionUID   = 1L;
     private static final String URL_TOPIC_PAGE     = "/topic.jsf?topicId=";

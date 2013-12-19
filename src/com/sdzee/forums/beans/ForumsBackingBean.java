@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.forums.dao.ForumCategoryDao;
@@ -24,6 +25,7 @@ import com.sdzee.forums.entities.ForumCategory;
  */
 @ManagedBean( name = "forumsBean" )
 @ViewScoped
+@URLMapping( id = "forums", pattern = "/forums/", viewId = "/forums.jsf" )
 public class ForumsBackingBean implements Serializable {
     private static final long   serialVersionUID = 1L;
 
