@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,13 +13,12 @@ import org.omnifaces.filter.HttpFilter;
 import com.sdzee.membres.entities.Member;
 
 /**
- * AdministrationFilter est le filtre de limitation d'accès à l'administration du site. Il contrôle toute URL suivant le pattern <code>/admin/*</code>
- * .
+ * AdministrationFilter est le filtre de limitation d'accès à l'administration du site. Il contrôle toute URL suivant le pattern
+ * <code>/admin/*</code> .
  * 
  * @author Médéric Munier
  * @version %I%, %G%
  */
-@WebFilter( "/admin/*" )
 public class AdministrationFilter extends HttpFilter {
     private static final String SESSION_MEMBER         = "member";
     // Rappel: visiteur < membre < staff < admin

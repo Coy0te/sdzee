@@ -9,6 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
+import com.ocpsoft.pretty.faces.annotation.URLMappings;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
@@ -20,6 +22,9 @@ import com.sdzee.membres.entities.Member;
 
 @ManagedBean( name = "adminForumsBean" )
 @RequestScoped
+@URLMappings( mappings = {
+        @URLMapping( id = "adminForums", pattern = "/admin/forums/", viewId = "/admin/admin_forums.jsf" ),
+        @URLMapping( id = "adminCategories", pattern = "/admin/categories/", viewId = "/admin/admin_categories.jsf" ) } )
 public class AdminForumsBackingBean implements Serializable {
     private static final long   serialVersionUID          = 1L;
     private static final String URL_PAGE_ADMIN_CATEGORIES = "/admin/admin_categories.jsf";

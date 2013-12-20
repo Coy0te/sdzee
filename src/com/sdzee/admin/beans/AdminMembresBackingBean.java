@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.membres.dao.MemberDao;
@@ -16,6 +17,7 @@ import com.sdzee.membres.entities.Member;
 
 @ManagedBean( name = "adminMembersBean" )
 @ViewScoped
+@URLMapping( id = "adminMembers", pattern = "/admin/members/", viewId = "/admin/admin_membres.jsf" )
 public class AdminMembresBackingBean implements Serializable {
     private static final long   serialVersionUID         = 1L;
     private static final String TITRE_PAGE_ADMIN         = "Administration";

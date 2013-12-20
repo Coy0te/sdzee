@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.membres.dao.MemberDao;
@@ -15,6 +16,7 @@ import com.sdzee.membres.entities.Member;
 
 @ManagedBean
 @RequestScoped
+@URLMapping( id = "profile", pattern = "/members/profile/#{memberId : profileBean.memberId}/", viewId = "/profile.jsf" )
 public class ProfileBean implements Serializable {
     private static final long serialVersionUID = 1L;
 

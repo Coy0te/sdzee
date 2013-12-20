@@ -7,32 +7,26 @@
 		<ui:param name="pageDescription" value="Des coups de fouet tu donneras !"/>
 	</ui:define>
 	<ui:define name="admin_content">
-	<p:tabView id="tabView" dynamic="true" cache="true">
-		<p:tab title="Liste des membres">
-			<p:dataTable var="member" value="#{adminMembersBean.members}" paginator="true" rows="20" filteredValue="#{adminMembersBean.filteredMembers}">
+		<h1>Liste des membres</h1>
+			<h:dataTable var="member" value="#{adminMembersBean.members}">
 				<f:facet name="header">
 					Liste des membres
 				</f:facet>
-				<p:column filterBy="#{member.nickName}" filterMatchMode="startsWith" headerText="Pseudo" footerText="Pseudo">
+				<h:column headerText="Pseudo" footerText="Pseudo">
 					#{membre.pseudo}
-				</p:column>
-				<p:column filterBy="#{member.email}" filterMatchMode="contains" headerText="Adresse email" footerText="Adresse email">
+				</h:column>
+				<h:column headerText="Adresse email" footerText="Adresse email">
 					#{membre.email}
-				</p:column>
-				<p:column filterBy="#{member.registrationDate}" filterMatchMode="contains" headerText="Date d'inscription" footerText="Date d'inscription">
+				</h:column>
+				<h:column headerText="Date d'inscription" footerText="Date d'inscription">
 					#{membre.dateInscription}
-				</p:column>
-				<p:column filterBy="#{member.rights}" filterMatchMode="contains" headerText="Droits" footerText="Droits">
+				</h:column>
+				<h:column headerText="Droits" footerText="Droits">
 					#{membre.droits}
-				</p:column>
+				</h:column>
 				<f:facet name="footer">
 					Au total, il y a #{fn:length(adminMembersBean.members)} membres.
 				</f:facet>
-			</p:dataTable>
-		</p:tab>
-		<p:tab title="Membre X" closable="true">
-			blablabla
-		</p:tab>
-	</p:tabView>
+			</h:dataTable>
 	</ui:define>
 </ui:composition>

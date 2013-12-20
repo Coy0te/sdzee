@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 
 import org.omnifaces.util.Faces;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
@@ -37,6 +38,7 @@ import com.sdzee.privatemessages.entities.PrivateTopic;
  */
 @ManagedBean( name = "privateTopicsBean" )
 @ViewScoped
+@URLMapping( id = "mp", pattern = "/mp/", viewId = "/privateTopics.jsf" )
 public class PrivateTopicsBackingBean implements Serializable {
     private static final long      serialVersionUID           = 1L;
     private static final String    URL_PRIVATE_TOPIC_PAGE     = "/privateTopic.jsf?topicId=";
@@ -61,17 +63,17 @@ public class PrivateTopicsBackingBean implements Serializable {
     private MemberDao              memberDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>forum</code> en récupérant en base le forum correspondant à l'id transmis par la Facelet
-     * <code>forum.xhtml</code>, contenu dans la variable <code>forumId</code>.
+     * Cette méthode initialise la variable d'instance <code>forum</code> en récupérant en base le forum correspondant à l'id transmis par
+     * la Facelet <code>forum.xhtml</code>, contenu dans la variable <code>forumId</code>.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
-     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
-     * est donc possible de faire appel à des dépendances. Ici, c'est le DAO {@link ForumDao} injecté via l'annotation <code>@EJB</code> qui entre en
-     * jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
+     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
+     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, c'est le DAO {@link ForumDao} injecté via l'annotation
+     * <code>@EJB</code> qui entre en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
-     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
-     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
+     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
+     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         if ( !FacesContext.getCurrentInstance().isPostback() ) {
@@ -143,7 +145,8 @@ public class PrivateTopicsBackingBean implements Serializable {
                     notification.setMemberId( item.getId() );
                     notification.setPrivateTopicId( privateTopic.getId() );
                     notification.setPrivatePost( privatePost );
-                    privateNotificationDao.create( notification ); // Rien ne sera créé s'il existe déjà une notification, voir implémentation DAO.
+                    privateNotificationDao.create( notification ); // Rien ne sera créé s'il existe déjà une notification, voir
+                                                                   // implémentation DAO.
                 }
             }
 

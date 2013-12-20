@@ -13,6 +13,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.membres.dao.MemberDao;
@@ -20,6 +21,7 @@ import com.sdzee.membres.entities.Member;
 
 @ManagedBean
 @ViewScoped
+@URLMapping( id = "registration", pattern = "/register", viewId = "/registration.jsf" )
 public class RegisterBean implements Serializable {
     private static final long   serialVersionUID       = 1L;
     private static final String SUCCES_INSCRIPTION     = "Succès de l'inscription !";
