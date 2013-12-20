@@ -8,6 +8,7 @@ Développé et testé avec :
    - JPA 2 (EclipseLink)
    - JSF 2.1 (Mojarra 2.1.21) 
 - OmniFaces 1.4.1 
+- PrettyFaces 3.3.3
 - MySQL 5.5.28
 
 Fonctionnalités implementées
