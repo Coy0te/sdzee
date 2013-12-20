@@ -13,8 +13,8 @@ import org.omnifaces.filter.HttpFilter;
 import com.sdzee.membres.entities.Member;
 
 /**
- * AdministrationFilter est le filtre de limitation d'accès à l'administration du site. Il contrôle toute URL suivant le pattern
- * <code>/admin/*</code> .
+ * AdministrationFilter est le filtre de limitation d'accès à l'administration du site. Il contrôle toute URL suivant le pattern <code>/admin/*</code>
+ * .
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -23,14 +23,14 @@ public class AdministrationFilter extends HttpFilter {
     private static final String SESSION_MEMBER         = "member";
     // Rappel: visiteur < membre < staff < admin
     private static final int    ADMIN_RIGHTS           = 4;
-    private static final String PARAM_URL_ORIGINE      = "?urlOrigine=";
-    private static final String PAGE_CONNECTION        = "/connection.jsf";
-    private static final String PAGE_RESTRICTED_ACCESS = "/restricted.jsf";
+    private static final String PARAM_NEXT_URL         = "?next=";
+    private static final String PAGE_CONNECTION        = "/logon";
+    private static final String PAGE_RESTRICTED_ACCESS = "/restricted";
 
     @Override
     public void doFilter( HttpServletRequest request, HttpServletResponse response, HttpSession session,
             FilterChain chain ) throws ServletException, IOException {
-        String urlOrigine = request.getRequestURI();
+        String nextUrl = request.getRequestURI().substring( request.getContextPath().length() );
         Member member = (Member) request.getSession().getAttribute( SESSION_MEMBER );
         // Membre connecté
         if ( member != null ) {
@@ -45,8 +45,8 @@ public class AdministrationFilter extends HttpFilter {
         } else {
             // Membre non connecté, redirection vers la page de connexion.
             HttpServletResponse res = (HttpServletResponse) response;
-            if ( urlOrigine != null && !urlOrigine.isEmpty() ) {
-                res.sendRedirect( request.getContextPath() + PAGE_CONNECTION + PARAM_URL_ORIGINE + urlOrigine );
+            if ( nextUrl != null && !nextUrl.isEmpty() ) {
+                res.sendRedirect( request.getContextPath() + PAGE_CONNECTION + PARAM_NEXT_URL + nextUrl );
             } else {
                 res.sendRedirect( request.getContextPath() + PAGE_CONNECTION );
             }

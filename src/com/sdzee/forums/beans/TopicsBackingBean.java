@@ -9,7 +9,6 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.omnifaces.util.Faces;
@@ -27,8 +26,7 @@ import com.sdzee.forums.entities.Topic;
 import com.sdzee.membres.entities.Member;
 
 /**
- * TopicsBackingBean est le bean sur lequel s'appuie notamment la page de chaque forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
- * une vue.
+ * TopicsBackingBean est le bean sur lequel s'appuie notamment la page de chaque forum. Il s'agit d'un ManagedBean JSF, ayant pour portée une vue.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -38,7 +36,8 @@ import com.sdzee.membres.entities.Member;
 @URLMapping( id = "forum", pattern = "/forums/#{forumId : topicsBean.forumId}/", viewId = "/forum.jsf" )
 public class TopicsBackingBean implements Serializable {
     private static final long   serialVersionUID   = 1L;
-    private static final String URL_TOPIC_PAGE     = "/topic.jsf?topicId=";
+    private static final String URL_TOPIC_PAGE     = "/topic.jsf?topicId=%d&faces-redirect=true";
+    private static final String URL_404            = "/404";
     private static final double NB_TOPICS_PER_PAGE = 5;
 
     private Topic               topic;
@@ -58,17 +57,17 @@ public class TopicsBackingBean implements Serializable {
     private PostDao             postDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>forum</code> en récupérant en base le forum correspondant à l'id transmis par
-     * la Facelet <code>forum.xhtml</code>, contenu dans la variable <code>forumId</code>.
+     * Cette méthode initialise la variable d'instance <code>forum</code> en récupérant en base le forum correspondant à l'id transmis par la Facelet
+     * <code>forum.xhtml</code>, contenu dans la variable <code>forumId</code>.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
-     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
-     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, c'est le DAO {@link ForumDao} injecté via l'annotation
-     * <code>@EJB</code> qui entre en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
+     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
+     * est donc possible de faire appel à des dépendances. Ici, c'est le DAO {@link ForumDao} injecté via l'annotation <code>@EJB</code> qui entre en
+     * jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
-     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
-     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
+     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
+     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         if ( !FacesContext.getCurrentInstance().isPostback() ) {
@@ -99,7 +98,7 @@ public class TopicsBackingBean implements Serializable {
      * @param member le membre à l'origine de l'action.
      * @throws IOException si la page vers laquelle effectuer une redirection n'existe pas.
      */
-    public void create( Member member ) throws IOException {
+    public String create( Member member ) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             // on commence par rafraichir l'entité Forum, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
@@ -122,13 +121,13 @@ public class TopicsBackingBean implements Serializable {
             topicDao.update( topic );
             forum.setLastPost( post );
             forumDao.update( forum );
-            ExternalContext externalContext = context.getExternalContext();
-            externalContext.redirect( externalContext.getRequestContextPath() + URL_TOPIC_PAGE
-                    + String.valueOf( topic.getId() ) );
+            return String.format( URL_TOPIC_PAGE, topic.getId() );
         } catch ( DAOException e ) {
             context.addMessage( null, new FacesMessage( FacesMessage.SEVERITY_ERROR, "Echec de la création du sujet",
                     "Une erreur est survenue..." ) );
             // TODO: logger
+            e.printStackTrace();
+            return URL_404;
         }
     }
 

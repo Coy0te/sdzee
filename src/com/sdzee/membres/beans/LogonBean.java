@@ -22,19 +22,17 @@ import com.sdzee.membres.entities.Member;
 @ViewScoped
 @URLMapping( id = "logon", pattern = "/logon", viewId = "/connection.jsf" )
 public class LogonBean implements Serializable {
-    private static final long   serialVersionUID           = 1L;
-    private static final String NICKNAME                   = "nickName";
-    private static final String SESSION_MEMBER             = "member";
-    private static final String PARAM_URL_ORIGINE          = "urlOrigine";
-    private static final String PARAM_QUERY_STRING_ORIGINE = "queryStringOrigine";
-    private static final String URL_PARAM_SEPARATEUR       = "?";
-    private static final String PAGE_ACCUEIL               = "/index.jsf";
-    private static final String TITRE_PAGE_CONNEXION       = "Connexion";
+    private static final long   serialVersionUID     = 1L;
+    private static final String NICKNAME             = "nickName";
+    private static final String SESSION_MEMBER       = "member";
+    private static final String PARAM_NEXT_URL       = "next";
+    private static final String PAGE_ACCUEIL         = "/";
+    private static final String TITRE_PAGE_CONNEXION = "Connexion";
 
     private String              nickName;
     private String              password;
     private String              autoConnect;
-    private String              urlOrigine;
+    private String              nextUrl;
 
     @EJB
     private MemberDao           memberDao;
@@ -47,23 +45,18 @@ public class LogonBean implements Serializable {
                 .get( SESSION_MEMBER );
         if ( loggedInMember != null ) {
             try {
-                externalContext.redirect( "index.jsf" );
+                externalContext.redirect( externalContext.getRequestContextPath() + PAGE_ACCUEIL );
                 return;
             } catch ( IOException e ) {
                 // jamais, a priori.
             }
         }
 
-        urlOrigine = externalContext.getRequestParameterMap().get( PARAM_URL_ORIGINE );
-        String queryStringOrigine = externalContext.getRequestParameterMap().get( PARAM_QUERY_STRING_ORIGINE );
-
-        if ( urlOrigine == null || urlOrigine.isEmpty() ) {
-            urlOrigine = externalContext.getRequestContextPath() + PAGE_ACCUEIL;
-        } else {
-            if ( queryStringOrigine != null && !queryStringOrigine.isEmpty() ) {
-                urlOrigine += URL_PARAM_SEPARATEUR + queryStringOrigine;
-            }
+        nextUrl = externalContext.getRequestParameterMap().get( PARAM_NEXT_URL );
+        if ( nextUrl == null || nextUrl.isEmpty() ) {
+            nextUrl = PAGE_ACCUEIL;
         }
+        nextUrl = externalContext.getRequestContextPath() + nextUrl;
     }
 
     // Méthode d'action appelée lors du clic sur le bouton du formulaire
@@ -84,7 +77,7 @@ public class LogonBean implements Serializable {
         memberDao.update( member );
 
         // On redirige le membre vers la page qu'il voulait visiter
-        externalContext.redirect( urlOrigine );
+        externalContext.redirect( nextUrl );
     }
 
     public String getNickName() {

@@ -11,7 +11,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
-import com.ocpsoft.pretty.faces.annotation.URLMappings;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
@@ -20,15 +19,13 @@ import com.sdzee.membres.entities.Member;
 
 @ManagedBean
 @ViewScoped
-@URLMappings( mappings = {
-        @URLMapping( id = "profileEdition", pattern = "/members/profile/#{memberId : profileBean.memberId}/edit", viewId = "/profileEdition.jsf" ),
-        @URLMapping( id = "restriction", pattern = "/restricted", viewId = "/restricted.jsf" ) } )
+@URLMapping( id = "profileEdition", pattern = "/members/profile/#{memberId : profileBean.memberId}/edit", viewId = "/profileEdition.jsf" )
 public class ProfileEditionBean implements Serializable {
     private static final long   serialVersionUID = 1L;
     private static final String SESSION_MEMBER   = "member";
     private static final int    STAFF_RIGHTS     = 3;
     private static final String URL_PROFILE_PAGE = "/profile.jsf?memberId=";
-    private static final String URL_404          = "/404.jsf";
+    private static final String URL_404          = "/404";
 
     private int                 memberId;
     private Member              member;

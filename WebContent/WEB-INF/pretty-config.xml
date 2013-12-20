@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.0" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.0 http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.0.xsd">
+
+   <!-- Begin Example RewriteRules 
+   
+      // These are custom rewrite-rules, and are probably not necessary for your application.
+
+      <rewrite match="^/old-url/(\w+)/$" substitute="/new_url/$1/" redirect="301" />
+
+   -->
+
+   <!-- Ci-dessous les mappings vers les ressources "statiques" (ne s'appuyant sur aucun ManagedBean) -->
+   
+      <url-mapping id="home"> 
+          <pattern value="/" /> 
+          <view-id value="/index.jsf" />
+      </url-mapping> 
+      
+      <url-mapping id="restricted"> 
+          <pattern value="/restricted" /> 
+          <view-id value="/restricted.jsf" />
+      </url-mapping>
+      
+      <url-mapping id="404"> 
+          <pattern value="/404" /> 
+          <view-id value="/404.jsf" />
+      </url-mapping> 
+      
+</pretty-config>

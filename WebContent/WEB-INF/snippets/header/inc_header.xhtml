@@ -11,8 +11,7 @@
 					<span class="sep"></span>
 					
 						<h:link styleClass="login" outcome="/connection" rendered="#{member == null}">
-							<f:param name="urlOrigine" value="#{request.requestURI}" />
-							<f:param name="queryStringOrigine" value="#{request.queryString}" />
+							<f:param name="next" value="#{prettyContext.getCurrentInstance().getRequestURL().toURL()}#{prettyContext.getCurrentInstance().requestQueryString}" />
 							<div class="zozorLogin"></div>
 							<div id="login">Rejoignez-nous</div>
 						</h:link>
