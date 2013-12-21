@@ -39,10 +39,6 @@ public class AdminMembresBackingBean implements Serializable {
         return members;
     }
 
-    public List<Member> getFilteredMembers() {
-        return filteredMembers;
-    }
-
     public List<BreadCrumbItem> getBreadCrumb() {
         String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         List<BreadCrumbItem> breadCrumb = BreadCrumbHelper.initBreadCrumb( path );

@@ -1,5 +1,5 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" 
-				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:uf="http://sdzee.com/functions/functions"
 				template="/WEB-INF/templates/template_admin.xhtml">
 	<ui:define name="admin_breadcrumb">
 		<ui:param name="breadCrumb" value="#{adminMembersBean.getBreadCrumb()}"/>
@@ -12,17 +12,32 @@
 				<f:facet name="header">
 					Liste des membres
 				</f:facet>
-				<h:column headerText="Pseudo" footerText="Pseudo">
-					#{membre.pseudo}
+				<h:column>
+				    <f:facet name="header">
+        	    		<h:outputText value="Pseudo" />
+	       		 	</f:facet>
+					<h:link outcome="/profile.jsf">
+						<f:param name="memberId" value="#{member.id}" />
+						#{member.nickName}
+					</h:link>
 				</h:column>
-				<h:column headerText="Adresse email" footerText="Adresse email">
-					#{membre.email}
+				<h:column>
+				    <f:facet name="header">
+        	    		<h:outputText value="Adresse email" />
+	       		 	</f:facet>
+					#{member.email}
 				</h:column>
-				<h:column headerText="Date d'inscription" footerText="Date d'inscription">
-					#{membre.dateInscription}
+				<h:column>
+				    <f:facet name="header">
+        	    		<h:outputText value="Date d'inscription" />
+	       		 	</f:facet>
+					#{uf:convertDateTime(member.registrationDate)}
 				</h:column>
-				<h:column headerText="Droits" footerText="Droits">
-					#{membre.droits}
+				<h:column>
+					<f:facet name="header">
+        	    		<h:outputText value="Droits" />
+	       		 	</f:facet>
+					#{member.rights}
 				</h:column>
 				<f:facet name="footer">
 					Au total, il y a #{fn:length(adminMembersBean.members)} membres.
