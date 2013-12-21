@@ -67,6 +67,30 @@ public class PrivateNotification implements Serializable {
         this.privatePost = privatePost;
     }
 
+    @Override
+    public String toString() {
+        return String.format( "PrivateNotification[%d,%d]", memberId, privateTopicId );
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        PrivateNotification other = (PrivateNotification) obj;
+        if ( memberId == null ) {
+            if ( other.memberId != null )
+                return false;
+        } else if ( privateTopicId == null ) {
+            if ( other.privateTopicId != null )
+                return false;
+        } else if ( memberId != other.memberId || privateTopicId != other.privateTopicId )
+            return false;
+        return true;
+    }
 }
 
 /**
@@ -78,4 +102,7 @@ public class PrivateNotification implements Serializable {
 class PrivateNotificationId implements Serializable {
     Long memberId;
     Long privateTopicId;
+
+    public PrivateNotificationId() {
+    }
 }

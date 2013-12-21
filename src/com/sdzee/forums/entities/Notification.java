@@ -67,6 +67,30 @@ public class Notification implements Serializable {
         this.post = post;
     }
 
+    @Override
+    public String toString() {
+        return String.format( "Notification[%d,%d]", memberId, topicId );
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        Notification other = (Notification) obj;
+        if ( memberId == null ) {
+            if ( other.memberId != null )
+                return false;
+        } else if ( topicId == null ) {
+            if ( other.topicId != null )
+                return false;
+        } else if ( memberId != other.memberId || topicId != other.topicId )
+            return false;
+        return true;
+    }
 }
 
 /**
@@ -78,4 +102,7 @@ public class Notification implements Serializable {
 class NotificationId implements Serializable {
     Long memberId;
     Long topicId;
+
+    public NotificationId() {
+    }
 }
