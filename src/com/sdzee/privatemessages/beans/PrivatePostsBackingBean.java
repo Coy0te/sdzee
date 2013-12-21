@@ -43,7 +43,7 @@ import com.sdzee.privatemessages.entities.PrivateTopic;
 @URLMapping( id = "mpPost", pattern = "/mp/#{topicId : privatePostsBean.topicId}/", viewId = "/privateTopic.jsf" )
 public class PrivatePostsBackingBean implements Serializable {
     private static final long      serialVersionUID       = 1L;
-    private static final String    URL_PRIVATE_TOPIC_PAGE = "/privateTopic.jsf?page=%d&topicId=%d&faces-redirect=true";
+    private static final String    URL_PRIVATE_TOPIC_PAGE = "/privateTopic.jsf?topicId=%d&page=%d&faces-redirect=true";
     private static final String    URL_404                = "/404";
     private static final String    SESSION_MEMBER         = "member";
     private static final String    PARTICIPANTS_SEPARATOR = ",";
@@ -153,7 +153,7 @@ public class PrivatePostsBackingBean implements Serializable {
                 }
                 privatePost = new PrivatePost(); // TODO : encore nécessaire après la redirection mise en place ci-après?
                 Messages.addFlashGlobalInfo( "Votre réponse a bien été ajoutée." );
-                return String.format( URL_PRIVATE_TOPIC_PAGE, page, privateTopic.getId() );
+                return String.format( URL_PRIVATE_TOPIC_PAGE, privateTopic.getId(), page );
             } catch ( DAOException e ) {
                 // TODO : logger l'échec de la création d'un message
                 e.printStackTrace();
@@ -216,7 +216,7 @@ public class PrivatePostsBackingBean implements Serializable {
                     }
                 }
                 privateTopicDao.update( privateTopic );
-                return String.format( URL_PRIVATE_TOPIC_PAGE, 1, privateTopic.getId() );
+                return String.format( URL_PRIVATE_TOPIC_PAGE, privateTopic.getId(), 1 );
             } catch ( DAOException e ) {
                 // TODO : logger l'échec de la mise à jour en base de la réponse
                 return URL_404;
