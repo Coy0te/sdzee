@@ -112,4 +112,27 @@ class VoteId implements Serializable {
 
     public VoteId() {
     }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        VoteId other = (VoteId) obj;
+        if ( memberId == null ) {
+            if ( other.memberId != null )
+                return false;
+        } else if ( objectId == null ) {
+            if ( other.objectId != null )
+                return false;
+        } else if ( objectType == null ) {
+            if ( other.objectType != null )
+                return false;
+        } else if ( memberId != other.memberId || objectId != other.objectId || !objectType.equals( other.objectType ) )
+            return false;
+        return true;
+    }
 }

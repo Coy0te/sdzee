@@ -105,4 +105,24 @@ class PrivateNotificationId implements Serializable {
 
     public PrivateNotificationId() {
     }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        PrivateNotificationId other = (PrivateNotificationId) obj;
+        if ( memberId == null ) {
+            if ( other.memberId != null )
+                return false;
+        } else if ( privateTopicId == null ) {
+            if ( other.privateTopicId != null )
+                return false;
+        } else if ( memberId != other.memberId || privateTopicId != other.privateTopicId )
+            return false;
+        return true;
+    }
 }

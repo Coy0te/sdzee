@@ -105,4 +105,24 @@ class NotificationId implements Serializable {
 
     public NotificationId() {
     }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        NotificationId other = (NotificationId) obj;
+        if ( memberId == null ) {
+            if ( other.memberId != null )
+                return false;
+        } else if ( topicId == null ) {
+            if ( other.topicId != null )
+                return false;
+        } else if ( memberId != other.memberId || topicId != other.topicId )
+            return false;
+        return true;
+    }
 }
