@@ -29,8 +29,8 @@ import com.sdzee.privatemessages.entities.PrivatePost;
 import com.sdzee.privatemessages.entities.PrivateTopic;
 
 /**
- * PrivatePostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
- * une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
+ * PrivatePostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour
+ * portée une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -41,7 +41,7 @@ import com.sdzee.privatemessages.entities.PrivateTopic;
 public class PrivatePostsBackingBean implements Serializable {
     private static final long      serialVersionUID       = 1L;
     private static final String    URL_PRIVATE_TOPIC_PAGE = "/privateTopic.jsf?page=%d&topicId=%d&faces-redirect=true";
-    private static final String    URL_404                = "/404.jsf";
+    private static final String    URL_404                = "/404";
     private static final String    SESSION_MEMBER         = "member";
     private static final double    NB_POSTS_PER_PAGE      = 5;
 
@@ -60,18 +60,18 @@ public class PrivatePostsBackingBean implements Serializable {
     private PrivateNotificationDao privateNotificationDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par la Facelet
-     * <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au sujet est connecté, et
-     * si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
+     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par
+     * la Facelet <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au
+     * sujet est connecté, et si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
-     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
-     * est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et {@link NotificationDao} injectés via l'annotation
-     * <code>@EJB</code> qui entrent en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
+     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
+     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et
+     * {@link NotificationDao} injectés via l'annotation <code>@EJB</code> qui entrent en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
-     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
-     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
+     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
+     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -91,7 +91,7 @@ public class PrivatePostsBackingBean implements Serializable {
                 // si le membre n'est pas un participant du MP, on le dégage et on loggue
                 try {
                     // TODO : logger la tentative d'espionnage du MP
-                    externalContext.redirect( "404.jsf" );
+                    externalContext.redirect( externalContext.getRequestContextPath() + URL_404 );
                     return;
                 } catch ( IOException e ) {
                 }

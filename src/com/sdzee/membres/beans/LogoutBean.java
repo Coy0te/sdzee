@@ -12,7 +12,7 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 public class LogoutBean implements Serializable {
     private static final long   serialVersionUID = 1L;
-    private static final String PAGE_ACCUEIL     = "/index.jsf";
+    private static final String PAGE_ACCUEIL     = "/";
 
     public void logout() throws IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
