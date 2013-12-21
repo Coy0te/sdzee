@@ -28,6 +28,15 @@
             <div><h:messages globalOnly="true" /></div>
         </div>
         </ui:fragment>
+        <o:form includeViewParams="true" styleClass="right">
+			<h:panelGroup rendered="#{member.rights >= 3 or member.nickName == privatePostsBean.privateTopic.author.nickName}">
+				<h:inputText id="participants" value="#{privatePostsBean.newParticipantsNames}" maxlength="100">
+					<f:validator binding="#{verificationParticipantsValidator}" />
+				</h:inputText>
+				<h:message id="participantsMessage" for="participants" errorClass="erreur" />
+				<h:commandButton value="Ajouter des participants" action="#{privatePostsBean.addParticipants(member)}" styleClass="resoudreSujet" />
+			</h:panelGroup>
+		</o:form>
 		<h1>
 			<h:link id="topicTitle">
 				<f:param name="topicId" value="#{param['topicId']}" />
@@ -37,11 +46,12 @@
 		<h2><h:panelGroup id="topicSubTitle">#{privatePostsBean.privateTopic.subTitle}</h:panelGroup></h2>
 		<div>
 			<strong>Participants :</strong>
-			<ui:repeat value="#{privatePostsBean.privateTopic.participants}" var="participant">
+			<ui:repeat value="#{privatePostsBean.privateTopic.participants}" var="participant" varStatus="loop">
 			<h:link outcome="/profile">
 				<f:param name="memberId" value="#{participant.id}" />
-				#{participant.nickName}, 
+				<h:graphicImage value="#{uf:gravatar(participant,16)}" alt="avatar" /> #{participant.nickName}
 			</h:link>
+			#{ loop.last ? '' : '|' } 
 			</ui:repeat>
 		 </div>
 		<div class="comments">

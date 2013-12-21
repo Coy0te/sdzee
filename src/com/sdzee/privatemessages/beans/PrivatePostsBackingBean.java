@@ -2,6 +2,8 @@ package com.sdzee.privatemessages.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
 import com.sdzee.forums.dao.NotificationDao;
 import com.sdzee.forums.dao.TopicDao;
+import com.sdzee.membres.dao.MemberDao;
 import com.sdzee.membres.entities.Member;
 import com.sdzee.privatemessages.dao.PrivateNotificationDao;
 import com.sdzee.privatemessages.dao.PrivatePostDao;
@@ -43,6 +46,7 @@ public class PrivatePostsBackingBean implements Serializable {
     private static final String    URL_PRIVATE_TOPIC_PAGE = "/privateTopic.jsf?page=%d&topicId=%d&faces-redirect=true";
     private static final String    URL_404                = "/404";
     private static final String    SESSION_MEMBER         = "member";
+    private static final String    PARTICIPANTS_SEPARATOR = ",";
     private static final double    NB_POSTS_PER_PAGE      = 5;
 
     private PrivatePost            privatePost;
@@ -51,11 +55,14 @@ public class PrivatePostsBackingBean implements Serializable {
     private int                    pagesNumber;
     private int                    topicId;
     private int                    page                   = 1;
+    private String                 newParticipantsNames;
 
     @EJB
     private PrivatePostDao         privatePostDao;
     @EJB
     private PrivateTopicDao        privateTopicDao;
+    @EJB
+    private MemberDao              memberDao;
     @EJB
     private PrivateNotificationDao privateNotificationDao;
 
@@ -190,6 +197,37 @@ public class PrivatePostsBackingBean implements Serializable {
         }
     }
 
+    public String addParticipants( Member member ) {
+        if ( member != null
+                && ( member.getRights() >= 3 || member.getNickName().equals( privateTopic.getAuthor().getNickName() ) ) ) {
+            try {
+                // on rafraichit l'entité PrivateTopic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                privateTopic = privateTopicDao.refresh( privateTopic );
+
+                // Quand on arrive ici, on est déjà passés par le validator, donc tous les pseudos saisis sont OK.
+                newParticipantsNames = newParticipantsNames.replaceAll( "\\s+", "" );
+                List<String> participantsNickNames = new ArrayList<String>( Arrays.asList( newParticipantsNames
+                        .split( PARTICIPANTS_SEPARATOR ) ) );
+                List<Member> newParticipants = memberDao.list( participantsNickNames );
+                // on n'ajoute un participant que s'il n'est pas déjà dans la liste
+                for ( Member participant : newParticipants ) {
+                    if ( !privateTopic.getParticipants().contains( participant ) ) {
+                        privateTopic.addParticipant( participant );
+                    }
+                }
+                privateTopicDao.update( privateTopic );
+                return String.format( URL_PRIVATE_TOPIC_PAGE, 1, privateTopic.getId() );
+            } catch ( DAOException e ) {
+                // TODO : logger l'échec de la mise à jour en base de la réponse
+                return URL_404;
+            }
+        } else {
+            // TODO : logger l'intrus qui essaie d'ajouter un participant sans y être
+            // autorisé...
+            return URL_404;
+        }
+    }
+
     public PrivatePost getPrivatePost() {
         return privatePost;
     }
@@ -228,6 +266,14 @@ public class PrivatePostsBackingBean implements Serializable {
 
     public void setPage( int page ) {
         this.page = page;
+    }
+
+    public String getNewParticipantsNames() {
+        return newParticipantsNames;
+    }
+
+    public void setNewParticipantsNames( String newParticipantsNames ) {
+        this.newParticipantsNames = newParticipantsNames;
     }
 
     /**
