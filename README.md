@@ -61,7 +61,7 @@ Fonctionnalités implementées
 ### La gestion des Messages Privés
 #### Un membre peut :
 * Créer des MP
-* Ajouter des membres aux MP dont il est l'auteur (TODO)
+* Ajouter des membres aux MP dont il est l'auteur
 * Répondre aux MP dans lesquels il participe
 * Être averti si le MP auquel il répond a changé (nouveaux posts non lus)
 * Sortir d'un MP sans supprimer la conversation (TODO)
@@ -73,6 +73,7 @@ Fonctionnalités implementées
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
 * Éditer n'importe quel post dans un MP auquel il participe
+* Ajouter des membres dans un MP auquel il participe
 
 
 Fonctionnalités à venir
