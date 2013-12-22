@@ -32,7 +32,7 @@ Fonctionnalités implementées
 
 #### Un staff peut :
 * Faire tout ce que peut faire un membre simple
-* Masquer un post (TODO: backend ok, frontend à terminer)
+* Masquer un post (TODO : permettre la saisie d'un message de masquage)
 * Supprimer un post (TODO: backend à tester, frontend à réaliser)
 * Supprimer un topic (TODO: backend à tester, frontend à réaliser)
 * Résoudre une alerte sur un post (TODO)
