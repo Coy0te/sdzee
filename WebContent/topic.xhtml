@@ -31,7 +31,7 @@
 	<ui:define name="body">
 		<o:form includeViewParams="true" styleClass="right">
 			<h:panelGroup rendered="#{member != null}">
-				<h:commandButton value="#{postsBean.bookmarked ? 'Ne plus suivre ce sujet' : 'Suivre ce sujet'}" action="#{postsBean.followTopic(member)}" styleClass="#{postsBean.bookmarked ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
+				<h:commandButton value="#{postsBean.bookmarked ? 'Sujet suivi ✔' : 'Suivre ce sujet'}" action="#{postsBean.followTopic(member)}" styleClass="#{postsBean.bookmarked ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
 			</h:panelGroup>
 			<h:panelGroup rendered="#{member != null and (member.rights >= 3 or member.nickName == postsBean.topic.firstPost.author.nickName)}">
 				<h:commandButton value="#{postsBean.topic.solved ? i18n.boutonSujetResolu  : i18n.boutonResoudreSujet}" action="#{postsBean.solveTopic(member)}" styleClass="#{postsBean.topic.solved ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
@@ -67,7 +67,7 @@
         </ui:fragment>
 		<div class="comments">
 			<ui:repeat value="#{postsBean.paginatedPosts}" var="post" id="forEach">
-			<div class="row#{post.useful ? ' greenBg' : ''}">
+			<div class="row#{post.useful ? ' greenBg' : ''}" id="msg#{post.id}">
 				<div class="userInfos">
 					<div class="avatar">
 						<div class="author">
@@ -113,24 +113,25 @@
 						<ui:fragment rendered="#{member.rights>=3 and post != postsBean.topic.firstPost}">
 						<li>
 							<o:form includeViewParams="true" styleClass="right">
-								<h:commandButton value="#{post.hidden ? 'Restaurer'  : 'Masquer'}" action="#{postsBean.hidePost(member, post)}" styleClass="#{post.useful ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
+								<h:commandButton value="#{post.hidden ? 'Restaurer'  : 'Masquer'}" action="#{postsBean.hidePost(member, post)}" styleClass="#{post.hidden ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
 							</o:form>
 						</li>
 						</ui:fragment>
 					</ul>
 				</ui:fragment>
 					<div class="content">
-						<h:link class="date">
+						<h:link class="date" outcome="/topic.jsf#msg">
 							<f:param name="topicId" value="#{param['topicId']}" />
+							<f:param name="page" value="#{param['page']}" />
 							<f:param name="postId" value="#{post.id}" />
 							#{uf:convertDateTime(post.creationDate)}
 						</h:link>
 						<div class="message" id="msg#{post.id}">
-							<o:form id="editReponseForm" prependId="false" includeViewParams="true" rendered="#{member != null and (member.rights >= 3 or member.nickName == post.author.nickName)}">
+							<o:form id="editReponseForm" prependId="false" includeViewParams="true" rendered="#{member != null and !post.hidden and (member.rights >= 3 or member.nickName == post.author.nickName)}">
 								<div class="markdownBody">
 									<h:outputText value="#{uf:parseMarkdown(post.text)}" escape="false" />
 									<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty post.lastEditBy}">
-										- <br/> #{i18n.lastEditBy} #{post.lastEditBy.nickName} <span class="lastEditDate">#{uf:convertDateTime(post.lastEditDate)}</span>
+										- <br/> #{i18n.lastEditBy} <h:link outcome="/profile.jsf"><f:param name="memberId" value="#{post.lastEditBy.id}"/>#{post.lastEditBy.nickName}</h:link> <span class="lastEditDate">#{uf:convertDateTime(post.lastEditDate)}</span>
 									</h:panelGroup>
 								</div>
 								<h:panelGroup layout="block" styleClass="hidden">
@@ -150,17 +151,17 @@
 									<h:commandButton value="Annuler" type="button" styleClass="btn btn-inverse cancelEdit" />
 								</h:panelGroup>
 							</o:form>
-							<h:panelGroup layout="block" syleClass="markdownBody" rendered="#{member == null or (member.rights lt 3 and member.nickName != post.author.nickName)}">
+							<h:panelGroup layout="block" syleClass="markdownBody" rendered="#{!post.hidden and (member == null or (member.rights lt 3 and member.nickName != post.author.nickName))}">
 								<h:outputText value="#{uf:parseMarkdown(post.text)}" escape="false"/>
 								<h:panelGroup layout="block" styleClass="lastEdit" rendered="#{!empty post.lastEditBy}">
 									- <br/> #{i18n.lastEditBy} #{post.lastEditBy.nickName} <span class="lastEditDate">#{uf:convertDateTime(post.lastEditDate)}</span>
 								</h:panelGroup>
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="bruteMarkdownBody" rendered="#{member != null}">
+							<h:panelGroup layout="block" styleClass="bruteMarkdownBody" rendered="#{member != null and !post.hidden}">
 								#{post.text}
 							</h:panelGroup>
 						</div>
-						<h:panelGroup styleClass="commentVote" rendered="#{member != null}">
+						<h:panelGroup styleClass="commentVote" rendered="#{member != null and !post.hidden}">
 							<span class="noVote" style="visibility: #{post.upVotes > 0 or post.downVotes > 0 ? 'visible' : 'visible'};"> 
 							<o:form includeViewParams="true" id="voteReponseForm">
 								<span class="votePlus">#{post.upVotes > 0 ? '+'.concat(post.upVotes) : ''}</span>
@@ -182,7 +183,8 @@
 							</o:form>
 							</span> 
 						</h:panelGroup>
-						<div class="signature">#{(member == null or member.showSignatures) ? post.author.signature : ''}</div>
+						<h:panelGroup layout="block" styleClass="signature" rendered="#{!post.hidden and (member == null or member.showSignatures)}">#{post.author.signature}</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="hiddenCause" rendered="#{post.hidden}">Message masqué par <h:link outcome="/profile.jsf"><f:param name="memberId" value="#{post.hiddenBy.id}"/>#{post.hiddenBy.nickName}</h:link> : #{post.hiddenCause}.</h:panelGroup>
 						<ui:fragment rendered="#{member != null and member.rights>=3 and !empty post.alerts}">
 						<ul>
 							<ui:repeat value="#{post.alerts}" var="alert">

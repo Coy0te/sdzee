@@ -210,7 +210,7 @@ public class PostsBackingBean implements Serializable {
                 // on commence par rafraichir l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
                 topic = topicDao.refresh( topic );
 
-                topic.setSolved( topic.isSolved() ? false : true );
+                topic.setSolved( !topic.isSolved() );
                 topicDao.update( topic );
                 return String.format( URL_TOPIC_PAGE, topic.getId(), 1 );
             } catch ( DAOException e ) {
@@ -230,7 +230,7 @@ public class PostsBackingBean implements Serializable {
                 // on commence par rafraichir l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
                 topic = topicDao.refresh( topic );
 
-                topic.setSticky( topic.isSticky() ? false : true );
+                topic.setSticky( !topic.isSticky() );
                 topicDao.update( topic );
                 Messages.addFlashGlobalInfo( "Le sujet " + ( topic.isSticky() ? "est maintenant" : "n''est plus" )
                         + " épinglé en Post-It." );
@@ -252,7 +252,7 @@ public class PostsBackingBean implements Serializable {
                 // on commence par rafraichir l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
                 topic = topicDao.refresh( topic );
 
-                topic.setLocked( topic.isLocked() ? false : true );
+                topic.setLocked( !topic.isLocked() );
                 topicDao.update( topic );
                 return String.format( URL_TOPIC_PAGE, topic.getId(), 1 );
             } catch ( DAOException e ) {
@@ -449,7 +449,7 @@ public class PostsBackingBean implements Serializable {
                 // on commence par rafraichir l'entité Post, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
                 post = postDao.refresh( post );
 
-                post.setUseful( post.isUseful() ? false : true );
+                post.setUseful( !post.isUseful() );
                 postDao.update( post );
                 Messages.addFlashGlobalInfo( "Le message " + ( post.isUseful() ? "a bien été" : "n''est plus" )
                         + " marqué comme utile, merci !" );
@@ -470,7 +470,7 @@ public class PostsBackingBean implements Serializable {
                 // on commence par rafraichir l'entité Post, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
                 post = postDao.refresh( post );
 
-                post.setHidden( post.isHidden() ? false : true );
+                post.setHidden( !post.isHidden() );
                 post.setHiddenBy( member );
                 post.setHiddenCause( "TODO : Message de masquage." );
                 postDao.update( post );

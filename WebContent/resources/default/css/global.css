@@ -151,6 +151,18 @@ ul.list li.read div.row:hover div.cell{
 	opacity: 0.6;
 }
 
+#mainSection div.comment .hiddenCause {
+	width: 100%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding-top: 6px;
+	font-size: 12px;
+	max-height: 18px;
+	opacity: 0.6;
+	font-style: italic;
+}
+
 /* Layout -------------------------------------------------------------------------------------- */
 .largeurLimite{
 	width: 95%;

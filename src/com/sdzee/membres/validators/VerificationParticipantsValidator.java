@@ -46,6 +46,7 @@ public class VerificationParticipantsValidator implements Validator {
 
         // Suppression des espaces qui trainent éventuellement ça et là dans la liste
         participantsNickNames = participantsNickNames.replaceAll( "\\s+", "" );
+        // TODO : remplacer la liste par un SET, car on a une collection d'éléments uniques
         List<String> participantsNickNamesList = Arrays.asList( participantsNickNames.split( PARTICIPANTS_SEPARATOR ) );
 
         if ( participantsNickNamesList.contains( member.getNickName() ) ) {
@@ -65,9 +66,9 @@ public class VerificationParticipantsValidator implements Validator {
             }
 
             /*
-             * Si au moins un pseudo est foireux, alors on envoie une exception propre à JSF, qu'on initialise avec un FacesMessage de gravité
-             * "Erreur" et contenant le message d'explication. Le framework va alors gérer lui-même cette exception et s'en servir pour afficher le
-             * message d'erreur à l'utilisateur.
+             * Si au moins un pseudo est foireux, alors on envoie une exception propre à JSF, qu'on initialise avec un FacesMessage de
+             * gravité "Erreur" et contenant le message d'explication. Le framework va alors gérer lui-même cette exception et s'en servir
+             * pour afficher le message d'erreur à l'utilisateur.
              */
             if ( badParticipantsNamesList.size() == 1 ) {
                 throw new ValidatorException(

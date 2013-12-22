@@ -126,6 +126,7 @@ public class PrivateTopicsBackingBean implements Serializable {
             // lastPost est mis à null par défaut en BDD
             // Quand on arrive ici, on est déjà passés par le validator, donc tous les pseudos saisis sont OK.
             participantsNames = participantsNames.replaceAll( "\\s+", "" );
+            // TODO : remplacer la liste par un SET, puisqu'on manipule ici des éléments uniques
             List<String> participantsNickNames = new ArrayList<String>( Arrays.asList( participantsNames
                     .split( PARTICIPANTS_SEPARATOR ) ) );
             // On ajoute l'auteur dans la liste des participants, pour que ça soit complet.
