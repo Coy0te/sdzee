@@ -25,9 +25,9 @@ Fonctionnalités implementées
 * Voter sur les posts des autres (en mode ajaxisé)
 * Signaler des posts aux modérateurs (TODO : permettre la saisie d'un message d'alerte)
 * Être notifié des réponses aux topics dans lesquels il a posté
-* Marquer un topic en favori (TODO)
+* Marquer un topic en favori
 * Être notifié des réponses aux topics qu'il a marqués en favori
-* Choisir de ne plus être notifié de certains topics (TODO)
+* Choisir de ne plus être notifié de certains topics
 * Faire disparaître les notifs en consultant les topics concernés
 
 #### Un staff peut :
