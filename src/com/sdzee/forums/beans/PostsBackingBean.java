@@ -35,8 +35,8 @@ import com.sdzee.forums.entities.Vote;
 import com.sdzee.membres.entities.Member;
 
 /**
- * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée une vue.
- * Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
+ * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
+ * une vue. Il contient une variable <code>sujetId</code> initialisée en amont par la Facelet <code>sujet.xhtml</code>.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -63,6 +63,7 @@ public class PostsBackingBean implements Serializable {
     private int                 pagesNumber;
     private int                 topicId;
     private int                 page                  = 1;
+    private boolean             bookmarked            = false;
 
     @EJB
     private PostDao             postDao;
@@ -80,18 +81,18 @@ public class PostsBackingBean implements Serializable {
     private NotificationDao     notificationDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par la Facelet
-     * <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au sujet est connecté, et
-     * si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
+     * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par
+     * la Facelet <code>topic.xhtml</code>, contenu dans la variable <code>topicId</code>. Elle vérifie ensuite si le visiteur accédant au
+     * sujet est connecté, et si oui, elle va supprimer de la base l'éventuelle notification associée à ce sujet pour le membre en question.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
-     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
-     * est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et {@link NotificationDao} injectés via l'annotation
-     * <code>@EJB</code> qui entrent en jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
+     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
+     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, ce sont les DAO {@link TopicDao} et
+     * {@link NotificationDao} injectés via l'annotation <code>@EJB</code> qui entrent en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
-     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
-     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
+     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
+     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         post = ( post == null ? new Post() : post );
@@ -105,6 +106,7 @@ public class PostsBackingBean implements Serializable {
                 .get( SESSION_MEMBER );
         if ( member != null ) {
             notificationDao.delete( member.getId(), Long.valueOf( topicId ) );
+            bookmarked = bookmarkDao.find( member.getId(), Long.valueOf( topicId ) ) == null ? false : true;
         }
     }
 
@@ -297,6 +299,39 @@ public class PostsBackingBean implements Serializable {
             }
         } else {
             // TODO: logger l'intrus qui essaie de jouer aux modos...
+            return URL_404;
+        }
+    }
+
+    public String followTopic( Member member ) {
+        if ( member != null ) {
+            try {
+                // on commence par rafraichir l'entité Topic, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                topic = topicDao.refresh( topic );
+
+                // tester si bookmark existe pour membre et topic
+                Bookmark bookmark = bookmarkDao.find( member.getId(), topic.getId() );
+
+                if ( bookmark == null ) {
+                    // Ajout auto d'un bookmark sur le sujet pour l'auteur de la réponse
+                    bookmark = new Bookmark();
+                    bookmark.setMemberId( member.getId() );
+                    bookmark.setTopicId( topic.getId() );
+                    bookmarkDao.create( bookmark );
+                    Messages.addFlashGlobalInfo( "Le sujet a bien été mis en favori." );
+                } else {
+                    bookmarkDao.delete( bookmark );
+                    Messages.addFlashGlobalInfo( "Le sujet ne fait plus partie de vos favoris." );
+                }
+                return String.format( URL_TOPIC_PAGE, topic.getId(), page );
+                // si oui, le supprimer
+            } catch ( DAOException e ) {
+                // TODO: logger l'échec de la mise à jour en base du sujet
+                return URL_404;
+            }
+        } else {
+            // TODO: logger l'intrus qui essaie de suivre un topic sans
+            // être connecté...
             return URL_404;
         }
     }
@@ -524,6 +559,14 @@ public class PostsBackingBean implements Serializable {
 
     public void setPage( int page ) {
         this.page = page;
+    }
+
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
+
+    public void setBookmarked( boolean bookmarked ) {
+        this.bookmarked = bookmarked;
     }
 
     /**

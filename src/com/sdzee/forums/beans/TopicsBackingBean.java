@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -17,16 +16,19 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.sdzee.breadcrumb.beans.BreadCrumbHelper;
 import com.sdzee.breadcrumb.beans.BreadCrumbItem;
 import com.sdzee.dao.DAOException;
+import com.sdzee.forums.dao.BookmarkDao;
 import com.sdzee.forums.dao.ForumDao;
 import com.sdzee.forums.dao.PostDao;
 import com.sdzee.forums.dao.TopicDao;
+import com.sdzee.forums.entities.Bookmark;
 import com.sdzee.forums.entities.Forum;
 import com.sdzee.forums.entities.Post;
 import com.sdzee.forums.entities.Topic;
 import com.sdzee.membres.entities.Member;
 
 /**
- * TopicsBackingBean est le bean sur lequel s'appuie notamment la page de chaque forum. Il s'agit d'un ManagedBean JSF, ayant pour portée une vue.
+ * TopicsBackingBean est le bean sur lequel s'appuie notamment la page de chaque forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
+ * une vue.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
@@ -55,19 +57,21 @@ public class TopicsBackingBean implements Serializable {
     private ForumDao            forumDao;
     @EJB
     private PostDao             postDao;
+    @EJB
+    private BookmarkDao         bookmarkDao;
 
     /**
-     * Cette méthode initialise la variable d'instance <code>forum</code> en récupérant en base le forum correspondant à l'id transmis par la Facelet
-     * <code>forum.xhtml</code>, contenu dans la variable <code>forumId</code>.
+     * Cette méthode initialise la variable d'instance <code>forum</code> en récupérant en base le forum correspondant à l'id transmis par
+     * la Facelet <code>forum.xhtml</code>, contenu dans la variable <code>forumId</code>.
      * <p>
-     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le bean n'est
-     * pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est déjà initialisé et il
-     * est donc possible de faire appel à des dépendances. Ici, c'est le DAO {@link ForumDao} injecté via l'annotation <code>@EJB</code> qui entre en
-     * jeu.
+     * Elle est exécutée automatiquement par JSF, après le constructeur de la classe s'il existe. À l'appel du constructeur classique, le
+     * bean n'est pas encore initialisé, et donc aucune dépendance n'est injectée. Cependant lorsque cette méthode est appelée, le bean est
+     * déjà initialisé et il est donc possible de faire appel à des dépendances. Ici, c'est le DAO {@link ForumDao} injecté via l'annotation
+     * <code>@EJB</code> qui entre en jeu.
      * <p>
-     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est simplement
-     * dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant. Puisqu'elle dépend de
-     * l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
+     * À la différence de la plupart des autres backing-beans, cette méthode n'est pas annotée avec <code>@PostConstruct</code>. Ceci est
+     * simplement dû au fait qu'elle fait appel à une variable qui est initialisée depuis la vue, en l'occurrence l'id du sujet courant.
+     * Puisqu'elle dépend de l'action du visiteur, son cycle de vie ne peut pas être entièrement géré par JSF.
      */
     public void init() {
         if ( !FacesContext.getCurrentInstance().isPostback() ) {
@@ -99,7 +103,6 @@ public class TopicsBackingBean implements Serializable {
      * @throws IOException si la page vers laquelle effectuer une redirection n'existe pas.
      */
     public String create( Member member ) throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
         try {
             // on commence par rafraichir l'entité Forum, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
             forumDao.refresh( forum );
@@ -108,10 +111,8 @@ public class TopicsBackingBean implements Serializable {
             post.setCreationDate( new Date( System.currentTimeMillis() ) );
             post.setAuthor( member );
             topic.setForum( forum );
-
             topicDao.create( topic );
-            context.addMessage( null, new FacesMessage( FacesMessage.SEVERITY_INFO, "Nouveau sujet créé avec succès",
-                    topic.getTitle() ) );
+
             // TODO : à surveiller, manque peut-être un refresh ici pour que le topic récupère bien son ID après sa création !
             post.setTopic( topic );
             postDao.create( post );
@@ -121,10 +122,15 @@ public class TopicsBackingBean implements Serializable {
             topicDao.update( topic );
             forum.setLastPost( post );
             forumDao.update( forum );
+
+            // Ajout auto d'un bookmark sur le sujet pour l'auteur du sujet
+            Bookmark bookmark = new Bookmark();
+            bookmark.setMemberId( member.getId() );
+            bookmark.setTopicId( topic.getId() );
+            bookmarkDao.create( bookmark );
+
             return String.format( URL_TOPIC_PAGE, topic.getId() );
         } catch ( DAOException e ) {
-            context.addMessage( null, new FacesMessage( FacesMessage.SEVERITY_ERROR, "Echec de la création du sujet",
-                    "Une erreur est survenue..." ) );
             // TODO: logger
             e.printStackTrace();
             return URL_404;

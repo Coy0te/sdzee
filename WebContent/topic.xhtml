@@ -30,6 +30,9 @@
 	</ui:define>
 	<ui:define name="body">
 		<o:form includeViewParams="true" styleClass="right">
+			<h:panelGroup rendered="#{member != null}">
+				<h:commandButton value="#{postsBean.bookmarked ? 'Ne plus suivre ce sujet' : 'Suivre ce sujet'}" action="#{postsBean.followTopic(member)}" styleClass="#{postsBean.bookmarked ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
+			</h:panelGroup>
 			<h:panelGroup rendered="#{member != null and (member.rights >= 3 or member.nickName == postsBean.topic.firstPost.author.nickName)}">
 				<h:commandButton value="#{postsBean.topic.solved ? i18n.boutonSujetResolu  : i18n.boutonResoudreSujet}" action="#{postsBean.solveTopic(member)}" styleClass="#{postsBean.topic.solved ? 'resoudreSujet sujetResolu' : 'resoudreSujet'}" />
 			</h:panelGroup>
