@@ -187,7 +187,11 @@
 						<ui:fragment rendered="#{member != null and member.rights>=3 and !empty post.alerts}">
 						<ul>
 							<ui:repeat value="#{post.alerts}" var="alert">
-							<li>[<h:link outcome="/profile"><f:param name="memberId" value="#{alert.author.id}" />#{alert.author.nickName}</h:link>, #{uf:convertDateTime(alert.creationDate)}] #{alert.text}</li>
+							<li>
+							<o:form includeViewParams="true" style="display: inline;">
+								<h:commandButton value="Résoudre" action="#{postsBean.solvePostAlert(member, alert, post)}" styleClass="resoudreSujet sujetResolu" />
+							</o:form>
+							[<h:link outcome="/profile"><f:param name="memberId" value="#{alert.author.id}" />#{alert.author.nickName}</h:link>, #{uf:convertDateTime(alert.creationDate)}] #{alert.text}</li>
 							</ui:repeat>
 						</ul>
 						</ui:fragment>

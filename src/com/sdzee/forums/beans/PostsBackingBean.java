@@ -193,6 +193,8 @@ public class PostsBackingBean implements Serializable {
                 post.setLastEditDate( new Date( System.currentTimeMillis() ) );
                 post.setLastEditBy( member );
                 postDao.update( post );
+
+                // TODO : résolution auto des alertes associées si l'édit est fait par un staff ?
             } catch ( DAOException e ) {
                 // TODO : logger l'échec de la mise à jour en base de la réponse
             }
@@ -513,23 +515,19 @@ public class PostsBackingBean implements Serializable {
         }
     }
 
-    public String solvePostAlert( Member member, Post post ) throws IOException {
-        // TODO
+    public String solvePostAlert( Member member, Alert alert, Post post ) throws IOException {
         if ( member != null && member.getRights() >= 3 ) {
             try {
-                // on commence par rafraichir l'entité Post, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                alertDao.delete( alert );
+                // on rafraichit l'entité Post, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
                 post = postDao.refresh( post );
-
-                alert.setAuthor( member );
-                alert.setCreationDate( new Date( System.currentTimeMillis() ) );
-                alert.setPost( post );
-                alert.setText( "TODO: implémenter la saisie de message d'alerte." );
-                alertDao.create( alert );
-                // TODO : ci-dessous bien nécessaire ?
-                post.addAlert( alert );
+                post.removeAlert( alert );
                 postDao.update( post );
                 alert = new Alert();
-                Messages.addFlashGlobalInfo( "Votre alerte a bien été envoyée au Staff, merci !" );
+                Messages.addFlashGlobalInfo( "L'alerte a bien été résolue !" );
+
+                // TODO : envoyer un MP auto à l'auteur de l'alerte pour le prévenir de la résolution.
+
                 return String.format( URL_TOPIC_PAGE, topic.getId(), page );
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base
