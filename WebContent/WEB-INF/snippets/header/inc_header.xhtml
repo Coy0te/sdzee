@@ -33,25 +33,64 @@
 								<h:commandLink value="Déconnexion" action="#{logoutBean.logout}" />
 							</o:form>
 							
-							<h:link outcome="/privateTopics" styleClass="dropdown-toggle secondaryLink">
-								Mes MP (#{fn:length(privateNotificationsBean.privateNotifications)})
-							</h:link>
+							<h:panelGroup id="mpsCount" layout="block" rendered="#{member.rights >= 3}">
+								<h:link outcome="/privateTopics" styleClass="dropdown-toggle secondaryLink">
+									Mes MP (#{privateNotificationsBean.countPrivateNotifications})
+								</h:link>
+								<ui:fragment rendered="#{privateNotificationsBean.countPrivateNotifications > 0}">
+								<ul id="mpsList">
+									<ui:repeat value="#{privateNotificationsBean.paginatedPrivateNotifications}" var="item">
+									<li>
+										<h:link outcome="/privateTopic" fragment="msg#{item.privatePost.id}">
+											<f:param name="topicId" value="#{item.privateTopicId}" />
+											#{item.privatePost.author.nickName} a répondu au MP "#{item.privatePost.privateTopic.title}" #{uf:convertDateTime(item.privatePost.creationDate)}
+										</h:link>
+									</li>
+									</ui:repeat>
+									<ui:fragment rendered="#{privateNotificationsBean.countPrivateNotifications > 5}">
+									<li>TODO : liste complète...</li>
+									</ui:fragment>
+								</ul>
+								</ui:fragment>
+							</h:panelGroup>
 							
 							<div id="notificationsCount">
-								<h:outputText value="Mes notifs (#{fn:length(notificationsBean.notifications)})"/>
+								<h:outputText value="Mes notifs (#{notificationsBean.countNotifications})"/>
+								<ui:fragment rendered="#{notificationsBean.countNotifications > 0}">
 								<ul id="notificationsList">
-									<ui:repeat value="#{notificationsBean.notifications}" var="item">
+									<ui:repeat value="#{notificationsBean.paginatedNotifications}" var="item">
 									<li>
-										<h:link outcome="/topic">
+										<h:link outcome="/topic" fragment="msg#{item.post.id}">
 											<f:param name="topicId" value="#{item.topicId}" />
-											<f:param name="responseId" value="#{item.post.id}" />
 											#{item.post.author.nickName} a répondu au sujet "#{item.post.topic.title}" #{uf:convertDateTime(item.post.creationDate)}
 										</h:link>
 									</li>
 									</ui:repeat>
+									<ui:fragment rendered="#{notificationsBean.countNotifications > 5}">
+									<li>TODO : liste complète...</li>
+									</ui:fragment>
 								</ul>
+								</ui:fragment>
 							</div>
 							
+							<h:panelGroup id="alertsCount" layout="block" rendered="#{member.rights >= 3}">
+								Alertes (#{alertsBean.countAlerts})
+								<ui:fragment rendered="#{alertsBean.countAlerts > 0}">
+								<ul id="alertsList">
+									<ui:repeat value="#{alertsBean.paginatedAlerts}" var="item">
+									<li>
+										<h:link outcome="/topic" fragment="msg#{item.post.id}">
+											<f:param name="topicId" value="#{item.post.topic.id}" />
+											#{item.author.nickName} a signalé le sujet "#{item.post.topic.title}" #{uf:convertDateTime(item.creationDate)}
+										</h:link>
+									</li>
+									</ui:repeat>
+									<ui:fragment rendered="#{alertsBean.countAlerts > 5}">
+									<li>TODO : liste complète...</li>
+									</ui:fragment>
+								</ul>
+								</ui:fragment>
+							</h:panelGroup>
 							<ui:include src="inc_menu.xhtml" />
 						</div>
 					</h:panelGroup>
