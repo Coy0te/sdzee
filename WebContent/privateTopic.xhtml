@@ -56,7 +56,7 @@
 		 </div>
 		<div class="comments">
 			<ui:repeat value="#{privatePostsBean.paginatedPrivatePosts}" var="post" id="forEach">
-			<div class="row">
+			<div class="row" id="msg#{post.id}">
 				<div class="userInfos">
 					<div class="avatar">
 						<div class="author">
@@ -88,12 +88,12 @@
 						</ui:fragment>
 					</ul>
 					<div class="content">
-						<h:link class="date">
+						<h:link class="date" outcome="/privateTopic" fragment="msg#{post.id}">
 							<f:param name="topicId" value="#{param['topicId']}" />
-							<f:param name="postId" value="#{post.id}" />
+							<f:param name="page" value="#{param['page']}" />
 							#{uf:convertDateTime(post.creationDate)}
 						</h:link>
-						<div class="message" id="msg#{post.id}">
+						<div class="message">
 							<o:form id="editReponseForm" prependId="false" includeViewParams="true" rendered="#{member.rights >= 3 or member.nickName == post.author.nickName}">
 								<div class="markdownBody">
 									<h:outputText value="#{uf:parseMarkdown(post.text)}" escape="false"/>

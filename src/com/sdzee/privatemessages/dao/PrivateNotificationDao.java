@@ -15,19 +15,20 @@ import com.sdzee.privatemessages.entities.PrivateNotification;
 import com.sdzee.privatemessages.entities.PrivateTopic;
 
 /**
- * PrivateNotificationDao est la classe DAO contenant les opérations CRUD réalisables sur la table des notifications des MPs. Il s'agit d'un EJB
- * Stateless dont la structure s'appuie sur JPA et JPQL.
+ * PrivateNotificationDao est la classe DAO contenant les opérations CRUD réalisables sur la table des notifications des MPs. Il s'agit d'un
+ * EJB Stateless dont la structure s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
  */
 @Stateless
 public class PrivateNotificationDao {
-    private static final String JPQL_SELECT_UNIQUE_NOTIFICATION    = "SELECT n FROM PrivateNotification n WHERE n.memberId=:memberId AND n.privateTopicId=:privateTopicId";
-    private static final String JPQL_DELETE_NOTIFICATION           = "DELETE FROM PrivateNotification n WHERE n.memberId=:memberId AND n.privateTopicId=:privateTopicId";
-    private static final String JPQL_NOTIFICATIONS_LIST_PER_MEMBER = "SELECT n FROM PrivateNotification n WHERE n.memberId=:memberId";
-    private static final String PARAM_MEMBER_ID                    = "memberId";
-    private static final String PARAM_PRIVATE_TOPIC_ID             = "privateTopicId";
+    private static final String JPQL_SELECT_UNIQUE_NOTIFICATION     = "SELECT n FROM PrivateNotification n WHERE n.memberId=:memberId AND n.privateTopicId=:privateTopicId";
+    private static final String JPQL_DELETE_NOTIFICATION            = "DELETE FROM PrivateNotification n WHERE n.memberId=:memberId AND n.privateTopicId=:privateTopicId";
+    private static final String JPQL_NOTIFICATIONS_LIST_PER_MEMBER  = "SELECT n FROM PrivateNotification n WHERE n.memberId=:memberId";
+    private static final String JPQL_COUNT_NOTIFICATIONS_PER_MEMBER = "SELECT count(n) FROM PrivateNotification n WHERE n.memberId=:memberId";
+    private static final String PARAM_MEMBER_ID                     = "memberId";
+    private static final String PARAM_PRIVATE_TOPIC_ID              = "privateTopicId";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
@@ -44,6 +45,24 @@ public class PrivateNotificationDao {
             if ( find( privateNotification.getMemberId(), privateNotification.getPrivateTopicId() ) == null ) {
                 em.persist( privateNotification );
             }
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de récupérer le nombre de {@link PrivateNotification} pour un {@link Member} donné.
+     * 
+     * @param member le membre pour lequel effectuer le décompte.
+     * @return le nombre de notifications correspondant.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public Integer count( Member member ) throws DAOException {
+        try {
+            Query query = em.createQuery( JPQL_COUNT_NOTIFICATIONS_PER_MEMBER );
+            query.setParameter( PARAM_MEMBER_ID, member.getId() );
+            // TODO : quid du cas NoResultException ?
+            return ( (Long) query.getSingleResult() ).intValue();
         } catch ( Exception e ) {
             throw new DAOException( e );
         }
@@ -68,7 +87,29 @@ public class PrivateNotificationDao {
     }
 
     /**
-     * Cette méthode permet de chercher une {@link PrivateNotification} via l'id du {@link Member} à notifier et l'id du {@link PrivateTopic} observé.
+     * Cette méthode permet de lister les {@link PrivateNotification} d'un {@link Membre} de manière paginée.
+     * 
+     * @param member le membre pour lequel effectuer la recherche.
+     * @param pageNumber le numéro de la page de notifications à récupérer.
+     * @param privateNotificationsPerPage le nombre de notifications à retourner pour la page donnée.
+     * @return la liste des notifications, ou <code>null</code> si aucune notification n'est trouvée.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public List<PrivateNotification> list( Member member, int pageNumber, int privateNotificationsPerPage ) throws DAOException {
+        try {
+            TypedQuery<PrivateNotification> query = em.createQuery( JPQL_NOTIFICATIONS_LIST_PER_MEMBER, PrivateNotification.class );
+            query.setParameter( PARAM_MEMBER_ID, member.getId() );
+            query.setFirstResult( ( pageNumber - 1 ) * privateNotificationsPerPage );
+            query.setMaxResults( privateNotificationsPerPage );
+            return query.getResultList();
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de chercher une {@link PrivateNotification} via l'id du {@link Member} à notifier et l'id du
+     * {@link PrivateTopic} observé.
      * 
      * @param memberId l'id du membre à notifier.
      * @param privateTopicId l'id du sujet observé.
@@ -103,8 +144,8 @@ public class PrivateNotificationDao {
     }
 
     /**
-     * Cette méthode permet de supprimer une {@link PrivateNotification} en se basant sur l'id du {@link Member} et l'id du {@link PrivateTopic}
-     * donnés.
+     * Cette méthode permet de supprimer une {@link PrivateNotification} en se basant sur l'id du {@link Member} et l'id du
+     * {@link PrivateTopic} donnés.
      * 
      * @param memberId l'id du membre pour lequel effectuer la suppression.
      * @param privateTopicId l'id du sujet pour lequel effectuer la suppression.
