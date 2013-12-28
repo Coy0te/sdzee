@@ -23,11 +23,12 @@ import com.sdzee.membres.entities.Member;
  */
 @Stateless
 public class NotificationDao {
-    private static final String JPQL_SELECT_UNIQUE_NOTIFICATION    = "SELECT n FROM Notification n WHERE n.memberId=:memberId AND n.topicId=:topicId";
-    private static final String JPQL_DELETE_NOTIFICATION           = "DELETE FROM Notification n WHERE n.memberId=:memberId AND n.topicId=:topicId";
-    private static final String JPQL_NOTIFICATIONS_LIST_PER_MEMBER = "SELECT n FROM Notification n WHERE n.memberId=:memberId";
-    private static final String PARAM_MEMBER_ID                    = "memberId";
-    private static final String PARAM_TOPIC_ID                     = "topicId";
+    private static final String JPQL_SELECT_UNIQUE_NOTIFICATION     = "SELECT n FROM Notification n WHERE n.memberId=:memberId AND n.topicId=:topicId";
+    private static final String JPQL_DELETE_NOTIFICATION            = "DELETE FROM Notification n WHERE n.memberId=:memberId AND n.topicId=:topicId";
+    private static final String JPQL_NOTIFICATIONS_LIST_PER_MEMBER  = "SELECT n FROM Notification n WHERE n.memberId=:memberId";
+    private static final String JPQL_COUNT_NOTIFICATIONS_PER_MEMBER = "SELECT count(n) FROM Notification n WHERE n.memberId=:memberId";
+    private static final String PARAM_MEMBER_ID                     = "memberId";
+    private static final String PARAM_TOPIC_ID                      = "topicId";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
@@ -50,6 +51,24 @@ public class NotificationDao {
     }
 
     /**
+     * Cette méthode permet de récupérer le nombre de {@link Notification} pour un {@link Member} donné.
+     * 
+     * @param member le membre pour lequel effectuer le décompte.
+     * @return le nombre de notifications correspondant.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public Integer count( Member member ) throws DAOException {
+        try {
+            Query query = em.createQuery( JPQL_COUNT_NOTIFICATIONS_PER_MEMBER );
+            query.setParameter( PARAM_MEMBER_ID, member.getId() );
+            // TODO : quid du cas NoResultException ?
+            return ( (Long) query.getSingleResult() ).intValue();
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
      * Cette méthode permet de lister toutes les {@link Notification} d'un {@link Member} donné.
      * 
      * @param member le membre pour lequel effectuer la recherche.
@@ -60,6 +79,27 @@ public class NotificationDao {
         try {
             TypedQuery<Notification> query = em.createQuery( JPQL_NOTIFICATIONS_LIST_PER_MEMBER, Notification.class );
             query.setParameter( PARAM_MEMBER_ID, member.getId() );
+            return query.getResultList();
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de lister les {@link Notification} d'un {@link Membre} de manière paginée.
+     * 
+     * @param member le membre pour lequel effectuer la recherche.
+     * @param pageNumber le numéro de la page de notifications à récupérer.
+     * @param notificationsPerPage le nombre de notifications à retourner pour la page donnée.
+     * @return la liste des notifications, ou <code>null</code> si aucune notification n'est trouvée.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public List<Notification> list( Member member, int pageNumber, int notificationsPerPage ) throws DAOException {
+        try {
+            TypedQuery<Notification> query = em.createQuery( JPQL_NOTIFICATIONS_LIST_PER_MEMBER, Notification.class );
+            query.setParameter( PARAM_MEMBER_ID, member.getId() );
+            query.setFirstResult( ( pageNumber - 1 ) * notificationsPerPage );
+            query.setMaxResults( notificationsPerPage );
             return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );

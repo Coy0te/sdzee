@@ -323,7 +323,7 @@ public class PostsBackingBean implements Serializable {
                     bookmarkDao.delete( bookmark );
                     Messages.addFlashGlobalInfo( "Le sujet ne fait plus partie de vos favoris." );
                 }
-                return String.format( URL_TOPIC_PAGE, topic.getId(), page );
+                return String.format( URL_TOPIC_PAGE, topic.getId(), 1 );
                 // si oui, le supprimer
             } catch ( DAOException e ) {
                 // TODO: logger l'échec de la mise à jour en base du sujet
@@ -509,6 +509,34 @@ public class PostsBackingBean implements Serializable {
             }
         } else {
             // TODO: logger l'intrus qui essaie d'alerter un post sans y être autorisé...
+            return URL_404;
+        }
+    }
+
+    public String solvePostAlert( Member member, Post post ) throws IOException {
+        // TODO
+        if ( member != null && member.getRights() >= 3 ) {
+            try {
+                // on commence par rafraichir l'entité Post, pour s'assurer qu'aucune modif n'a été apportée entre temps dessus
+                post = postDao.refresh( post );
+
+                alert.setAuthor( member );
+                alert.setCreationDate( new Date( System.currentTimeMillis() ) );
+                alert.setPost( post );
+                alert.setText( "TODO: implémenter la saisie de message d'alerte." );
+                alertDao.create( alert );
+                // TODO : ci-dessous bien nécessaire ?
+                post.addAlert( alert );
+                postDao.update( post );
+                alert = new Alert();
+                Messages.addFlashGlobalInfo( "Votre alerte a bien été envoyée au Staff, merci !" );
+                return String.format( URL_TOPIC_PAGE, topic.getId(), page );
+            } catch ( DAOException e ) {
+                // TODO: logger l'échec de la mise à jour en base
+                return URL_404;
+            }
+        } else {
+            // TODO: logger l'intrus qui essaie de résoudre une alerte sur un post sans y être autorisé...
             return URL_404;
         }
     }
