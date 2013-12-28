@@ -5,24 +5,24 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolationException;
 
 import com.sdzee.dao.DAOException;
 import com.sdzee.forums.entities.Alert;
-import com.sdzee.forums.entities.Post;
 
 /**
- * AlertDao est la classe DAO contenant les opérations CRUD réalisables sur la table des alertes du forum. Il s'agit d'un EJB Stateless dont la
- * structure s'appuie sur JPA et JPQL.
+ * AlertDao est la classe DAO contenant les opérations CRUD réalisables sur la table des alertes du forum. Il s'agit d'un EJB Stateless dont
+ * la structure s'appuie sur JPA et JPQL.
  * 
  * @author Médéric Munier
  * @version %I%, %G%
  */
 @Stateless
 public class AlertDao {
-    private static final String JPQL_ALERTS_LIST_PER_POST = "SELECT a FROM Alert a WHERE a.post=:post ORDER BY a.id ASC";
-    private static final String PARAM_POST                = "post";
+    private static final String JPQL_ALERTS_LIST  = "SELECT a FROM Alert a";
+    private static final String JPQL_COUNT_ALERTS = "SELECT count(a) FROM Alert a";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
     private EntityManager       em;
@@ -59,17 +59,49 @@ public class AlertDao {
     }
 
     /**
-     * Cette méthode permet de lister toutes les {@link Alert} d'un {@link Post} donné.
+     * Cette méthode permet de récupérer le nombre d'{@link Alert}.
      * 
-     * @param post le post dans lequel effectuer la recherche.
-     * @return la liste des alertes triées par id par ordre croissant, ou <code>null</code> si aucune alerte n'est trouvée.
+     * @return le nombre d'alertes correspondant.
      * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
-     * @deprecated Utiliser la liste des alertes directement depuis le post
      */
-    public List<Alert> list( Post post ) throws DAOException {
+    public Integer count() throws DAOException {
         try {
-            TypedQuery<Alert> query = em.createQuery( JPQL_ALERTS_LIST_PER_POST, Alert.class );
-            query.setParameter( PARAM_POST, post );
+            Query query = em.createQuery( JPQL_COUNT_ALERTS );
+            // TODO : quid du cas NoResultException ?
+            return ( (Long) query.getSingleResult() ).intValue();
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de lister toutes les {@link Alert} en cours.
+     * 
+     * @return la liste de toutes les alertes, ou <code>null</code> si aucune alerte n'est trouvée.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public List<Alert> list() throws DAOException {
+        try {
+            TypedQuery<Alert> query = em.createQuery( JPQL_ALERTS_LIST, Alert.class );
+            return query.getResultList();
+        } catch ( Exception e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Cette méthode permet de lister les {@link Alert} de manière paginée.
+     * 
+     * @param pageNumber le numéro de la page d'alertes à récupérer.
+     * @param alertsPerPage le nombre d'alertes à retourner pour la page donnée.
+     * @return la liste des alertes, ou <code>null</code> si aucune alerte n'est trouvée.
+     * @throws {@link DAOException} lorsqu'une erreur survient lors de l'opération en base.
+     */
+    public List<Alert> list( int pageNumber, int alertsPerPage ) throws DAOException {
+        try {
+            TypedQuery<Alert> query = em.createQuery( JPQL_ALERTS_LIST, Alert.class );
+            query.setFirstResult( ( pageNumber - 1 ) * alertsPerPage );
+            query.setMaxResults( alertsPerPage );
             return query.getResultList();
         } catch ( Exception e ) {
             throw new DAOException( e );
