@@ -79,6 +79,7 @@ Fonctionnalités implementées
 Fonctionnalités à venir
 ------------------------
 - ban membre / ban IP / LS
+- gestion des MPs envoyés par "le site" (pas de réponse possible, etc.)
 - récupération du compte via email (mot de passe et/ou login oubliés)
 - les tutos en lecture seule
 - la rédaction et la validation des tutos
