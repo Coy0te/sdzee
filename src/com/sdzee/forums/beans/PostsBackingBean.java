@@ -32,7 +32,14 @@ import com.sdzee.forums.entities.Notification;
 import com.sdzee.forums.entities.Post;
 import com.sdzee.forums.entities.Topic;
 import com.sdzee.forums.entities.Vote;
+import com.sdzee.membres.dao.MemberDao;
 import com.sdzee.membres.entities.Member;
+import com.sdzee.privatemessages.dao.PrivateNotificationDao;
+import com.sdzee.privatemessages.dao.PrivatePostDao;
+import com.sdzee.privatemessages.dao.PrivateTopicDao;
+import com.sdzee.privatemessages.entities.PrivateNotification;
+import com.sdzee.privatemessages.entities.PrivatePost;
+import com.sdzee.privatemessages.entities.PrivateTopic;
 
 /**
  * PostsBackingBean est le bean sur lequel s'appuie notamment la page d'un sujet de forum. Il s'agit d'un ManagedBean JSF, ayant pour portée
@@ -45,40 +52,48 @@ import com.sdzee.membres.entities.Member;
 @ViewScoped
 @URLMapping( id = "topic", pattern = "/forums/topic/#{topicId : postsBean.topicId}/", viewId = "/topic.jsf" )
 public class PostsBackingBean implements Serializable {
-    private static final long   serialVersionUID      = 1L;
-    private static final String URL_FORUM_PAGE        = "/forum.jsf?forumId=";
-    private static final String URL_TOPIC_PAGE        = "/topic.jsf?topicId=%d&page=%d&faces-redirect=true";
-    private static final String URL_404               = "/404";
-    private static final int    VOTE_UP               = 1;
-    private static final int    VOTE_DOWN             = -1;
-    private static final String SESSION_MEMBER        = "member";
-    private static final double NB_POSTS_PER_PAGE     = 5;
-    private static final String VOTE_OBJECT_TYPE_POST = "post";
+    private static final long      serialVersionUID      = 1L;
+    private static final String    URL_FORUM_PAGE        = "/forum.jsf?forumId=";
+    private static final String    URL_TOPIC_PAGE        = "/topic.jsf?topicId=%d&page=%d&faces-redirect=true";
+    private static final String    URL_404               = "/404";
+    private static final int       VOTE_UP               = 1;
+    private static final int       VOTE_DOWN             = -1;
+    private static final String    SESSION_MEMBER        = "member";
+    private static final double    NB_POSTS_PER_PAGE     = 5;
+    private static final String    VOTE_OBJECT_TYPE_POST = "post";
 
-    private Post                post;
-    private Topic               topic;
-    private Alert               alert;
-    private Forum               forumDeplacement;
-    private List<Post>          paginatedPosts;
-    private int                 pagesNumber;
-    private int                 topicId;
-    private int                 page                  = 1;
-    private boolean             bookmarked            = false;
+    private Post                   post;
+    private Topic                  topic;
+    private Alert                  alert;
+    private Forum                  forumDeplacement;
+    private List<Post>             paginatedPosts;
+    private int                    pagesNumber;
+    private int                    topicId;
+    private int                    page                  = 1;
+    private boolean                bookmarked            = false;
 
     @EJB
-    private PostDao             postDao;
+    private PostDao                postDao;
     @EJB
-    private TopicDao            topicDao;
+    private PrivatePostDao         privatePostDao;
     @EJB
-    private ForumDao            forumDao;
+    private TopicDao               topicDao;
     @EJB
-    private AlertDao            alertDao;
+    private PrivateTopicDao        privateTopicDao;
     @EJB
-    private VoteDao             voteDao;
+    private ForumDao               forumDao;
     @EJB
-    private BookmarkDao         bookmarkDao;
+    private AlertDao               alertDao;
     @EJB
-    private NotificationDao     notificationDao;
+    private VoteDao                voteDao;
+    @EJB
+    private MemberDao              memberDao;
+    @EJB
+    private BookmarkDao            bookmarkDao;
+    @EJB
+    private NotificationDao        notificationDao;
+    @EJB
+    private PrivateNotificationDao privateNotificationDao;
 
     /**
      * Cette méthode initialise la variable d'instance <code>topic</code> en récupérant en base le sujet correspondant à l'id transmis par
@@ -523,10 +538,42 @@ public class PostsBackingBean implements Serializable {
                 post = postDao.refresh( post );
                 post.removeAlert( alert );
                 postDao.update( post );
-                alert = new Alert();
                 Messages.addFlashGlobalInfo( "L'alerte a bien été résolue !" );
 
                 // TODO : envoyer un MP auto à l'auteur de l'alerte pour le prévenir de la résolution.
+                PrivateTopic mp = new PrivateTopic();
+                // origine du MP envoyé
+                Member origine = memberDao.find( "nickName", "Coyote" );// TODO : utiliser un user global représentant le site ?
+                mp.setAuthor( origine );
+                mp.setTitle( "Résolution de votre alerte" );
+                mp.setSubTitle( "Sujet : " + post.getTopic().getTitle() );
+                List<Member> participants = new ArrayList<Member>();
+                participants.add( alert.getAuthor() );
+                mp.setParticipants( participants );
+                privateTopicDao.create( mp );
+                PrivatePost privatePost = new PrivatePost();
+                privatePost.setAuthor( origine );
+                privatePost.setIpAddress( Faces.getRemoteAddr() );
+                privatePost.setCreationDate( new Date( System.currentTimeMillis() ) );
+                privatePost.setPrivateTopic( mp );
+                privatePost.setText( String.format(
+                        "Bonjour,\n\n L'alerte que vous aviez envoyée concernant le sujet \"%s\" a été résolue.\n\n ZdS FTW.", post
+                                .getTopic()
+                                .getTitle() ) );
+                privatePostDao.create( privatePost );
+
+                mp.setFirstPrivatePost( privatePost );
+                privateTopicDao.update( mp );
+
+                // Enregistrer une notification pour le participant au MP...
+                PrivateNotification notification;
+                for ( Member item : participants ) {
+                    notification = new PrivateNotification();
+                    notification.setMemberId( item.getId() );
+                    notification.setPrivateTopicId( mp.getId() );
+                    notification.setPrivatePost( privatePost );
+                    privateNotificationDao.create( notification );
+                }
 
                 return String.format( URL_TOPIC_PAGE, topic.getId(), page );
             } catch ( DAOException e ) {
