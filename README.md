@@ -35,7 +35,7 @@ Fonctionnalités implementées
 * Masquer un post (TODO : permettre la saisie d'un message de masquage)
 * Supprimer un post (TODO: backend à tester, frontend à réaliser)
 * Supprimer un topic (TODO: backend à tester, frontend à réaliser)
-* Résoudre une alerte sur un post (TODO: envoi auto d'un MP à l'auteur de l'alerte)
+* Résoudre une alerte sur un post, provoquant l'envoi d'un MP à l'auteur de l'alerte
 * Marquer n'importe quel topic comme résolu
 * Mettre n'importe quel topic en post-it
 * Verrouiller n'importe quel topic
