@@ -21,7 +21,7 @@ import com.sdzee.forums.entities.Alert;
  */
 @Stateless
 public class AlertDao {
-    private static final String JPQL_ALERTS_LIST  = "SELECT a FROM Alert a";
+    private static final String JPQL_ALERTS_LIST  = "SELECT a FROM Alert a ORDER BY a.id DESC";
     private static final String JPQL_COUNT_ALERTS = "SELECT count(a) FROM Alert a";
 
     @PersistenceContext( unitName = "bdd_sdzee_PU" )
