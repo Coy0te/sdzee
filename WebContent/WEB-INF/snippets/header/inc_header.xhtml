@@ -33,7 +33,7 @@
 								<h:commandLink value="Déconnexion" action="#{logoutBean.logout}" />
 							</o:form>
 							
-							<h:panelGroup id="mpsCount" layout="block" rendered="#{member.rights >= 3}">
+							<h:panelGroup id="mpsCount" layout="block">
 								<h:link outcome="/privateTopics" styleClass="dropdown-toggle secondaryLink">
 									Mes MP (#{privateNotificationsBean.countPrivateNotifications})
 								</h:link>
